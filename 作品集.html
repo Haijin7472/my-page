@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RECOMPO - UX/UI Portfolio</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A84FF',
+                        accent: '#FF375F',
+                        surface: '#1C1C1E',
+                        surfaceLight: '#2C2C2E',
+                        textMuted: '#8E8E93',
+                        darkBg: '#000000',
+                        male: { main: '#0A84FF', bg: '#0A84FF15' }, 
+                        female: { main: '#FF375F', bg: '#FF375F15' }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            background-color: #000000;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-card {
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #0A84FF 0%, #C974F4 50%, #FF375F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .wf-box { background: #2C2C2E; border-radius: 8px; border: 2px dashed #444; }
+        .wf-line { background: #444; height: 8px; border-radius: 4px; margin-bottom: 8px; }
+        .wf-circle { background: #444; border-radius: 50%; }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .nav-link.active { color: #fff; font-weight: 600; border-bottom: 2px solid #0A84FF; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .premium-card { background-color: #1C1C1E; border-radius: 24px; position: relative; overflow: hidden; }
+        .premium-card-light { background-color: #2C2C2E; border-radius: 20px; }
+        .matrix-btn { transition: transform 0.15s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary selection:text-white relative">
+
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card rounded-none border-t-0 border-l-0 border-r-0 border-b border-white/10 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="font-bold text-xl tracking-tight flex items-center gap-2">
+                <i data-lucide="layers" class="text-primary w-6 h-6"></i>
+                RECOMPO <span class="text-textMuted font-normal text-sm ml-2 hidden sm:inline">| Case Study</span>
+            </div>
+            <nav class="hidden md:flex gap-6 text-sm text-textMuted">
+                <a href="#hero" class="hover:text-white transition-colors">Overview</a>
+                <a href="#prototypes" class="hover:text-white transition-colors">Prototyping</a>
+                <a href="#hifi" class="hover:text-white transition-colors">Final UI</a>
+                <a href="#dimensions" class="hover:text-white transition-colors">UX Dimensions</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-32 max-w-6xl mx-auto px-6 space-y-32">
+
+        <section id="hero" class="min-h-[70vh] flex flex-col justify-center items-start relative">
+            <div class="absolute top-20 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+            
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold mb-6">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Web App Frontend Portfolio
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mb-6 leading-tight">
+                Data-Driven <br> <span class="gradient-text">Body Recomposition.</span>
+            </h1>
+            <p class="text-xl text-textMuted max-w-2xl mb-10 leading-relaxed">
+                RECOMPO is an intelligent fitness web app based on physiological matrix calibration. This portfolio details the complete evolution from concept wireframes to high-fidelity prototypes, along with an in-depth design breakdown across 5 key UX dimensions.
+            </p>
+            <div class="flex gap-4">
+                <a href="#prototypes" class="px-8 py-4 bg-white text-black font-bold rounded-full hover:scale-105 transition-transform">Explore Evolution</a>
+                <a href="#dimensions" class="px-8 py-4 bg-surfaceLight text-white font-bold rounded-full hover:bg-surface border border-white/10 transition-colors">View 5 Dimensions</a>
+            </div>
+        </section>
+
+        <section id="prototypes" class="space-y-24">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Prototyping Stages</h2>
+                <p class="text-textMuted max-w-2xl mx-auto">Showcasing the design evolution from low-fidelity sketches to vertical flow validation, clarifying the rationale for fidelity choices at each step.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="glass-card p-8 h-[400px] flex items-center justify-center relative overflow-hidden group">
+                    <div class="w-[280px] h-[500px] bg-[#1C1C1E] rounded-[32px] border-4 border-[#333] p-4 shadow-2xl relative rotate-[-5deg] group-hover:rotate-0 transition-transform duration-500">
+                        <div class="w-20 h-4 bg-[#333] rounded-full mx-auto mb-8 mt-2"></div>
+                        <div class="wf-circle w-16 h-16 mx-auto mb-4"></div>
+                        <div class="wf-line w-3/4 mx-auto mb-2"></div>
+                        <div class="wf-line w-1/2 mx-auto mb-8"></div>
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <div class="wf-box h-24"></div><div class="wf-box h-24"></div>
+                            <div class="wf-box h-24"></div><div class="wf-box h-24"></div>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between px-2">
+                            <div class="wf-circle w-6 h-6"></div><div class="wf-circle w-6 h-6"></div>
+                            <div class="wf-circle w-6 h-6"></div><div class="wf-circle w-6 h-6"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">1</span>
+                        <h3 class="text-2xl font-bold">Low-Fidelity Wireframes</h3>
+                    </div>
+                    <p class="text-textMuted mb-6 leading-relaxed">In the initial stage, grayscale wireframes are used to quickly build the page skeleton. The focus is on the information architecture layout, such as placeholders for matrix calibration, data visualization, and coach list modules.</p>
+                    <div class="bg-surfaceLight/50 p-5 rounded-2xl border border-white/5">
+                        <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Fidelity Rationale</h4>
+                        <p class="text-sm text-textMuted">The core goal at this stage is <strong class="text-white">"rapid iteration & structure validation"</strong>. Eliminating visual distractions like color and typography forces designers and stakeholders to focus on content layout and functionality, reducing revision costs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center flex-col-reverse md:flex-row-reverse">
+                <div class="glass-card p-8 h-[400px] flex items-center justify-center relative">
+                    <div class="w-full max-w-sm bg-[#1C1C1E] border border-white/10 rounded-3xl p-6 relative shadow-2xl">
+                        <div class="mb-12">
+                            <div class="h-40 bg-surfaceLight rounded-xl mb-4 animate-pulse"></div>
+                            <div class="h-20 bg-surfaceLight rounded-xl animate-pulse delay-75"></div>
+                        </div>
+                        <div class="flex justify-between items-center bg-[#2C2C2E] p-4 rounded-2xl">
+                            <div class="flex flex-col items-center gap-1 text-primary scale-110 transition-all"><i data-lucide="layout-dashboard" class="w-6 h-6"></i><div class="w-1 h-1 rounded-full bg-primary mt-1"></div></div>
+                            <div class="flex flex-col items-center gap-1 text-textMuted"><i data-lucide="activity-square" class="w-6 h-6"></i></div>
+                            <div class="flex flex-col items-center gap-1 text-textMuted"><i data-lucide="target" class="w-6 h-6"></i></div>
+                            <div class="flex flex-col items-center gap-1 text-textMuted"><i data-lucide="users" class="w-6 h-6"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">2</span>
+                        <h3 class="text-2xl font-bold">Horizontal Prototype (Global Navigation)</h3>
+                    </div>
+                    <p class="text-textMuted mb-6 leading-relaxed">Building the global breadth structure. Implementing the bottom <code>Tab Bar</code> (Summary / Live Gym / Matrix / Coaches / Plan) to ensure seamless switching between 5 core views without diving into the specific functional logic of each page.</p>
+                    <div class="bg-surfaceLight/50 p-5 rounded-2xl border border-white/5">
+                        <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-green-500"></i> Fidelity Rationale</h4>
+                        <p class="text-sm text-textMuted">To test <strong class="text-white">"breadth & information findability"</strong>. Horizontal fidelity validates whether the 5-dimension structure aligns with user mental models, ensuring users never get lost without expending effort on deep logic for every subpage.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="glass-card p-8 h-[400px] flex items-center justify-center relative overflow-hidden">
+                    <div class="flex flex-col gap-4 w-full max-w-[260px]">
+                        <div class="bg-surfaceLight p-4 rounded-xl border border-primary flex items-center gap-4 relative z-10 shadow-[0_0_20px_rgba(10,132,255,0.2)]">
+                            <i data-lucide="target" class="text-primary w-6 h-6"></i>
+                            <div><div class="text-sm font-bold text-white">1. Matrix Calibration</div><div class="text-[10px] text-textMuted">Select M3F1 -> M2F1</div></div>
+                        </div>
+                        <div class="w-0.5 h-6 bg-primary/50 mx-auto -my-5 relative z-0"></div>
+                        <div class="bg-surfaceLight p-4 rounded-xl border border-accent flex items-center gap-4 relative z-10 shadow-[0_0_20px_rgba(255,55,95,0.2)]">
+                            <i data-lucide="pie-chart" class="text-accent w-6 h-6"></i>
+                            <div><div class="text-sm font-bold text-white">2. Generate Plan</div><div class="text-[10px] text-textMuted">Calculate Macro Split</div></div>
+                        </div>
+                        <div class="w-0.5 h-6 bg-accent/50 mx-auto -my-5 relative z-0"></div>
+                        <div class="bg-surfaceLight p-4 rounded-xl border border-[#5ED67A] flex items-center gap-4 relative z-10 shadow-[0_0_20px_rgba(94,214,122,0.2)]">
+                            <i data-lucide="calendar-check" class="text-[#5ED67A] w-6 h-6"></i>
+                            <div><div class="text-sm font-bold text-white">3. Book Session</div><div class="text-[10px] text-textMuted">Assign to Timeline</div></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold">3</span>
+                        <h3 class="text-2xl font-bold">Vertical Prototype (Core Flow)</h3>
+                    </div>
+                    <p class="text-textMuted mb-6 leading-relaxed">Deeply integrating the core business flow: <strong>"Calibrate Goal (Matrix) -> Generate Algorithm Recommendations -> Book Session (Plan & Coach)"</strong>. This flow features high interaction fidelity and data linkage (e.g., selecting different body types auto-recalculates charts and schedules).</p>
+                    <div class="bg-surfaceLight/50 p-5 rounded-2xl border border-white/5">
+                        <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-[#5ED67A]"></i> Fidelity Rationale</h4>
+                        <p class="text-sm text-textMuted">Using a high-depth, low-breadth strategy to validate <strong class="text-white">"core value chain feasibility"</strong>. Matrix algorithms and chart rendering are the product's core barriers, requiring near-code high-fidelity testing to ensure accurate data logic and smooth interactions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hifi" class="space-y-12">
+            <div class="text-center mb-16">
+                <div class="flex justify-center items-center gap-3 mb-4">
+                    <span class="w-8 h-8 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold">4&5</span>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">High-Fidelity Final UI & 1:1 Frontend Replication</h2>
+                <p class="text-textMuted max-w-2xl mx-auto">All interfaces inside the phone mockups below are <strong class="text-white">100% extracted from actual frontend source code</strong>. Perfectly preserving custom `.premium-card`, exact Tailwind CSS classes, color variables (dynamic gender themes), and absolute-positioned Lucide icons.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 justify-center items-start">
+                
+                <div class="flex flex-col items-center group">
+                    <div class="relative w-[320px] h-[640px] bg-black border-[8px] border-[#2C2C2E] rounded-[48px] overflow-hidden shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+                        <div class="absolute top-0 inset-x-0 h-7 bg-black z-20 rounded-t-[40px] flex justify-center">
+                            <div class="w-32 h-6 bg-black rounded-b-3xl"></div>
+                        </div>
+                        
+                        <div class="pt-12 px-5 pb-2 flex justify-between items-end relative z-10">
+                            <h1 class="text-[32px] font-bold tracking-tight leading-none text-white">Summary</h1>
+                            <div class="w-9 h-9 rounded-full bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93] mb-1">
+                                <i data-lucide="user" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+
+                        <div class="px-5 pt-4 space-y-5 relative z-0 h-full overflow-y-auto no-scrollbar pb-24">
+                            <div class="premium-card p-6">
+                                <i data-lucide="target" class="absolute -top-10 -right-6 w-48 h-48 rotate-12 pointer-events-none opacity-10 text-[#0A84FF]"></i>
+                                <div class="relative z-10">
+                                    <div class="flex justify-between items-center mb-6">
+                                        <div class="flex items-center gap-2"><i data-lucide="target" class="w-5 h-5 text-white"></i><h2 class="font-semibold text-lg">My Program</h2></div>
+                                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-[#0A84FF] bg-[#0A84FF15]">MALE</span>
+                                    </div>
+                                    <div class="bg-black/30 rounded-[16px] p-4 mb-6">
+                                        <p class="text-xs text-textMuted mb-1">Vector Goal</p>
+                                        <p class="text-base font-semibold">Average → Athletic</p>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3 mb-6">
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] text-textMuted mb-3 uppercase font-semibold tracking-wider">Macro Split</span>
+                                            <div class="h-[80px] w-full flex items-center justify-center">
+                                                <div class="w-16 h-16 rounded-full border-[12px] border-[#0A84FF] border-r-[#5ED67A]"></div>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] text-textMuted mb-3 uppercase font-semibold tracking-wider">System Focus</span>
+                                            <div class="h-[80px] w-full flex items-end gap-1 justify-center pb-2">
+                                                <div class="w-4 h-4 bg-[#3A3A3C] rounded-t-sm"></div>
+                                                <div class="w-4 h-12 bg-[#0A84FF] rounded-t-sm"></div>
+                                                <div class="w-4 h-8 bg-[#C974F4] rounded-t-sm"></div>
+                                                <div class="w-4 h-6 bg-[#FFB340] rounded-t-sm"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 pt-5 border-t border-white/5 flex justify-between items-center">
+                                        <div class="flex flex-col"><span class="text-[10px] text-textMuted uppercase tracking-wider font-semibold">Weekly Target</span><span class="text-xl font-bold text-white">360 min</span></div>
+                                        <button class="px-4 py-2 bg-white text-black text-[11px] font-bold rounded-full">View Plan</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="premium-card p-4 flex flex-col justify-between aspect-[4/3] group relative">
+                                    <i data-lucide="activity" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#5ED67A]/10 pointer-events-none"></i>
+                                    <div class="flex justify-between items-start relative z-10 w-full">
+                                        <span class="text-xs font-semibold text-textMuted">Gym Load</span>
+                                        <div class="w-1.5 h-1.5 rounded-full bg-[#5ED67A] animate-pulse"></div>
+                                    </div>
+                                    <div class="relative z-10 mt-auto"><div class="flex items-baseline gap-1"><h3 class="font-bold text-3xl leading-none text-white">24</h3><span class="text-[10px] font-medium text-textMuted">ppl</span></div></div>
+                                </div>
+                                <div class="premium-card p-4 flex flex-col justify-between aspect-[4/3] group relative transition-all duration-500" style="background: linear-gradient(135deg, #1C1C1E 30%, rgba(201, 116, 244, 0.12) 100%)">
+                                    <i data-lucide="users" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#C974F4] pointer-events-none opacity-20"></i>
+                                    <div class="relative z-10 w-full flex justify-between items-start">
+                                        <span class="text-xs font-semibold text-textMuted">Coaches</span>
+                                        <div class="flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider" style="background-color: #C974F420; color: #C974F4;">AT-HOME</div>
+                                    </div>
+                                    <div class="relative z-10 mt-auto w-full">
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center gap-2 min-w-0">
+                                                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80" class="w-7 h-7 rounded-full object-cover border-2 shrink-0" style="border-color: #C974F4;">
+                                                <span class="text-[10px] font-bold text-white truncate">Wei</span>
+                                            </div>
+                                            <button class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white shrink-0">
+                                                <i data-lucide="x" class="w-3 h-3"></i>
+                                            </button>
+                                        </div>
+                                        <h3 class="font-bold text-[11px] truncate mt-1.5 text-[#C974F4]">Apr 24 • 14:00</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center max-w-[320px]">
+                        <h4 class="font-bold text-sm mb-2 flex items-center justify-center gap-1.5"><i data-lucide="layout-dashboard" class="w-4 h-4 text-primary"></i> Dashboard Overview</h4>
+                        <p class="text-xs text-textMuted">Precisely implements `.premium-card`, fully restoring dynamic theme binding, absolute-positioned Lucide watermark icons, and gradient card feedback for confirmed bookings.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center group">
+                    <div class="relative w-[320px] h-[640px] bg-black border-[8px] border-[#2C2C2E] rounded-[48px] overflow-hidden shadow-[0_20px_50px_rgba(255,55,95,0.15)] transition-transform duration-500 group-hover:-translate-y-2">
+                        <div class="absolute top-0 inset-x-0 h-7 bg-black z-20 rounded-t-[40px] flex justify-center">
+                            <div class="w-32 h-6 bg-black rounded-b-3xl"></div>
+                        </div>
+
+                        <div class="pt-12 px-5 pb-2 flex justify-between items-end relative z-10">
+                            <h1 class="text-[32px] font-bold tracking-tight leading-none">Matrix</h1>
+                            <button class="text-xs font-bold text-[#FF375F]">Reset</button>
+                        </div>
+                        
+                        <div class="px-5 pt-4 space-y-4">
+                            <div class="bg-surfaceLight p-1 rounded-lg flex relative">
+                                <button class="flex-1 py-2 text-xs font-medium rounded-md transition-all relative z-10 text-textMuted">Male</button>
+                                <button class="flex-1 py-2 text-xs font-bold rounded-md transition-all relative z-10 text-white bg-[#FF375F] shadow-sm">Female</button>
+                            </div>
+                            
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 p-0 group" style="border-color: #FF375F; box-shadow: inset 0 0 0 2px #FF375F;">
+                                    <div class="absolute inset-0 opacity-90 z-0">
+                                        <img src="f11.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full z-20 bg-white"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Athletic</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Shredded</span>
+                                    </div>
+                                </button>
+                                
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0">
+                                    <div class="absolute inset-0 opacity-60 z-0">
+                                        <img src="f12.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Robust</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Muscular</span>
+                                    </div>
+                                </button>
+
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0">
+                                    <div class="absolute inset-0 opacity-60 z-0">
+                                        <img src="f13.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Power</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">High Mass</span>
+                                    </div>
+                                </button>
+
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0">
+                                    <div class="absolute inset-0 opacity-60 z-0">
+                                        <img src="f21.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Lean</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Toned</span>
+                                    </div>
+                                </button>
+
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 p-0" style="border-color: #FF375F;">
+                                    <div class="absolute inset-0 opacity-90 z-0">
+                                        <img src="f22.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full z-20" style="background-color: #FF375F;"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] mb-0.5 leading-tight drop-shadow" style="color: #FF375F;">Fit</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Balanced</span>
+                                    </div>
+                                </button>
+
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0 opacity-30 cursor-not-allowed">
+                                    <div class="absolute inset-0 opacity-60 z-0 grayscale">
+                                        <img src="f23.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Stocky</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Solid</span>
+                                    </div>
+                                </button>
+
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0 opacity-30 cursor-not-allowed">
+                                    <div class="absolute inset-0 opacity-60 z-0 grayscale">
+                                        <img src="f31.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Slender</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Thin</span>
+                                    </div>
+                                </button>
+                                
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0 opacity-30 cursor-not-allowed">
+                                    <div class="absolute inset-0 opacity-60 z-0 grayscale">
+                                        <img src="f32.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Average</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Untrained</span>
+                                    </div>
+                                </button>
+                                
+                                <button class="matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0 opacity-30 cursor-not-allowed">
+                                    <div class="absolute inset-0 opacity-60 z-0 grayscale">
+                                        <img src="f33.png" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 z-20"></div>
+                                    <div class="relative z-10 p-2 w-full">
+                                        <span class="block font-bold text-[11px] text-white mb-0.5 leading-tight drop-shadow">Skinny Fat</span>
+                                        <span class="block text-[8px] text-gray-300 drop-shadow truncate">Low Muscle</span>
+                                    </div>
+                                </button>
+                            </div>
+                            
+                            <div class="flex justify-between text-[10px] font-medium text-textMuted px-1 pt-2 border-t border-white/5">
+                                <span>&lt; 22%</span><span>23-35%</span><span>&gt; 35%</span>
+                            </div>
+
+                            <div class="flex gap-3 pt-2">
+                                <div class="premium-card p-4 flex-1 relative overflow-hidden">
+                                    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover opacity-20 mix-blend-screen" style="filter: grayscale(30%);"></div>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-0"></div>
+                                    <div class="relative z-10 mt-6"><p class="text-[10px] text-textMuted mb-1">Baseline</p><div class="text-sm font-bold truncate" style="color:#FF375F;">Fit</div></div>
+                                </div>
+                                <div class="flex items-center text-[#FF375F] z-10"><i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+                                <div class="premium-card p-4 flex-1 relative overflow-hidden">
+                                    <div class="absolute inset-0 z-0"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=300&q=80" class="w-full h-full object-cover opacity-20 mix-blend-screen"></div>
+                                    <div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-0"></div>
+                                    <div class="relative z-10 mt-6"><p class="text-[10px] text-textMuted mb-1">Target</p><div class="text-sm font-bold truncate" style="color:#FF375F;">Athletic</div></div>
+                                </div>
+                            </div>
+                            
+                            <button class="w-full py-4 mt-2 rounded-xl bg-white text-black font-bold text-base active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-lg">
+                                Generate My Plan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center max-w-[320px]">
+                        <h4 class="font-bold text-sm mb-2 flex items-center justify-center gap-1.5"><i data-lucide="dna" class="w-4 h-4 text-primary"></i> Matrix Calibration</h4>
+                        <p class="text-xs text-textMuted">Perfectly ports complex DOM structures with background gradients + `bg-gradient-to-t` masks, precise disabled grayscale states, and gender-based dynamic color/body fat scales.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center group">
+                    <div class="relative w-[320px] h-[640px] bg-black border-[8px] border-[#2C2C2E] rounded-[48px] overflow-hidden shadow-2xl transition-transform duration-500 group-hover:-translate-y-2">
+                        <div class="absolute top-0 inset-x-0 h-7 bg-black z-20 rounded-t-[40px] flex justify-center">
+                            <div class="w-32 h-6 bg-black rounded-b-3xl"></div>
+                        </div>
+
+                        <div class="pt-12 px-5 pb-2 flex items-center gap-3 bg-black relative z-10">
+                            <i data-lucide="chevron-left" class="w-8 h-8 -ml-2 text-[#0A84FF]"></i>
+                            <h1 class="text-xl font-bold">Wei Li</h1>
+                        </div>
+                        
+                        <div class="px-5 pt-2 space-y-6 h-full overflow-y-auto no-scrollbar pb-24">
+                            <div class="premium-card p-6 flex flex-col items-center text-center relative overflow-hidden">
+                                <i data-lucide="award" class="absolute -top-6 -right-6 w-32 h-32 rotate-12 pointer-events-none opacity-20" style="color:#C974F4"></i>
+                                <div class="w-20 h-20 rounded-full border-4 mb-3 z-10 shadow-lg relative overflow-hidden" style="border-color:#C974F44D">
+                                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 opacity-20" style="background-color:#C974F4"></div>
+                                </div>
+                                <p class="text-xs text-textMuted leading-relaxed mb-3 z-10">Focuses on practical strength for daily life. Great for beginners looking to build a sustainable routine without intimidating equipment.</p>
+                                <div class="flex gap-2 z-10">
+                                    <span class="text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider" style="color:#C974F4; background-color:#C974F415; border: 1px solid #C974F433">Strength</span>
+                                    <span class="text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider" style="color:#C974F4; background-color:#C974F415; border: 1px solid #C974F433">At-Home</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg mb-4">Dates</h3>
+                                <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+                                    <div class="snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl cursor-pointer bg-white border border-transparent text-black">
+                                        <span class="text-[11px] font-medium mb-1">W</span><span class="text-xl font-bold">23</span>
+                                        <div class="w-1.5 h-1.5 rounded-full mt-1" style="background-color: #C974F4"></div>
+                                    </div>
+                                    <div class="snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl cursor-pointer bg-surfaceLight border border-transparent text-white">
+                                        <span class="text-[11px] font-medium mb-1">T</span><span class="text-xl font-bold">24</span>
+                                        <div class="w-1 h-1 rounded-full bg-[#47A1FF] mt-1"></div>
+                                    </div>
+                                    <div class="snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl bg-surfaceLight/30 border border-transparent text-textMuted/30 cursor-not-allowed">
+                                        <span class="text-[11px] font-medium mb-1">F</span><span class="text-xl font-bold">25</span>
+                                        <div class="w-1 h-1 mt-1"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-lg mb-4">Time</h3>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <button class="py-3 rounded-xl bg-surfaceLight text-xs font-bold text-white border border-transparent">09:00</button>
+                                    <button class="py-3 rounded-xl text-xs font-bold text-[#47A1FF] border border-[#47A1FF] bg-[#47A1FF]/10">10:00</button>
+                                    <button class="py-3 rounded-xl bg-surfaceLight text-xs font-bold text-white border border-transparent">14:00</button>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 mt-4">
+                                <button class="py-4 rounded-xl font-bold text-sm bg-surfaceLight text-textMuted flex-1 pointer-events-none">Book Gym</button>
+                                <button class="py-4 rounded-xl font-bold text-sm bg-[#C974F4] text-white flex-1">Book At-Home</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-center max-w-[320px]">
+                        <h4 class="font-bold text-sm mb-2 flex items-center justify-center gap-1.5"><i data-lucide="calendar-check" class="w-4 h-4 text-[#C974F4]"></i> Coach Booking</h4>
+                        <p class="text-xs text-textMuted">Authentically restores coach tag-based dynamic color logic. Calendar slider uses `snap-center`, and the "Book At-Home" button displays precisely per business logic.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bg-surfaceLight/50 p-6 rounded-3xl border border-white/5 mt-12 max-w-4xl mx-auto">
+                <h4 class="text-lg font-bold text-white mb-3 flex items-center gap-2"><i data-lucide="aperture" class="w-5 h-5 text-white"></i> Highly Reusable & Semantic Tailwind Architecture</h4>
+                <p class="text-sm text-textMuted leading-relaxed">
+                    After validating structure and flow, the project advances to maximum fidelity. By abstracting shared styles like <code class="text-[#0A84FF] bg-[#0A84FF]/10 px-1 rounded">.premium-card</code> and refining Tailwind Theme configs (color system: Male <span class="text-[#0A84FF]">#0A84FF</span> / Female <span class="text-[#FF375F]">#FF375F</span>, radius rules: 20px/24px), we ensure visual impact (glassmorphism, dark sci-fi style, transparent watermarks) while maintaining extreme component reusability for 100% high-fidelity code implementation.
+                </p>
+            </div>
+        </section>
+
+        <section id="dimensions" class="space-y-12">
+            <div class="text-center mb-16">
+                <div class="flex justify-center items-center gap-3 mb-4">
+                    <span class="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-bold">7</span>
+                </div>
+                <h2 class="text-3xl font-bold mb-4">5 Key UX Dimensions</h2>
+                <p class="text-textMuted max-w-2xl mx-auto">A bottom-up panoramic deconstruction of the RECOMPO app based on Jesse James Garrett's Elements of User Experience framework.</p>
+            </div>
+
+            <div class="relative pl-6 md:pl-0">
+                <div class="absolute left-[11px] top-0 bottom-0 w-0.5 bg-white/10 md:hidden"></div>
+
+                <div class="space-y-6">
+                    <div class="glass-card p-6 md:p-8 relative">
+                        <div class="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#8E8E93] border-4 border-darkBg md:hidden"></div>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/4 shrink-0">
+                                <span class="text-[10px] uppercase tracking-widest text-textMuted font-bold block mb-1">Dimension 01</span>
+                                <h3 class="text-2xl font-bold text-white">Strategy <br><span class="text-lg text-textMuted font-medium">Strategy</span></h3>
+                            </div>
+                            <div class="md:w-3/4">
+                                <ul class="space-y-3 text-sm text-gray-300">
+                                    <li class="flex gap-3"><i data-lucide="target" class="w-5 h-5 text-primary shrink-0"></i> <div><strong>User Needs:</strong> Escape generic fitness plans; require science-backed, personalized programs based on current physiology and clear goals (Body Recomposition).</div></li>
+                                    <li class="flex gap-3"><i data-lucide="briefcase" class="w-5 h-5 text-accent shrink-0"></i> <div><strong>Business Goals:</strong> Build a digital loop: Goal Input → Algorithm Prescription → Coach Booking & Scheduling, achieving monetization and user retention.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 relative">
+                        <div class="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#8E8E93] border-4 border-darkBg md:hidden"></div>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/4 shrink-0">
+                                <span class="text-[10px] uppercase tracking-widest text-textMuted font-bold block mb-1">Dimension 02</span>
+                                <h3 class="text-2xl font-bold text-white">Scope <br><span class="text-lg text-textMuted font-medium">Scope</span></h3>
+                            </div>
+                            <div class="md:w-3/4">
+                                <p class="text-sm text-gray-300 mb-3">Defining functional specs & content requirements:</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-surfaceLight border border-white/5 rounded-full text-xs">Dual Gender Matrix Logic</span>
+                                    <span class="px-3 py-1 bg-surfaceLight border border-white/5 rounded-full text-xs">Real-time Gym Capacity</span>
+                                    <span class="px-3 py-1 bg-surfaceLight border border-white/5 rounded-full text-xs">Multi-dimensional Data Charts</span>
+                                    <span class="px-3 py-1 bg-surfaceLight border border-white/5 rounded-full text-xs">Smart Coach Matching</span>
+                                    <span class="px-3 py-1 bg-surfaceLight border border-white/5 rounded-full text-xs">Dynamic Weekly Plan Generator</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 relative">
+                        <div class="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#8E8E93] border-4 border-darkBg md:hidden"></div>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/4 shrink-0">
+                                <span class="text-[10px] uppercase tracking-widest text-textMuted font-bold block mb-1">Dimension 03</span>
+                                <h3 class="text-2xl font-bold text-white">Structure <br><span class="text-lg text-textMuted font-medium">Structure</span></h3>
+                            </div>
+                            <div class="md:w-3/4">
+                                <p class="text-sm text-gray-300 mb-3"><strong>Interaction Design & Information Architecture:</strong> Flat star navigation via bottom Tab Bar connecting 5 parallel core modules. Linear flows within functions, e.g.:</p>
+                                <div class="bg-darkBg/50 p-4 rounded-xl border border-white/5 text-xs text-textMuted font-mono">
+                                    [Matrix View] → Select Gender → Set Baseline → Set Target → Trigger Validation / Generate Charts → [Guide] to Plan View
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 relative">
+                        <div class="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#8E8E93] border-4 border-darkBg md:hidden"></div>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/4 shrink-0">
+                                <span class="text-[10px] uppercase tracking-widest text-textMuted font-bold block mb-1">Dimension 04</span>
+                                <h3 class="text-2xl font-bold text-white">Skeleton <br><span class="text-lg text-textMuted font-medium">Skeleton</span></h3>
+                            </div>
+                            <div class="md:w-3/4">
+                                <p class="text-sm text-gray-300 leading-relaxed">
+                                    <strong>Interface, Navigation & Information Design:</strong><br>
+                                    Modular Premium Cards separate functional zones. Optimized mobile touch targets (e.g., enlarged bottom nav). Information hierarchy uses size/color contrast: large bold headings for goals, high-saturation badges for status labels (e.g., "BOOKED").
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 md:p-8 relative border-l-4 border-l-primary">
+                        <div class="absolute -left-[28px] md:-left-12 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-primary shadow-[0_0_10px_#0A84FF] border-4 border-darkBg md:hidden"></div>
+                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                            <div class="md:w-1/4 shrink-0">
+                                <span class="text-[10px] uppercase tracking-widest text-primary font-bold block mb-1">Dimension 05</span>
+                                <h3 class="text-2xl font-bold text-white">Surface <br><span class="text-lg text-textMuted font-medium">Surface</span></h3>
+                            </div>
+                            <div class="md:w-3/4">
+                                <p class="text-sm text-gray-300 leading-relaxed mb-4">
+                                    <strong>Visual Design & Sensory Communication:</strong> Premium dark sci-fi fitness aesthetic established.
+                                </p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <div class="p-3 bg-[#0A84FF]/10 border border-[#0A84FF]/30 rounded-lg text-center"><div class="w-4 h-4 rounded-full bg-[#0A84FF] mx-auto mb-1"></div><span class="text-[10px] text-white">Male Theme</span></div>
+                                    <div class="p-3 bg-[#FF375F]/10 border border-[#FF375F]/30 rounded-lg text-center"><div class="w-4 h-4 rounded-full bg-[#FF375F] mx-auto mb-1"></div><span class="text-[10px] text-white">Female Theme</span></div>
+                                    <div class="p-3 bg-surface border border-white/10 rounded-lg text-center"><div class="text-xs font-bold text-white mb-1">Inter</div><span class="text-[10px] text-textMuted">Typography</span></div>
+                                    <div class="p-3 bg-surface border border-white/10 rounded-lg text-center"><i data-lucide="feather" class="w-4 h-4 mx-auto mb-1 text-white"></i><span class="text-[10px] text-textMuted">Lucide Icons</span></div>
+                                </div>
+                                <p class="text-xs text-textMuted mt-4">Glassmorphism, absolute-positioned watermark icons, and subtle micro-animations (pulse dots for live status) add depth without distracting from data readability.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-white/10 py-8 text-center text-sm text-textMuted">
+        <p>RECOMPO Frontend Portfolio. Built with Tailwind CSS.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
