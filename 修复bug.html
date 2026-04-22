@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>RECOMPO</title>
+    <!-- 引入 Chart.js 和 Lucide 图标 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        window.tailwind = {
+            config: {
+                theme: { 
+                    extend: { 
+                        colors: { 
+                            male: { main: '#0A84FF', bg: '#0A84FF15' }, 
+                            female: { main: '#FF375F', bg: '#FF375F15' },
+                            surface: '#1C1C1E',
+                            surfaceLight: '#2C2C2E',
+                            textMuted: '#8E8E93'
+                        } 
+                    } 
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'body-recomp-default';
+
+        window.firebaseDB = db;
+        window.firebaseAuth = auth;
+        window.appId = appId;
+        window.firestoreUtils = { doc, getDoc, setDoc };
+
+        const initAuth = async () => {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) { loadPersistentData(user.uid); }
+        });
+        initAuth();
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        :root { 
+            --safe-top: env(safe-area-inset-top); 
+            --safe-bottom: env(safe-area-inset-bottom); 
+        }
+        
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
+            background-color: #000000; 
+            color: #FFFFFF; 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .premium-card { background-color: #1C1C1E; border-radius: 24px; position: relative; overflow: hidden; }
+        .premium-card-light { background-color: #2C2C2E; border-radius: 20px; }
+        
+        .ios-tab-bar {
+            background: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-top: 0.5px solid rgba(255,255,255,0.1);
+        }
+
+        /* 恢复纯白极简底栏 */
+        .nav-item { color: #8E8E93; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-active { 
+            color: #FFFFFF;
+            transform: scale(1.05); 
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)); 
+        }
+
+        .matrix-btn { transition: transform 0.15s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease; }
+        .matrix-btn:active:not(:disabled) { transform: scale(0.95); }
+        .view-section { display: none; animation: fade-in 0.3s ease-out forwards; }
+        .view-active { display: block; }
+        @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .chart-container { position: relative; width: 100%; height: 180px; }
+        .home-chart-container { position: relative; width: 100%; height: 100px; }
+        
+        .pt-safe { padding-top: calc(1rem + var(--safe-top)); }
+        .pb-safe { padding-bottom: calc(5rem + var(--safe-bottom)); }
+    </style>
+</head>
+<body class="antialiased select-none overflow-x-hidden">
+
+<header class="fixed top-0 left-0 right-0 z-50 px-5 pt-safe pb-2 bg-black/90 backdrop-blur-lg border-b border-white/[0.05]">
+    <div class="flex justify-between items-end max-w-lg mx-auto h-12">
+        <div class="flex items-center gap-2">
+            <button id="header-back-btn" onclick="goBack()" class="hidden text-[#0A84FF] active:opacity-50 pb-1 transition-all">
+                <i data-lucide="chevron-left" class="w-8 h-8 -ml-2"></i>
+            </button>
+            <h1 id="view-title" class="text-[32px] font-bold tracking-tight leading-none transition-all duration-300">Summary</h1>
+        </div>
+        <div class="w-9 h-9 rounded-full bg-surfaceLight flex items-center justify-center text-textMuted mb-1">
+            <i data-lucide="user" class="w-5 h-5"></i>
+        </div>
+    </div>
+</header>
+
+<div class="relative z-10 max-w-lg mx-auto px-5 pt-28 pb-40">
+
+    <!-- 视图: 首页 -->
+    <main id="view-home" class="view-section view-active space-y-5">
+        <div id="home-empty-state" class="premium-card p-6 relative group cursor-pointer" onclick="switchView('vector')">
+                    <i data-lucide="dna" class="absolute -top-6 -right-6 w-32 h-32 text-[#FF5C77]/10 rotate-12 transition-transform duration-500 group-hover:scale-110 pointer-events-none"></i>
+                    <div class="relative z-10 flex flex-col items-center text-center py-4">
+                        <div class="w-16 h-16 rounded-full bg-surfaceLight flex items-center justify-center text-[#FF5C77] mb-4">
+                            <i data-lucide="target" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-xl font-bold mb-2">Goal Uncalibrated</h2>
+                        <p class="text-sm text-textMuted mb-6">Define your matrix to generate your program.</p>
+                        <button class="px-6 py-3 bg-white text-black font-semibold text-sm rounded-full active:scale-95 transition-transform w-full">Calibrate Matrix</button>
+                    </div>
+                </div>
+
+                <div id="home-vector-card" class="premium-card p-6 hidden">
+                    <!-- 修复点 3：Target 水印加入动态 ID，通过 JS 动态随性别变化颜色 -->
+                    <i id="home-watermark-target" data-lucide="target" class="absolute -top-10 -right-6 w-48 h-48 rotate-12 pointer-events-none opacity-10 transition-colors duration-500"></i>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-2"><i data-lucide="target" class="w-5 h-5 text-white"></i><h2 class="font-semibold text-lg">My Program</h2></div>
+                            <span id="home-gender-tag" class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">MALE</span>
+                        </div>
+                        <div class="bg-black/30 rounded-[16px] p-4 mb-6">
+                            <p class="text-xs text-textMuted mb-1">Vector Goal</p>
+                            <p id="home-vector-path" class="text-base font-semibold">---</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-textMuted mb-3 uppercase font-semibold tracking-wider">Macro Split</span>
+                                <div class="home-chart-container h-[80px]"><canvas id="homeMacroChart"></canvas></div>
+                                <div id="home-macro-legend" class="flex flex-wrap justify-center gap-x-3 mt-2 text-[8px] text-textMuted"></div>
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-textMuted mb-3 uppercase font-semibold tracking-wider">System Focus</span>
+                                <div class="home-chart-container h-[80px]"><canvas id="homeMicroChart"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-5 border-t border-white/5 flex justify-between items-center">
+                            <div class="flex flex-col"><span class="text-[10px] text-textMuted uppercase tracking-wider font-semibold">Weekly Target</span><span id="home-total-time" class="text-xl font-bold text-white">360 min</span></div>
+                            <button onclick="switchView('plan')" class="px-4 py-2 bg-white text-black text-[11px] font-bold rounded-full">View Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="home-course-card" class="premium-card p-5 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-semibold text-[15px]">Up Next Workouts</h2>
+                        <span class="text-[10px] text-[#5ED67A] font-bold bg-[#5ED67A]/10 px-2 py-1 rounded tracking-wide">SELECTED</span>
+                    </div>
+                    <div id="home-selected-courses-list" class="space-y-4"></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div onclick="switchView('gym')" class="premium-card p-4 flex flex-col justify-between aspect-[4/3] group cursor-pointer relative">
+                        <!-- 修复点 4：健身房 activity 水印加入淡淡的绿色 -->
+                        <i data-lucide="activity" class="absolute -bottom-4 -right-4 w-20 h-20 text-[#5ED67A]/10 pointer-events-none"></i>
+                        <div class="flex justify-between items-start relative z-10 w-full">
+                            <span class="text-xs font-semibold text-textMuted">Gym Load</span>
+                            <div class="w-1.5 h-1.5 rounded-full bg-[#5ED67A] animate-pulse"></div>
+                        </div>
+                        <div class="relative z-10 mt-auto"><div class="flex items-baseline gap-1"><h3 class="font-bold text-3xl leading-none text-white">24</h3><span class="text-[10px] font-medium text-textMuted">ppl</span></div></div>
+                    </div>
+                    
+                    <!-- 修复点：添加 ID 以支持动态控制卡片渐变氛围背景 -->
+                    <div id="home-coach-card-outer" onclick="handleHomeCoachClick()" class="premium-card p-4 flex flex-col justify-between aspect-[4/3] group cursor-pointer relative transition-all duration-500">
+                        <!-- 教练 users 水印，默认透明白，预约后通过 JS 动态赋予色彩 -->
+                        <i id="home-coach-watermark" data-lucide="users" class="absolute -bottom-4 -right-4 w-20 h-20 text-white/5 pointer-events-none transition-colors duration-500"></i>
+                        <div class="relative z-10 w-full flex justify-between items-start">
+                            <span class="text-xs font-semibold text-textMuted">Coaches</span>
+                            <div id="home-coach-status-pill" class="hidden px-1.5 py-0.5 rounded-sm text-[8px] font-bold">BOOKED</div>
+                        </div>
+                        <div id="home-coach-default" class="relative z-10 mt-auto"><i data-lucide="calendar-plus" class="w-5 h-5 text-[#5ED67A] mb-1"></i><h3 class="font-semibold text-xs text-white">Book Session</h3></div>
+                        <div id="home-coach-booked" class="relative z-10 mt-auto hidden w-full">
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <img id="home-coach-avatar" src="" class="w-7 h-7 rounded-full object-cover border-2 shrink-0">
+                                    <span id="home-coach-name" class="text-[10px] font-bold text-white truncate">Name</span>
+                                </div>
+                                <button onclick="cancelBooking(event)" class="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center active:scale-95 transition-transform text-white shrink-0 hover:bg-[#FF5C77]">
+                                    <i data-lucide="x" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                            <h3 id="home-coach-time" class="font-bold text-[11px] truncate mt-1.5 transition-colors duration-500">Apr 24 • 14:00</h3>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- 视图: 实时健身房 -->
+            <main id="view-gym" class="view-section space-y-5">
+                <div class="premium-card p-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 class="font-bold text-xl mb-1">Central Hub</h2>
+                            <p class="text-sm text-textMuted">Live & Predicted Load</p>
+                        </div>
+                        <!-- 新增：实时在线人数状态直显 -->
+                        <div class="flex flex-col items-end">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <div class="w-1.5 h-1.5 rounded-full bg-[#5ED67A] animate-pulse"></div>
+                                <span class="text-[10px] font-bold text-[#5ED67A] uppercase tracking-wider">Live</span>
+                            </div>
+                            <div class="flex items-baseline gap-1">
+                                <h3 class="font-bold text-3xl leading-none text-white">24</h3>
+                                <span class="text-[10px] font-medium text-textMuted">ppl</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container h-[220px] w-full"><canvas id="gymLoadChart"></canvas></div>
+                </div>
+            </main>
+
+            <!-- 视图: 矩阵标定 -->
+            <main id="view-vector" class="view-section space-y-5">
+                <div class="flex justify-between items-center px-1"><h2 id="vector-main-title" class="font-bold text-xl">Calibration</h2><button id="reset-btn" class="hidden text-xs font-bold active:opacity-50 transition-opacity text-[#47A1FF]">Reset</button></div>
+                <div id="matrix-step-1" class="space-y-4 transition-all duration-300">
+                    <div class="bg-surfaceLight p-1 rounded-lg flex relative">
+                        <button id="btn-male" onclick="setGender('male')" class="flex-1 py-2 text-xs font-bold rounded-md transition-all relative z-10 text-white bg-[#47A1FF] shadow-sm">Male</button>
+                        <button id="btn-female" onclick="setGender('female')" class="flex-1 py-2 text-xs font-medium rounded-md transition-all relative z-10 text-textMuted hover:text-white">Female</button>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2.5" id="matrix-grid"></div>
+                    <div class="flex justify-between text-[10px] font-medium text-textMuted px-1 pt-2 border-t border-white/5" id="bfp-scale"></div>
+                </div>
+                <div class="flex gap-3" id="status-cards">
+                    <div class="premium-card p-4 flex-1 relative overflow-hidden"><div id="current-icon-container" class="absolute inset-0 z-0"></div><div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-0"></div><div class="relative z-10 mt-6"><p class="text-[10px] text-textMuted mb-1">Baseline</p><div id="current-display" class="text-sm font-bold truncate">---</div></div></div>
+                    <div class="flex items-center text-surfaceLight z-10" id="matrix-arrow"><i data-lucide="arrow-right" class="w-4 h-4"></i></div>
+                    <div class="premium-card p-4 flex-1 relative overflow-hidden"><div id="target-icon-container" class="absolute inset-0 z-0"></div><div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent z-0"></div><div class="relative z-10 mt-6"><p class="text-[10px] text-textMuted mb-1">Target</p><div id="target-display" class="text-sm font-bold truncate">---</div></div></div>
+                </div>
+                
+                <div id="exception-banner" class="hidden premium-card p-5 bg-[#FF5C77]/10 border border-[#FF5C77]/20">
+                    <div class="flex items-start gap-3 relative z-10">
+                        <i data-lucide="alert-circle" class="w-5 h-5 text-[#FF5C77] shrink-0 mt-0.5"></i>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#FF5C77]">Invalid Selection</h3>
+                            <p class="text-xs text-[#FF5C77]/80 mt-1">Goal must be a progressive physiological step.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prescription-section" class="hidden space-y-5">
+                    <div class="premium-card p-6">
+                        <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-sm">Macro Split</h3><div id="macro-legend" class="text-[9px] text-textMuted flex flex-col gap-1"></div></div>
+                        <div class="chart-container h-[180px]"><canvas id="macroChart"></canvas></div>
+                    </div>
+                    <div class="premium-card p-6"><h3 class="font-bold text-sm mb-4">System Focus</h3><div class="chart-container h-[180px]"><canvas id="microChart"></canvas></div></div>
+                    <div class="premium-card p-6" id="energy-guide"></div>
+                    
+                    <!-- 新增：Matrix 跳转至 Plan 视图的快捷按钮 -->
+                    <button onclick="switchView('plan')" class="w-full py-4 mt-2 rounded-xl bg-white text-black font-bold text-base active:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-lg">
+                        Generate My Plan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </main>
+
+            <!-- 视图: 计划 -->
+            <main id="view-plan" class="view-section space-y-6">
+                <div id="plan-empty" class="premium-card py-20 flex flex-col items-center justify-center text-center px-6">
+                    <i data-lucide="calendar-x-2" class="w-10 h-10 text-textMuted mb-4"></i>
+                    <h2 class="text-lg font-bold">No Active Plan</h2>
+                    <p class="text-xs text-textMuted mb-6">Define your matrix goals first.</p>
+                    <button onclick="switchView('vector')" class="px-6 py-3 bg-white text-black font-bold text-xs rounded-full active:scale-95 transition-transform">Calibrate Now</button>
+                </div>
+                <div id="plan-content" class="hidden space-y-6">
+                    <div>
+                        <h2 class="font-bold text-[18px] mb-3">Recommended</h2>
+                        <!-- 修复点：更正 snap 语法为 snap-x snap-mandatory，并加入 flex-nowrap 与 touch-pan-x 确保横滑生效 -->
+                        <div id="course-grid" class="flex flex-nowrap gap-4 overflow-x-auto touch-pan-x no-scrollbar snap-x snap-mandatory pb-1 after:content-[''] after:w-4 after:shrink-0 w-full"></div>
+                    </div>
+                    <div id="visual-calendar-grid" class="flex justify-between bg-surfaceLight/50 p-2 rounded-2xl"></div>
+                    <div class="premium-card p-6"><h3 id="selected-date-display" class="font-bold text-lg mb-4">Today</h3><div id="daily-schedule-panel" class="space-y-6"></div></div>
+                </div>
+            </main>
+
+            <!-- 视图: 教练列表 -->
+            <main id="view-coach" class="view-section space-y-4"></main>
+
+            <!-- 视图: 教练详情 -->
+            <main id="view-coach-detail" class="view-section space-y-6">
+                <div id="coach-detail-header" class="premium-card p-6 flex flex-col items-center text-center relative overflow-hidden"></div>
+                <div><h3 class="font-bold text-lg mb-4">Dates</h3><div id="coach-calendar" class="flex gap-3 overflow-x-auto no-scrollbar pb-2 after:content-[''] after:w-4 after:shrink-0"></div></div>
+                <div id="coach-slots-container" class="hidden"><h3 class="font-bold text-lg mb-4">Time</h3><div id="coach-slots" class="grid grid-cols-3 gap-3"></div></div>
+                <div id="book-actions-container" class="flex gap-3 mt-4">
+                    <button id="book-session-btn" class="py-4 rounded-xl font-bold text-sm transition-all duration-300 flex justify-center items-center pointer-events-none bg-surfaceLight text-textMuted">Select Slot</button>
+                    <button id="book-athome-btn" class="hidden py-4 rounded-xl font-bold text-sm transition-all duration-300 flex justify-center items-center pointer-events-none bg-surfaceLight text-textMuted">Book At-Home</button>
+                </div>
+            </main>
+        </div>
+
+<nav class="fixed bottom-0 left-0 right-0 z-50 ios-tab-bar pb-safe pt-2">
+    <div class="flex justify-around items-center max-w-lg mx-auto px-2">
+        <button onclick="switchView('home')" id="nav-home" class="nav-item flex flex-col items-center gap-1 flex-1 py-1"><i data-lucide="layout-dashboard" class="w-5 h-5"></i><span class="text-[9px] font-medium mt-1">Summary</span></button>
+        <button onclick="switchView('gym')" id="nav-gym" class="nav-item flex flex-col items-center gap-1 flex-1 py-1"><i data-lucide="activity-square" class="w-5 h-5"></i><span class="text-[9px] font-medium mt-1">Live Gym</span></button>
+        <button onclick="switchView('vector')" id="nav-vector" class="nav-item flex flex-col items-center gap-1 flex-1 py-1"><i data-lucide="target" class="w-5 h-5"></i><span class="text-[9px] font-medium mt-1">Matrix</span></button>
+        <button onclick="switchView('coach')" id="nav-coach" class="nav-item flex flex-col items-center gap-1 flex-1 py-1"><i data-lucide="users" class="w-5 h-5"></i><span class="text-[9px] font-medium mt-1">Coaches</span></button>
+        <button onclick="switchView('plan')" id="nav-plan" class="nav-item flex flex-col items-center gap-1 flex-1 py-1"><i data-lucide="calendar-days" class="w-5 h-5"></i><span class="text-[9px] font-medium mt-1">Plan</span></button>
+    </div>
+</nav>
+
+<script>
+function refreshIcons(options) { 
+    if (typeof window.lucide !== 'undefined') {
+        window.lucide.createIcons(options); 
+    }
+}
+
+const viewTitles = { 'home': 'Summary', 'gym': 'Live Gym', 'vector': 'Matrix', 'plan': 'Schedule', 'coach': 'Private Classes' };
+const themes = {
+    male: { glow: '#47A1FF', glowDim: 'rgba(71, 161, 255, 0.15)', chartMacro: ['#47A1FF', '#5ED67A'], chartMicro: ['#3A3A3C', '#47A1FF', '#C974F4', '#FFB340'] },
+    female: { glow: '#FF5C77', glowDim: 'rgba(255, 92, 119, 0.15)', chartMacro: ['#FF5C77', '#C974F4'], chartMicro: ['#3A3A3C', '#FF5C77', '#C974F4', '#FFB340'] }
+};
+
+let currentGender = 'male';
+const gridBaseData = [
+    { id: 'M3F1', m: 3, f: 1, name: 'Athletic', desc: 'Shredded', imgCode: '11' },
+    { id: 'M3F2', m: 3, f: 2, name: 'Robust', desc: 'Muscular', imgCode: '12' },
+    { id: 'M3F3', m: 3, f: 3, name: 'Power', desc: 'High Mass', imgCode: '13' },
+    { id: 'M2F1', m: 2, f: 1, name: 'Lean', desc: 'Toned', imgCode: '21' },
+    { id: 'M2F2', m: 2, f: 2, name: 'Fit', desc: 'Balanced', imgCode: '22' },
+    { id: 'M2F3', m: 2, f: 3, name: 'Stocky', desc: 'Solid', imgCode: '23' },
+    { id: 'M1F1', m: 1, f: 1, name: 'Slender', desc: 'Thin', imgCode: '31' },
+    { id: 'M1F2', m: 1, f: 2, name: 'Average', desc: 'Untrained', imgCode: '32' },
+    { id: 'M1F3', m: 1, f: 3, name: 'Skinny Fat', desc: 'Low Muscle', imgCode: '33' }
+];
+
+const courseDatabase = {
+    'RESISTANCE': { type: 'STRENGTH', categoryTitle: 'Resistance Training', specificTitles: ['Heavy Lifting', 'Hypertrophy'], color: '#C974F4', icon: 'dumbbell', image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=400&q=80' },
+    'METCON': { type: 'METCON', categoryTitle: 'Metabolic Resistance', specificTitles: ['Kettlebell Advanced', 'Machine Circuit'], color: '#FFB340', icon: 'flame', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=400&q=80' },
+    'Z2': { type: 'Z2', categoryTitle: 'Fat Oxidation (Z2)', specificTitles: ['Steady Cycling', 'Incline Walk'], color: '#47A1FF', icon: 'bike', image: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=400&q=80' },
+    'HIIT': { type: 'HIIT', categoryTitle: 'Anaerobic Intervals', specificTitles: ['Sprints', 'Explosive Cycling'], color: '#FF5C77', icon: 'zap', image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=400&q=80' },
+    'Z1': { type: 'Z1', categoryTitle: 'Active Recovery', specificTitles: ['Slow Walk', 'Static Stretching'], color: '#5ED67A', icon: 'leaf', image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=400&q=80' }
+};
+
+const bfpThresholds = { male: { 1: '< 15%', 2: '15-25%', 3: '> 25%' }, female: { 1: '< 22%', 2: '23-35%', 3: '> 35%' } };
+let currentCell = null, targetCell = null;
+let macroChart = null, microChart = null, homeMacroChart = null, homeMicroChart = null, gymLoadChart = null;
+const TOTAL_TARGET_MINUTES = 360;
+let weeklySchedulePlan = {};
+let selectedDayIndex = 2; 
+let selectedCourses = []; 
+
+const calendarDaysInfo = [];
+for(let i=0; i<7; i++) calendarDaysInfo.push({ date: 22 + i, isCurrentMonth: true }); 
+const weekMap = ['WED', 'THU', 'FRI', 'SAT', 'SUN', 'MON', 'TUE'];
+
+async function saveToFirestore() {
+    const auth = window.firebaseAuth; const db = window.firebaseDB;
+    if (!auth || !auth.currentUser) return;
+    const { doc, setDoc } = window.firestoreUtils;
+    try { 
+        await setDoc(doc(db, 'artifacts', window.appId, 'users', auth.currentUser.uid, 'settings', 'profile'), { 
+            currentGender, baselineId: currentCell?.id || null, targetId: targetCell?.id || null, updatedAt: new Date().toISOString() 
+        }); 
+    } catch (e) {
+        console.warn("Firestore save skipped.");
+    }
+}
+
+async function loadPersistentData(uid) {
+    const db = window.firebaseDB; const { doc, getDoc } = window.firestoreUtils;
+    try {
+        const snap = await getDoc(doc(db, 'artifacts', window.appId, 'users', uid, 'settings', 'profile'));
+        if (snap.exists()) {
+            const data = snap.data();
+            if (data.currentGender) setGender(data.currentGender);
+            if (data.baselineId) { 
+                const b = gridBaseData.find(d => d.id === data.baselineId); 
+                if (b) handleSelect(b, document.querySelector(`[data-id="${data.baselineId}"]`), true); 
+            }
+            if (data.targetId) { 
+                const t = gridBaseData.find(d => d.id === data.targetId); 
+                if (t) handleSelect(t, document.querySelector(`[data-id="${data.targetId}"]`), true); 
+            }
+        }
+    } catch (e) {
+        console.warn("Firestore load skipped.");
+    }
+}
+
+function goBack() {
+    if (document.getElementById('view-coach-detail').classList.contains('view-active')) {
+        switchView('coach'); 
+    } else {
+        switchView('home');
+    }
+}
+
+function switchView(id) {
+    document.querySelectorAll('.view-section').forEach(v => v.classList.remove('view-active'));
+    document.getElementById(`view-${id}`).classList.add('view-active');
+    
+    const navItem = document.getElementById(`nav-${id}`);
+    if (navItem) { 
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('nav-active')); 
+        navItem.classList.add('nav-active'); 
+    }
+    
+    const backBtn = document.getElementById('header-back-btn');
+    const titleEl = document.getElementById('view-title');
+    
+    if (viewTitles[id]) titleEl.innerText = viewTitles[id];
+    
+    if (id === 'home') { 
+        backBtn.classList.add('hidden'); 
+        titleEl.className = 'text-[32px] font-bold transition-all duration-300 tracking-tight leading-none'; 
+    } else { 
+        backBtn.classList.remove('hidden'); 
+        if (id === 'coach-detail') {
+            titleEl.className = 'text-xl ml-1 font-bold transition-all duration-300'; 
+        } else {
+            titleEl.className = 'text-[32px] font-bold transition-all duration-300 tracking-tight leading-none'; 
+        }
+    }
+    
+    if (id === 'plan') { 
+        const hasPlan = !!targetCell; 
+        document.getElementById('plan-empty').classList.toggle('hidden', hasPlan); 
+        document.getElementById('plan-content').classList.toggle('hidden', !hasPlan); 
+    }
+    
+    if (id === 'coach') renderCoachList();
+    if (id === 'gym') setTimeout(renderGymChart, 50);
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setGender(gender) {
+    currentGender = gender;
+    const btnM = document.getElementById('btn-male');
+    const btnF = document.getElementById('btn-female');
+    
+    if (gender === 'male') { 
+        btnM.className = "flex-1 py-2 text-xs font-bold rounded-md transition-all relative z-10 text-white bg-[#47A1FF] shadow-sm"; 
+        btnF.className = "flex-1 py-2 text-xs font-medium rounded-md transition-all relative z-10 text-textMuted hover:text-white"; 
+    } else { 
+        btnM.className = "flex-1 py-2 text-xs font-medium rounded-md transition-all relative z-10 text-textMuted hover:text-white"; 
+        btnF.className = "flex-1 py-2 text-xs font-bold rounded-md transition-all relative z-10 text-white bg-[#FF5C77] shadow-sm"; 
+    }
+    
+    const scale = bfpThresholds[gender]; 
+    document.getElementById('bfp-scale').innerHTML = `<span>${scale[1]}</span><span>${scale[2]}</span><span>${scale[3]}</span>`;
+    document.getElementById('reset-btn').style.color = themes[gender].glow;
+    
+    initGrid(); 
+    if (currentCell) document.getElementById('reset-btn').click();
+}
+
+function initGrid() {
+    const container = document.getElementById('matrix-grid'); 
+    container.innerHTML = '';
+    const fallbackImg = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=300&q=80';
+    
+    gridBaseData.forEach(d => {
+        const btn = document.createElement('button');
+        btn.className = 'matrix-btn bg-surfaceLight rounded-[14px] w-full aspect-square text-left relative overflow-hidden flex flex-col justify-end border-2 border-transparent p-0 group';
+        btn.dataset.id = d.id; 
+        const imgSrc = currentGender === 'female' ? `f${d.imgCode}.png` : `${d.imgCode}.png`;
+        
+        btn.innerHTML = `
+            <div class="absolute inset-0 transition-opacity duration-300 opacity-60 group-hover:opacity-90 z-0" id="icon-wrap-${d.id}">
+                <img src="${imgSrc}" onerror="this.src='${fallbackImg}'" class="w-full h-full object-cover transition-all duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent"></div>
+            </div>
+            <div class="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-white/30 transition-colors duration-300 z-20" id="dot-${d.id}"></div>
+            <div class="relative z-10 p-2.5 w-full">
+                <span class="block font-bold text-[13px] text-white mb-0.5 transition-colors duration-300 leading-tight drop-shadow">${d.name}</span>
+                <span class="block text-[9px] text-gray-300 transition-colors duration-300 drop-shadow">${d.desc}</span>
+            </div>
+        `;
+        btn.onclick = () => handleSelect(d, btn); 
+        container.appendChild(btn);
+    });
+}
+
+function updateCardIcon(containerId, source, color) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    if (source.endsWith('.png')) {
+        container.innerHTML = `<img src="${source}" onerror="this.src='https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=300&q=80'" class="w-full h-full object-cover opacity-20 transition-all duration-300 mix-blend-screen" style="filter: grayscale(30%);">`;
+    } else { 
+        container.innerHTML = `<i data-lucide="${source}" class="w-24 h-24" style="color: ${color}"></i>`; 
+        refreshIcons({ root: container }); 
+    }
+}
+
+function handleSelect(data, btn, isInit = false) {
+    const t = themes[currentGender];
+    const imgSrc = currentGender === 'female' ? `f${data.imgCode}.png` : `${data.imgCode}.png`;
+    
+    if (!currentCell) {
+        currentCell = data; 
+        btn.style.borderColor = t.glow; 
+        btn.querySelector('span.font-bold').style.color = t.glow;
+        document.getElementById(`dot-${data.id}`).style.backgroundColor = t.glow;
+        document.getElementById(`icon-wrap-${data.id}`).style.opacity = '1';
+        
+        document.getElementById('current-display').innerHTML = data.name; 
+        document.getElementById('current-display').style.color = t.glow;
+        document.getElementById('reset-btn').classList.remove('hidden'); 
+        
+        updateCardIcon('current-icon-container', imgSrc, 'rgba(255,255,255,0.05)');
+        
+        document.querySelectorAll('#matrix-grid button').forEach(b => {
+            const item = gridBaseData.find(i => i.id === b.dataset.id);
+            if (item.id === currentCell.id) return;
+            const dM = item.m - currentCell.m;
+            const dF = item.f - currentCell.f;
+            if (dM < 0 || (dM === 0 && dF > 0)) { 
+                b.disabled = true; 
+                b.style.opacity = '0.3'; 
+                b.style.cursor = 'not-allowed';
+                if(b.querySelector('img')) b.querySelector('img').style.filter = 'grayscale(100%)'; 
+            }
+        });
+        if (!isInit) saveToFirestore();
+    } else if (!targetCell && !btn.disabled && data.id !== currentCell.id) {
+        targetCell = data; 
+        btn.style.borderColor = t.glow; 
+        btn.style.boxShadow = `inset 0 0 0 2px ${t.glow}`;
+        btn.querySelector('span.font-bold').style.color = '#fff';
+        document.getElementById(`dot-${data.id}`).style.backgroundColor = '#fff';
+        document.getElementById(`icon-wrap-${data.id}`).style.opacity = '1';
+        
+        document.getElementById('target-display').innerHTML = data.name; 
+        document.getElementById('target-display').style.color = t.glow;
+        
+        updateCardIcon('target-icon-container', imgSrc, t.glowDim);
+        
+        document.getElementById('matrix-step-1').classList.add('hidden'); 
+        document.getElementById('vector-main-title').innerText = 'Your Protocol';
+        document.getElementById('matrix-arrow').style.color = t.glow; 
+        
+        calculateWithScalars(); 
+        if (!isInit) saveToFirestore(); 
+        updateHomeSummary();
+    }
+}
+
+function calculateWithScalars() {
+    const dM = targetCell.m - currentCell.m;
+    const dF = targetCell.f - currentCell.f;
+    const absM = Math.abs(dM);
+    const absF = Math.abs(dF);
+    
+    if (dM < 0 || (dM === 0 && dF > 0)) { 
+        document.getElementById('prescription-section').classList.add('hidden'); 
+        document.getElementById('exception-banner').classList.remove('hidden');
+        return; 
+    }
+    
+    document.getElementById('exception-banner').classList.add('hidden');
+    
+    let rt = 50; 
+    if (dM > 0) rt += (absM * 12); 
+    if (dF < 0) rt -= (absF * 4); 
+    if (dM > 0 && dF >= 0) rt += 10;
+    
+    rt = Math.max(40, Math.min(85, rt)); 
+    let ct = 100 - rt;
+    let z1 = 0, z2 = 0, hiit = 0, metcon = 0;
+    
+    if (dM === 0 && dF === 0) { z2 = 40; metcon = 60; }
+    else if (dM > 0 && dF >= 0) { metcon = 20 + (dF === 0 ? 5 : -5); z1 = 100 - metcon; }
+    else if (dM > 0 && dF < 0) { z2 = 85; z1 = 15; }
+    else if (dM === 0 && dF < 0) { 
+        if (targetCell.f === 1) { hiit = 15 + (absF * 5); z2 = 100 - hiit; } 
+        else { hiit = 10; z2 = 90; } 
+    }
+    
+    renderCharts({ rt, ct, z1, z2, hiit, metcon });
+}
+
+function renderCharts(v) {
+    if (typeof Chart === 'undefined') return;
+    
+    const ps = document.getElementById('prescription-section');
+    if (ps) ps.classList.remove('hidden');
+    
+    const t = themes[currentGender];
+    
+    Chart.defaults.font.family = "'Inter', sans-serif"; 
+    Chart.defaults.color = '#8E8E93';
+
+    const centerPlugin = { 
+        id: 'centerText', 
+        beforeDraw: (chart) => { 
+            if (chart.config.type !== 'doughnut') return; 
+            const ctx = chart.ctx;
+            const centerX = chart.getDatasetMeta(0).data[0].x;
+            const centerY = chart.getDatasetMeta(0).data[0].y; 
+            ctx.save(); 
+            ctx.font = "bold 26px Inter"; 
+            ctx.textBaseline = "middle";
+            ctx.textAlign = "center"; 
+            ctx.fillStyle = "#fff"; 
+            ctx.fillText(v.rt + "%", centerX, centerY - 6); 
+            ctx.font = "600 10px Inter"; 
+            ctx.fillStyle = t.glow;
+            ctx.fillText("Resistance", centerX, centerY + 14); 
+            ctx.restore(); 
+        } 
+    };
+    
+    const barPlugin = { 
+        id: 'barLabels', 
+        afterDatasetsDraw(chart) { 
+            const ctx = chart.ctx; 
+            chart.data.datasets.forEach((dataset, i) => { 
+                const meta = chart.getDatasetMeta(i); 
+                meta.data.forEach((bar, index) => { 
+                    const val = dataset.data[index]; 
+                    if (val > 0) { 
+                        ctx.fillStyle = '#FFFFFF'; 
+                        ctx.font = 'bold 10px Inter'; 
+                        ctx.textAlign = 'center'; 
+                        ctx.textBaseline = 'bottom';
+                        const offset = chart.canvas.id.includes('home') ? 3 : 5;
+                        ctx.fillText(val + '%', bar.x, bar.y - offset); 
+                    } 
+                }); 
+            }); 
+        } 
+    };
+    
+    const draw = (id, type, data, options, plugins = []) => { 
+        const el = document.getElementById(id); 
+        if (!el) return; 
+        const ctx = el.getContext('2d'); 
+        if (window[id+'Obj']) window[id+'Obj'].destroy(); 
+        window[id+'Obj'] = new Chart(ctx, { type, data, options, plugins }); 
+    };
+    
+    const macroData = { labels: ['Resistance', 'Cardio'], datasets: [{ data: [v.rt, v.ct], backgroundColor: t.chartMacro, borderWidth: 0, borderRadius: 0 }] };
+    const microData = { labels: ['Z1', 'Z2', 'HIIT', 'MET'], datasets: [{ data: [v.z1, v.z2, v.hiit, v.metcon], backgroundColor: t.chartMicro, borderRadius: 4 }] };
+    
+    draw('macroChart', 'doughnut', macroData, { cutout: '82%', plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false }, [centerPlugin]);
+    draw('microChart', 'bar', microData, { layout: { padding: { top: 20 } }, scales: { y: { display: false, max: 100 }, x: { grid: { display: false }, border: {display: false} } }, plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false }, [barPlugin]);
+    draw('homeMacroChart', 'doughnut', macroData, { cutout: '78%', plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false });
+    draw('homeMicroChart', 'bar', microData, { layout: { padding: { top: 15 } }, scales: { y: { display: false, max: 100 }, x: { grid: { display: false }, border: {display: false}, ticks: { font: { size: 9 }, color: '#8E8E93' } } }, plugins: { legend: { display: false } }, responsive: true, maintainAspectRatio: false }, [barPlugin]);
+    
+    const renderLegend = (id, labels, colors, values) => { 
+        const el = document.getElementById(id); 
+        if (el) {
+            el.innerHTML = labels.map((l, i) => `
+                <div class="flex items-center gap-1.5">
+                    <div class="w-2 h-2 rounded-sm" style="background-color:${colors[i]}"></div>
+                    <span>${l} <strong class="text-white ml-0.5">${values[i]}%</strong></span>
+                </div>
+            `).join('');
+        }
+    };
+    
+    renderLegend('macro-legend', ['Resistance', 'Cardio'], t.chartMacro, [v.rt, v.ct]);
+    renderLegend('home-macro-legend', ['Resist', 'Cardio'], t.chartMacro, [v.rt, v.ct]);
+
+    const eg = document.getElementById('energy-guide');
+    if (eg) {
+        eg.innerHTML = `
+            <h3 class="font-semibold text-base mb-5">Energy Systems Guide</h3>
+            <div class="space-y-5">
+            ${[
+                {l:'Z1: Active Recovery', c:'#5ED67A', i:'leaf', d:'Very light effort to promote blood flow and recovery.', e:'Slow Walk, Yoga, Mobility'},
+                {l:'Z2: Fat Oxidation', c:'#47A1FF', i:'bike', d:'Moderate effort, conversational pace to build aerobic base.', e:'Steady Cycling, Incline Walk'},
+                {l:'HIIT: Anaerobic Intervals', c:'#FF5C77', i:'zap', d:'Maximum effort bursts followed by rest for anaerobic capacity.', e:'Sprints, Assault Bike, Jump Rope'},
+                {l:'MET: Metabolic Resistance', c:'#FFB340', i:'flame', d:'High heart rate resistance training to build muscle and burn fat.', e:'Kettlebell Circuits, CrossFit'}
+            ].map(s=>`
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" style="background:${s.c}15; color:${s.c}">
+                        <i data-lucide="${s.i}" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold" style="color:${s.c}">${s.l}</h4>
+                        <p class="text-xs text-textMuted mt-0.5">${s.d}</p>
+                        <p class="text-[10px] font-semibold text-white/40 mt-1.5 uppercase tracking-wide">Exercises: ${s.e}</p>
+                    </div>
+                </div>
+            `).join('')}
+            </div>
+        `;
+        refreshIcons({ root: eg });
+    }
+    
+    renderCourses(v);
+}
+
+function renderCourses(v) {
+    const grid = document.getElementById('course-grid'); 
+    if (!grid) return; 
+
+    grid.innerHTML = '';
+    
+    // 核心修复逻辑：先将 360 分钟切分为 Resistance 和 Cardio，再细分 Cardio
+    const resistMins = Math.round((TOTAL_TARGET_MINUTES * (v.rt / 100)) / 5) * 5;
+    const cardioMins = TOTAL_TARGET_MINUTES - resistMins;
+
+    const cardioPlan = [{ k: 'METCON', m: v.metcon }, { k: 'Z2', m: v.z2 }, { k: 'HIIT', m: v.hiit }, { k: 'Z1', m: v.z1 }];
+    let remCardio = cardioMins; 
+    const activeCardio = cardioPlan.filter(i => i.m > 0).sort((a,b) => b.m - a.m);
+    
+    const finalPlan = [];
+    
+    // 首先压入纯阻力训练
+    if (resistMins > 0) {
+        finalPlan.push({ k: 'RESISTANCE', mins: resistMins });
+    }
+    
+    // 然后压入细分的有氧与代谢训练
+    activeCardio.forEach((item, i) => {
+        let mins = 0;
+        if (i === activeCardio.length - 1) {
+            mins = remCardio; // 最后一种运动吸收剩余分钟数的舍入误差
+        } else {
+            mins = Math.round((cardioMins * (item.m / 100)) / 5) * 5;
+            remCardio -= mins;
+        }
+        if (mins > 0) {
+            finalPlan.push({ k: item.k, mins: mins });
+        }
+    });
+
+    finalPlan.forEach((item) => {
+        const c = courseDatabase[item.k];
+        const card = document.createElement('div'); 
+        
+        // 修复点：添加了严格的 w-[130px] 来锁定宽度，使得卡片的高度完全一致，不会被内部不同长短的文字撑开
+        card.className = 'snap-center premium-card-light w-[130px] min-w-[130px] p-4 flex flex-col justify-between aspect-[3/4] shrink-0 relative overflow-hidden group';
+        card.innerHTML = `
+            <!-- 背景图片与深色渐变遮罩 -->
+            <div class="absolute inset-0 z-0">
+                <img src="${c.image}" class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-300">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#1C1C1E] via-[#1C1C1E]/60 to-[#1C1C1E]/10"></div>
+            </div>
+            
+            <!-- 内容层 -->
+            <div class="relative z-10">
+                <div class="w-8 h-8 rounded-full bg-black/40 flex items-center justify-center mb-2 backdrop-blur-sm" style="color:${c.color}">
+                    <i data-lucide="${c.icon}" class="w-4 h-4"></i>
+                </div>
+                <p class="text-[9px] font-bold text-gray-300 uppercase">${c.type}</p>
+                <p class="text-xs font-bold text-white leading-tight mt-0.5 drop-shadow-md">${c.categoryTitle}</p>
+            </div>
+            <p class="text-lg font-bold relative z-10 drop-shadow-lg" style="color:${c.color}">${item.mins}<span class="text-[8px] text-gray-300 ml-1 uppercase">min</span></p>
+        `;
+        grid.appendChild(card);
+    });
+    
+    document.getElementById('home-total-time').innerText = `${TOTAL_TARGET_MINUTES} MIN`;
+    generateSchedule(); 
+    refreshIcons();
+}
+
+function generateSchedule() {
+    weekMap.forEach(d => { weeklySchedulePlan[d] = { Morning: null, Afternoon: null, Evening: null }; });
+    
+    const morning = [
+        {t:'Z2', s:'Steady Cycling'},
+        {t:'Z2', s:'Incline Walk'},
+        {t:'Z2', s:'Low-Intensity Anaerobic'}
+    ];
+    
+    const afternoon = [
+        {t:'HIIT', s:'Running Intervals'},
+        {t:'HIIT', s:'Cycling Intervals'},
+        {t:'HIIT', s:'Plyometrics'}
+    ];
+    
+    const workDays = ['MON','TUE','WED','THU','FRI','SAT'];
+    
+    workDays.forEach((d, i) => {
+        weeklySchedulePlan[d]['Morning'] = { type: morning[i%3].t, title: morning[i%3].s, time: '09:00 - 10:00' };
+        weeklySchedulePlan[d]['Afternoon'] = { type: afternoon[i%3].t, title: afternoon[i%3].s, time: '15:00 - 16:00' };
+        weeklySchedulePlan[d]['Evening'] = { type: 'METCON', title: 'Kettlebell', time: '20:00 - 21:00' };
+    });
+    
+    renderCalendar();
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('visual-calendar-grid'); 
+    if (!grid) return;
+    grid.innerHTML = '';
+    
+    calendarDaysInfo.forEach((day, index) => {
+        const isSel = index === selectedDayIndex;
+        const div = document.createElement('div');
+        div.className = `flex flex-col items-center justify-center p-2 rounded-[14px] w-10 transition-all cursor-pointer ${isSel ? 'bg-white text-black' : 'text-textMuted hover:bg-surfaceLight/50 active:bg-surfaceLight'}`;
+        div.innerHTML = `
+            <span class="text-[10px] font-medium mb-1 ${isSel ? 'text-black/60' : 'text-textMuted'}">${weekMap[index].charAt(0)}</span>
+            <span class="text-sm font-bold">${day.date}</span>
+        `;
+        div.onclick = () => { 
+            selectedDayIndex = index; 
+            renderCalendar(); 
+            updateTimeline(index); 
+        }; 
+        grid.appendChild(div);
+    });
+    
+    updateTimeline(selectedDayIndex);
+}
+
+function toggleScheduledCourse(date, title, time, type, color, icon) {
+    const idx = selectedCourses.findIndex(c => c.date.toString() === date.toString() && c.title === title && c.time === time);
+    
+    if (idx >= 0) {
+        selectedCourses.splice(idx, 1);
+    } else {
+        selectedCourses.push({ date, title, time, type, color, icon });
+    }
+    
+    selectedCourses.sort((a, b) => {
+        if (a.date.toString() !== b.date.toString()) return parseInt(a.date) - parseInt(b.date);
+        return a.time.localeCompare(b.time);
+    });
+    
+    updateTimeline(selectedDayIndex); 
+    updateHomeSelectedCourses();
+}
+
+function updateHomeSelectedCourses() {
+    const card = document.getElementById('home-course-card'), list = document.getElementById('home-selected-courses-list');
+    if (!card || !list) return;
+    if (!selectedCourses.length) { card.classList.add('hidden'); return; }
+    card.classList.remove('hidden');
+    list.innerHTML = selectedCourses.map(c => `<div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background:${c.color}15"><i data-lucide="${c.icon}" class="w-5 h-5" style="color:${c.color}"></i></div><div class="flex-1 min-w-0"><h3 class="font-bold text-xs text-white truncate">${c.title}</h3><p class="text-[10px] text-textMuted mt-0.5">Apr ${c.date} • ${c.time}</p></div><i data-lucide="play" class="w-3 h-3 text-white"></i></div>`).join('');
+    refreshIcons({ root: card });
+}
+
+function updateTimeline(idx) {
+    const day = calendarDaysInfo[idx], schedule = weeklySchedulePlan[weekMap[idx % 7]], panel = document.getElementById('daily-schedule-panel');
+    if (!panel) return;
+    let html = '', has = false;
+    ['Morning', 'Afternoon', 'Evening'].forEach(s => {
+        const ses = schedule[s]; 
+        if (ses) {
+            has = true; 
+            const c = courseDatabase[ses.type];
+            const isSel = selectedCourses.some(sc => sc.title === ses.title && sc.date.toString() === day.date.toString() && sc.time === ses.time);
+            
+            html += `
+            <div class="relative flex items-start pl-5 pb-6 border-l-2 ${isSel ? '' : 'border-surfaceLight'}" style="${isSel ? `border-color:${c.color}` : ''}">
+                <div class="absolute left-[-7px] top-1 w-3 h-3 rounded-full border-2 ${isSel ? 'border-white' : 'border-black'}" style="background-color:${c.color}"></div>
+                
+                <div class="w-full">
+                    <p class="text-[10px] font-bold mb-2 ${isSel ? 'text-white' : 'text-textMuted'}">${ses.time}</p>
+                    
+                    <div class="premium-card-light p-4 border transition-all duration-300 flex justify-between items-center gap-2 relative overflow-hidden" style="${isSel ? `border-color: ${c.color};` : 'border-color: rgba(255,255,255,0.05);'}">
+                        
+                        <!-- 高级动态背景图与渐变遮罩 -->
+                        <div class="absolute inset-0 z-0">
+                            <img src="${c.image}" class="w-full h-full object-cover transition-opacity duration-300 ${isSel ? 'opacity-40' : 'opacity-20'}">
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#1C1C1E] via-[#1C1C1E]/80 to-[#1C1C1E]/20"></div>
+                            ${isSel ? `<div class="absolute inset-0 mix-blend-overlay opacity-40" style="background-color: ${c.color}"></div>` : ''}
+                        </div>
+
+                        <!-- 课程内容层 -->
+                        <div class="flex-1 min-w-0 relative z-10">
+                            <div class="flex items-center gap-1.5 mb-1">
+                                <i data-lucide="${c.icon}" class="w-4 h-4 drop-shadow" style="color:${c.color}"></i>
+                                <p class="text-[10px] font-bold uppercase tracking-wide" style="color:${c.color}">${ses.type}</p>
+                            </div>
+                            <p class="text-sm font-semibold text-white truncate drop-shadow-md">${ses.title}</p>
+                        </div>
+
+                        <!-- 预约按钮 -->
+                        <button onclick="toggleScheduledCourse('${day.date}', '${ses.title}', '${ses.time}', '${ses.type}', '${c.color}', '${c.icon}')" 
+                            class="px-4 py-2 rounded-full text-[11px] font-bold transition-all shrink-0 active:scale-95 relative z-10 ${isSel ? 'shadow-sm border' : 'bg-black/50 text-gray-300 border border-white/5 hover:text-white backdrop-blur-md'}" 
+                            style="${isSel ? `background-color: ${c.color}33; color: ${c.color}; border-color: ${c.color}4D;` : ''}">
+                            ${isSel ? 'Booked' : 'Book'}
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+    });
+    panel.innerHTML = has ? html : `<div class="flex flex-col items-center justify-center py-10 opacity-50"><i data-lucide="coffee" class="w-8 h-8 mb-2"></i><p class="text-[10px] font-bold text-textMuted uppercase">Rest Day</p></div>`;
+    refreshIcons({ root: panel });
+}
+
+function updateHomeSummary() {
+    if (!currentCell || !targetCell) return;
+    
+    const es = document.getElementById('home-empty-state');
+    const vc = document.getElementById('home-vector-card');
+    const vp = document.getElementById('home-vector-path');
+    const watermark = document.getElementById('home-watermark-target');
+    
+    if (es) es.classList.add('hidden');
+    if (vc) vc.classList.remove('hidden');
+    if (vp) vp.innerText = `${currentCell.name}  →  ${targetCell.name}`;
+    
+    // 动态根据性别修改巨型 Target 水印的颜色
+    if (watermark) watermark.style.color = themes[currentGender].glow;
+    
+    const tag = document.getElementById('home-gender-tag');
+    if (tag) { 
+        tag.innerText = currentGender; 
+        tag.style.color = themes[currentGender].glow; 
+        tag.style.background = themes[currentGender].glowDim; 
+    }
+}
+
+    document.getElementById('reset-btn').onclick = () => {
+    currentCell = targetCell = null; 
+    initGrid();
+    
+    ['current-display', 'target-display'].forEach(id => { 
+        const el = document.getElementById(id);
+        if(el) { el.innerText = '---'; el.style.color = ''; }
+    });
+    
+    ['exception-banner', 'prescription-section', 'reset-btn', 'home-vector-card'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.classList.add('hidden');
+    });
+    
+    const es = document.getElementById('home-empty-state');
+    if(es) es.classList.remove('hidden');
+    
+    updateCardIcon('current-icon-container', 'circle-dashed', 'rgba(255,255,255,0.03)');
+    updateCardIcon('target-icon-container', 'circle-dashed', 'rgba(255,255,255,0.03)');
+    
+    selectedCourses = []; 
+    const hc = document.getElementById('home-course-card');
+    if(hc) hc.classList.add('hidden');
+    
+    const ms1 = document.getElementById('matrix-step-1');
+    if(ms1) ms1.classList.remove('hidden');
+    
+    const vt = document.getElementById('vector-main-title');
+    if(vt) vt.innerText = 'Calibration';
+    
+    const ma = document.getElementById('matrix-arrow');
+    if(ma) ma.style.color = '';
+    
+    saveToFirestore();
+};
+
+// 修复点：调整了教练姓名顺序，将姓氏 (Last Name) 放在后方
+const coachesData = [
+    { id: 'c1', name: 'Wei Li', avatar: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80', desc: 'Focuses on practical strength for daily life. Great for beginners looking to build a sustainable routine without intimidating equipment.', tags: ['Strength', 'At-Home'], tagColors: ['#C974F4', '#C974F4'] },
+    { id: 'c2', name: 'Siyu Chen', avatar: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=150&q=80', desc: 'Helps you fix your posture and lose fat effectively. She provides easy-to-follow cardio plans you can do right in your living room.', tags: ['Fat Loss', 'At-Home'], tagColors: ['#C974F4', '#C974F4'] },
+    { id: 'c3', name: 'Hao Wang', avatar: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=150&q=80', desc: 'Friendly mobility coach who helps you recover from sitting at a desk all day. Focuses on stretching and moving pain-free.', tags: ['Recovery', 'In-Gym'], tagColors: ['#FFB340', '#FFB340'] },
+    { id: 'c4', name: 'Jian Zhao', avatar: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=150&q=80', desc: 'Passionate about body recomposition. He breaks down complex exercises into simple steps to help you tone up safely.', tags: ['Hypertrophy', 'In-Gym'], tagColors: ['#FFB340', '#FFB340'] },
+    { id: 'c5', name: 'Min Zhang', avatar: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&w=150&q=80', desc: 'Energetic HIIT instructor who keeps you motivated. Expect sweaty, fun sessions that get your heart rate up quickly.', tags: ['HIIT', 'In-Gym'], tagColors: ['#FFB340', '#FFB340'] },
+    { id: 'c6', name: 'Yue Lin', avatar: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=150&q=80', desc: 'Gentle yoga and core instructor. Perfect for winding down after a long day with minimal space needed.', tags: ['Yoga', 'At-Home'], tagColors: ['#C974F4', '#C974F4'] }
+];
+
+const coachSchedules = {
+    'c1': { '23': ['09:00', '10:00', '14:00'], '24': ['11:00', '14:00', '16:00'], '26': ['08:00', '09:00'] },
+    'c2': { '22': ['08:00'], '24': ['13:00', '14:00', '15:00'], '25': ['09:00', '18:00'] },
+    'c3': { '22': ['07:00', '08:00'], '24': ['10:00', '14:00'], '27': ['14:00', '15:00', '16:00'] },
+    'c4': { '24': ['08:00', '09:00', '17:00', '18:00'], '25': ['12:00'] },
+    'c5': { '23': ['10:00', '11:00'], '24': ['15:00', '16:00', '17:00'], '26': ['19:00'] },
+    'c6': { '24': ['07:00', '12:00', '19:00'], '28': ['08:00', '09:00'] }
+};
+
+let currentSelectedCoach = null;
+let currentSelectedDate = null;
+let currentSelectedSlot = null;
+let currentBooking = null;
+
+// 添加全局智能跳转逻辑
+window.handleHomeCoachClick = function() {
+    if (currentBooking && currentBooking.coach) {
+        openCoachDetail(currentBooking.coach);
+        // 自动定位并展开已预约的日期和时间不需要在这里使用 setTimeout
+        // openCoachDetail 内部已经集成了对已预约记录的自动感知与点击逻辑
+    } else {
+        switchView('coach');
+    }
+};
+
+// 添加全局取消预约函数
+window.cancelBooking = function(event) {
+    if (event) event.stopPropagation(); 
+    currentBooking = null;
+    updateHomeBooking();
+    
+    // 如果当前停留在教练详情页，同步刷新并清空已选择的状态
+    if (document.getElementById('view-coach-detail').classList.contains('view-active')) {
+        if (currentSelectedDate) {
+            const cc = document.getElementById('coach-calendar');
+            const activeBtn = Array.from(cc.children).find(c => c.classList.contains('bg-white'));
+            if (activeBtn) selectCoachDate(currentSelectedDate, activeBtn);
+        }
+        updateBookButton();
+    }
+    refreshIcons();
+};
+
+function updateHomeBooking() {
+    const cd = document.getElementById('home-coach-default');
+    const cb = document.getElementById('home-coach-booked');
+    const cp = document.getElementById('home-coach-status-pill');
+    const cardOuter = document.getElementById('home-coach-card-outer');
+    const watermark = document.getElementById('home-coach-watermark');
+    const timeText = document.getElementById('home-coach-time');
+    const avatar = document.getElementById('home-coach-avatar');
+
+    if (!currentBooking) {
+        if (cd) cd.classList.remove('hidden');
+        if (cb) cb.classList.add('hidden');
+        if (cp) cp.classList.add('hidden');
+        if (cardOuter) cardOuter.style.background = '';
+        if (watermark) watermark.style.color = 'rgba(255,255,255,0.05)';
+        return;
+    }
+    
+    if (cd) cd.classList.add('hidden');
+    if (cb) cb.classList.remove('hidden');
+    
+    // 根据类型赋予全卡片的视觉颜色主题 (橙色/紫色)
+    const tColor = currentBooking.type === 'At-Home' ? '#C974F4' : '#FFB340';
+    const tBg = currentBooking.type === 'At-Home' ? 'rgba(201, 116, 244, 0.12)' : 'rgba(255, 179, 64, 0.12)';
+
+    if (cardOuter) cardOuter.style.background = `linear-gradient(135deg, #1C1C1E 30%, ${tBg} 100%)`;
+    if (watermark) watermark.style.color = tColor;
+    
+    if (cp) {
+        cp.classList.remove('hidden');
+        cp.className = `flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[8px] font-bold uppercase tracking-wider transition-colors duration-500`; 
+        cp.style.backgroundColor = `${tColor}20`;
+        cp.style.color = tColor;
+        cp.innerText = currentBooking.type; 
+    }
+    
+    if (avatar) {
+        avatar.onerror = function() { this.onerror=null; this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80'; };
+        avatar.src = currentBooking.coach.avatar;
+        avatar.style.borderColor = tColor;
+    }
+    
+    const name = document.getElementById('home-coach-name');
+    if (name) name.innerText = currentBooking.coach.name.split(' ')[0];
+    
+    if (timeText) {
+        timeText.innerHTML = `Apr ${currentBooking.date} &bull; ${currentBooking.time}`;
+        timeText.style.color = tColor;
+    }
+}
+
+function renderCoachList() {
+    const container = document.getElementById('view-coach'); 
+    if (!container) return;
+    
+    container.innerHTML = '';
+    const fallbackImg = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80';
+    
+    coachesData.forEach(c => {
+        const card = document.createElement('div'); 
+        card.className = 'premium-card p-4 flex gap-4 items-center cursor-pointer active:scale-[0.98] transition-transform';
+        card.onclick = () => openCoachDetail(c);
+        
+        const isAtHome = c.tags.includes('At-Home');
+        const themeColor = isAtHome ? '#C974F4' : '#FFB340';
+        
+        card.innerHTML = `
+            <div class="w-14 h-14 rounded-full shrink-0 relative overflow-hidden border-2" style="border-color:${themeColor}4D">
+                <img src="${c.avatar}" onerror="this.onerror=null; this.src='${fallbackImg}';" class="w-full h-full object-cover">
+                <div class="absolute inset-0 opacity-20" style="background-color:${themeColor}"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="text-sm font-bold text-white mb-0.5">${c.name}</h3>
+                <p class="text-[10px] text-textMuted line-clamp-1 mb-1.5">${c.desc}</p>
+                <div class="flex gap-2">
+                    ${c.tags.map((t, i) => `<span class="text-[8px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider" style="color:${c.tagColors[i]}; background-color:${c.tagColors[i]}15; border: 1px solid ${c.tagColors[i]}33">${t}</span>`).join('')}
+                </div>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 shrink-0" style="color:${themeColor}80"></i>
+        `;
+        container.appendChild(card);
+    });
+    refreshIcons({ root: container });
+}
+
+function openCoachDetail(coach) {
+    currentSelectedCoach = coach; 
+    currentSelectedDate = null; 
+    currentSelectedSlot = null;
+    
+    const vt = document.getElementById('view-title'); 
+    if (vt) vt.innerText = coach.name; 
+    
+    switchView('coach-detail');
+    
+    const hasAtHome = coach.tags.includes('At-Home');
+    const btn = document.getElementById('book-session-btn');
+    const atBtn = document.getElementById('book-athome-btn');
+    
+    // 修复：重构按钮类的分配，使用精细的 classList 以确保过渡动画正常工作
+    if (btn) {
+        btn.className = "py-4 rounded-xl font-bold text-sm transition-all duration-300 flex justify-center items-center pointer-events-none bg-surfaceLight text-textMuted";
+        if (hasAtHome) {
+            btn.classList.add('flex-1');
+            btn.innerText = "Book Gym";
+        } else {
+            btn.classList.add('w-full');
+            btn.innerText = "Select a Time Slot";
+        }
+    }
+    
+    if (atBtn) {
+        atBtn.className = "py-4 rounded-xl font-bold text-sm transition-all duration-300 flex justify-center items-center pointer-events-none bg-surfaceLight text-textMuted hidden";
+        if (hasAtHome) { 
+            atBtn.classList.remove('hidden'); 
+            atBtn.classList.add('flex-1');
+            atBtn.innerText = "Book At-Home"; 
+        }
+    }
+    
+    const themeColor = hasAtHome ? '#C974F4' : '#FFB340';
+    const fallbackImg = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=150&q=80';
+    const head = document.getElementById('coach-detail-header');
+    
+    if (head) {
+        head.innerHTML = `
+            <i data-lucide="award" class="absolute -top-6 -right-6 w-32 h-32 rotate-12 pointer-events-none opacity-20" style="color:${themeColor}"></i>
+            <div class="w-20 h-20 rounded-full border-4 mb-3 z-10 shadow-lg relative overflow-hidden" style="border-color:${themeColor}4D">
+                <img src="${coach.avatar}" onerror="this.onerror=null; this.src='${fallbackImg}';" class="w-full h-full object-cover">
+                <div class="absolute inset-0 opacity-20" style="background-color:${themeColor}"></div>
+            </div>
+            <p class="text-xs text-textMuted leading-relaxed mb-3 z-10">${coach.desc}</p>
+            <div class="flex gap-2 z-10">
+                ${coach.tags.map((t, i) => `<span class="text-[9px] px-2 py-1 rounded-full font-bold uppercase tracking-wider" style="color:${coach.tagColors[i]}; background-color:${coach.tagColors[i]}15; border: 1px solid ${coach.tagColors[i]}33">${t}</span>`).join('')}
+            </div>
+        `;
+    }
+    
+    const calGrid = document.getElementById('coach-calendar'); 
+    if (!calGrid) return;
+    
+    calGrid.innerHTML = '';
+    let targetBtnToClick = null;
+
+    calendarDaysInfo.forEach((day, index) => {
+        const has = coachSchedules[coach.id] && coachSchedules[coach.id][day.date.toString()];
+        const isBookedDate = currentBooking && currentBooking.coach.id === coach.id && currentBooking.date === day.date.toString();
+        const d = document.createElement('div'); 
+        
+        if (has) {
+            d.className = 'snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl cursor-pointer active:scale-95 transition-all';
+            
+            // 已预约的日期给予彩色边框的高光提示
+            if (isBookedDate) {
+                const tColor = currentBooking.type === 'At-Home' ? '#C974F4' : '#FFB340';
+                d.style.border = `1px solid ${tColor}`;
+                d.style.backgroundColor = `${tColor}15`;
+                d.style.color = tColor;
+                targetBtnToClick = d;
+            } else {
+                d.className += ' bg-surfaceLight border border-transparent text-white';
+            }
+            d.onclick = () => selectCoachDate(day.date.toString(), d);
+        } else {
+            d.className = 'snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl bg-surfaceLight/30 border border-transparent text-textMuted/30 cursor-not-allowed';
+        }
+        
+        let dotHtml = '<div class="w-1 h-1 mt-1"></div>';
+        if (isBookedDate) {
+            dotHtml = `<div class="w-1.5 h-1.5 rounded-full mt-1" style="background-color: ${currentBooking.type === 'At-Home' ? '#C974F4' : '#FFB340'}"></div>`;
+        } else if (has) {
+            dotHtml = `<div class="w-1 h-1 rounded-full bg-[#47A1FF] mt-1"></div>`;
+        }
+
+        d.innerHTML = `
+            <span class="text-[11px] font-medium mb-1">${weekMap[index].charAt(0)}</span>
+            <span class="text-xl font-bold">${day.date}</span>
+            ${dotHtml}
+        `;
+        calGrid.appendChild(d);
+    });
+    
+    const sc = document.getElementById('coach-slots-container'); 
+    if (sc) sc.classList.add('hidden'); 
+    
+    refreshIcons();
+
+    // 自动打开并渲染预约详情
+    if (targetBtnToClick) {
+        setTimeout(() => targetBtnToClick.click(), 10);
+    }
+}
+
+function selectCoachDate(dayStr, btnEl) {
+    currentSelectedDate = dayStr; 
+    currentSelectedSlot = null;
+    
+    const cc = document.getElementById('coach-calendar');
+    if (cc) {
+        Array.from(cc.children).forEach(c => { 
+            if (!c.classList.contains('cursor-not-allowed')) {
+                // 恢复普通可选按钮的状态
+                c.className = 'snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl cursor-pointer active:scale-95 transition-all bg-surfaceLight border border-transparent text-white'; 
+                c.style.backgroundColor = '';
+                c.style.borderColor = '';
+                c.style.color = '';
+            }
+        });
+    }
+    
+    // 当前选中日期强制高亮为白色
+    btnEl.className = 'snap-center flex flex-col items-center justify-center min-w-[64px] h-[76px] rounded-2xl bg-white border border-transparent cursor-pointer active:scale-95 transition-all text-black';
+    
+    const slots = coachSchedules[currentSelectedCoach.id][dayStr];
+    const grid = document.getElementById('coach-slots'); 
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    slots.forEach(s => {
+        const isBooked = currentBooking && currentBooking.coach.id === currentSelectedCoach.id && currentBooking.date === dayStr && currentBooking.time === s;
+        const b = document.createElement('button'); 
+        
+        if (isBooked) {
+            // 已预约的时段呈现极其明显的实心高亮状态
+            const tColor = currentBooking.type === 'At-Home' ? '#C974F4' : '#FFB340';
+            b.className = 'py-3 rounded-xl text-xs font-bold text-black border-2 transition-all relative overflow-hidden shadow-lg shadow-black/50 flex items-center justify-center gap-1.5'; 
+            b.style.backgroundColor = tColor; 
+            b.style.borderColor = tColor;
+            b.innerHTML = `
+                <i data-lucide="check-circle" class="w-4 h-4 text-black"></i>
+                <span class="text-black drop-shadow-sm">${s}</span>
+                <span class="absolute text-[8px] uppercase font-black opacity-30 top-1 right-1.5 text-black">${currentBooking.type}</span>
+            `;
+            currentSelectedSlot = s; // 自动将当前选中的 slot 设置为已预约的 slot
+        } else {
+            b.className = 'py-3 rounded-xl bg-surfaceLight text-xs font-bold text-white border border-transparent transition-all hover:bg-surfaceLight/80'; 
+            b.innerText = s;
+        }
+        
+        b.onclick = () => { 
+            currentSelectedSlot = s; 
+            Array.from(grid.children).forEach(c => { 
+                if (!c.innerHTML.includes('check')) { // 不覆盖已预约的专属样式
+                    c.className = 'py-3 rounded-xl bg-surfaceLight text-xs font-bold text-white border border-transparent transition-all hover:bg-surfaceLight/80';
+                }
+            }); 
+            if (!isBooked) {
+                b.className = 'py-3 rounded-xl text-xs font-bold text-[#47A1FF] border border-[#47A1FF] bg-[#47A1FF]/10 transition-all'; 
+            }
+            updateBookButton(); 
+        };
+        grid.appendChild(b);
+    });
+    
+    const sc = document.getElementById('coach-slots-container'); 
+    if (sc) sc.classList.remove('hidden'); 
+    
+    refreshIcons({root: grid});
+    // 若自动捕获到了已预约的时间段，顺便刷新底部按钮状态
+    setTimeout(() => updateBookButton(), 10);
+}
+
+function updateBookButton() {
+    const btn = document.getElementById('book-session-btn');
+    const atBtn = document.getElementById('book-athome-btn');
+    if (!btn || !atBtn) return;
+    
+    const hasAtHome = currentSelectedCoach && currentSelectedCoach.tags.includes('At-Home');
+    
+    // 取消预约逻辑：判断当前选中的是否正是已预约的课程
+    const isBookedSlot = currentBooking && currentSelectedCoach && 
+                         currentBooking.coach.id === currentSelectedCoach.id && 
+                         currentBooking.date === currentSelectedDate && 
+                         currentBooking.time === currentSelectedSlot;
+
+    if (isBookedSlot) {
+        btn.classList.remove('bg-surfaceLight', 'text-textMuted', 'pointer-events-none', 'bg-[#47A1FF]', 'w-full', 'flex-1'); 
+        btn.classList.add('bg-[#FF5C77]', 'text-white', 'active:scale-[0.98]');
+        if (hasAtHome) btn.classList.add('flex-1'); else btn.classList.add('w-full');
+        
+        btn.innerText = "Cancel Booking";
+        btn.onclick = () => {
+            cancelBooking();
+            btn.innerText = "Canceled";
+            btn.classList.replace('bg-[#FF5C77]', 'bg-surfaceLight');
+            btn.classList.replace('text-white', 'text-textMuted');
+            btn.classList.add('pointer-events-none');
+            setTimeout(() => updateBookButton(), 1000);
+        };
+        
+        if (hasAtHome) {
+            atBtn.classList.add('pointer-events-none', 'opacity-30');
+            atBtn.classList.remove('bg-[#C974F4]', 'text-white');
+            atBtn.classList.add('bg-surfaceLight', 'text-textMuted');
+        }
+        return;
+    }
+    
+    if (currentSelectedDate && currentSelectedSlot) {
+        // 启用状态颜色精细赋值，避免闪烁
+        btn.classList.remove('bg-surfaceLight', 'text-textMuted', 'pointer-events-none', 'bg-[#FF5C77]', 'w-full', 'flex-1'); 
+        btn.classList.add('bg-[#47A1FF]', 'text-white', 'active:scale-[0.98]', hasAtHome ? 'flex-1' : 'w-full');
+        btn.onclick = () => handleBookingConfirm(btn, 'In-Gym');
+        
+        if (!hasAtHome) {
+            btn.innerText = `Book ${currentSelectedSlot}`;
+        } else {
+            btn.innerText = "Book Gym";
+        }
+        
+        if (hasAtHome) { 
+            atBtn.classList.remove('bg-surfaceLight', 'text-textMuted', 'pointer-events-none', 'opacity-30'); 
+            atBtn.classList.add('bg-[#C974F4]', 'text-white', 'active:scale-[0.98]', 'flex-1'); 
+            atBtn.onclick = () => handleBookingConfirm(atBtn, 'At-Home'); 
+        }
+    } else {
+        // 禁用状态精细恢复
+        btn.classList.add('bg-surfaceLight', 'text-textMuted', 'pointer-events-none'); 
+        btn.classList.remove('bg-[#47A1FF]', 'text-white', 'active:scale-[0.98]', 'bg-[#FF5C77]');
+        btn.onclick = null;
+        
+        if (hasAtHome) {
+            btn.classList.add('flex-1');
+            btn.classList.remove('w-full');
+            btn.innerText = "Book Gym";
+        } else {
+            btn.classList.add('w-full');
+            btn.classList.remove('flex-1');
+            btn.innerText = "Select Slot";
+        }
+        
+        if (hasAtHome) { 
+            atBtn.classList.add('bg-surfaceLight', 'text-textMuted', 'pointer-events-none'); 
+            atBtn.classList.remove('bg-[#C974F4]', 'text-white', 'active:scale-[0.98]', 'opacity-30'); 
+            atBtn.onclick = null;
+        }
+    }
+}
+
+function handleBookingConfirm(clickedBtn, type) {
+    const originalText = clickedBtn.innerText;
+    const originalBg = type === 'At-Home' ? 'bg-[#C974F4]' : 'bg-[#47A1FF]';
+    
+    clickedBtn.innerHTML = '<i data-lucide="check-circle" class="w-5 h-5 inline-block mr-2"></i> Confirmed'; 
+    clickedBtn.classList.remove(originalBg, 'active:scale-[0.98]'); 
+    clickedBtn.classList.add('bg-[#5ED67A]', 'pointer-events-none');
+    
+    const btn = document.getElementById('book-session-btn');
+    const atBtn = document.getElementById('book-athome-btn');
+    
+    if (clickedBtn === btn) { 
+        atBtn.classList.add('pointer-events-none', 'opacity-30'); 
+    } else { 
+        btn.classList.add('pointer-events-none', 'opacity-30'); 
+    }
+    
+    refreshIcons();
+    currentBooking = { coach: currentSelectedCoach, date: currentSelectedDate, time: currentSelectedSlot, type: type };
+    updateHomeBooking();
+    
+    setTimeout(() => { 
+        switchView('home'); 
+        clickedBtn.classList.add(originalBg, 'active:scale-[0.98]'); 
+        clickedBtn.classList.remove('bg-[#5ED67A]', 'pointer-events-none'); 
+        clickedBtn.innerText = originalText; 
+        
+        btn.classList.remove('pointer-events-none', 'opacity-30'); 
+        atBtn.classList.remove('pointer-events-none', 'opacity-30');
+        
+        currentSelectedDate = null;
+        currentSelectedSlot = null;
+        updateBookButton();
+    }, 1200);
+}
+
+function renderGymChart() {
+    const el = document.getElementById('gymLoadChart');
+    if (typeof Chart === 'undefined' || !el) return; 
+    
+    const ctx = el.getContext('2d');
+    if (gymLoadChart) gymLoadChart.destroy();
+    
+    gymLoadChart = new Chart(ctx, { 
+        type: 'line', 
+        data: { 
+            labels: ['6AM', '8AM', '10AM', '12PM', '2PM', '4PM', '6PM', '8PM', '10PM'], 
+            datasets: [
+                { 
+                    label: 'Historical', 
+                    data: [12, 45, 32, 28, 24, null, null, null, null], 
+                    borderColor: '#47A1FF', 
+                    backgroundColor: 'rgba(71, 161, 255, 0.1)', 
+                    borderWidth: 3, 
+                    fill: true, 
+                    tension: 0.4,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#47A1FF'
+                }, 
+                { 
+                    label: 'Predicted', 
+                    data: [null, null, null, null, 24, 38, 65, 42, 15], 
+                    borderColor: '#8E8E93', 
+                    borderWidth: 2, 
+                    borderDash: [5, 5], 
+                    tension: 0.4,
+                    pointRadius: 0
+                }
+            ] 
+        }, 
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { 
+                    display: true,
+                    labels: { boxWidth: 12, usePointStyle: true, pointStyle: 'circle', font: { size: 10 } }
+                } 
+            }, 
+            scales: { 
+                y: { display: false, max: 80 }, 
+                x: { grid: { display: false, drawBorder: false }, ticks: { font: { size: 10 } } } 
+            } 
+        } 
+    });
+}
+
+window.onload = () => { 
+    setGender('male'); 
+    switchView('home'); 
+    refreshIcons(); 
+};
+</script>
+</body>
+</html>
