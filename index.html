@@ -51,135 +51,70 @@
 
     <main class="pt-32 pb-20 max-w-7xl mx-auto px-6 space-y-40">
 
-        <!-- SECTION 1: MOTIVATION & RESEARCH -->
+        <!-- SECTION 1 & 2 ... -->
         <section id="motivation" class="space-y-12">
             <div class="max-w-3xl">
                 <h2 class="section-title">01. Motivation & <span class="text-primary">Research</span></h2>
                 <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> The Why</div>
                 <p class="text-textMuted leading-relaxed mb-10 text-justify">
-                    FITGRID (或称 FitMatrix) 旨在通过科学的数字化手段解决健身房资源分配不均与训练计划混乱的痛点。作为西交利物浦大学 (XJTLU) 的学生，我们注意到用户常因高峰期场地拥挤而产生挫败感。通过引入代谢等效值 (MET) 计算 与实时流量追踪，我们致力于将复杂的生理校准转化为直观、有趣的交互体验，提升用户的长期训练动力。
+                    FITGRID (或称 FitMatrix) 旨在通过科学的数字化手段解决健身房资源分配不均与训练计划混乱的痛点。我们致力于将复杂的生理校准转化为直观、有趣的交互体验。
                 </p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="layers" class="w-5"></i> The Gap</div>
-                    <p class="text-xs text-textMuted mb-4">Summary of 4 academic papers and 4 commercial products.</p>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <p class="text-xs text-textMuted italic">[在此填入 3 个做得好的点与 3 个缺失的点]</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="users" class="w-5"></i> The Stakeholders</div>
-                    <div class="grid grid-cols-2 gap-4 mt-4">
-                        <div class="bg-surface rounded-2xl overflow-hidden border border-white/5 text-center p-3">
-                            <div class="text-white font-bold text-sm">Primary Persona</div>
-                            <div class="text-[10px] text-textMuted mt-1">Gym Enthusiast</div>
-                        </div>
-                        <div class="bg-surface rounded-2xl overflow-hidden border border-white/5 text-center p-3">
-                            <div class="text-white font-bold text-sm">Secondary Persona</div>
-                            <div class="text-[10px] text-textMuted mt-1">Gym Manager</div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
-        <!-- SECTION 2: USER REQUIREMENTS -->
         <section id="requirements" class="space-y-12">
             <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
             <div class="grid lg:grid-cols-3 gap-8">
-                <!-- User Journey Map -->
-                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10">
-                    <div class="p-6 pb-0 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-                    <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-auto object-contain mt-4 shadow-2xl">
+                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10 flex flex-col">
+                    <div class="p-6 pb-2 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
+                    <div class="flex-1 p-6">
+                        <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-full object-contain rounded-xl">
+                    </div>
                 </div>
-
                 <div class="space-y-8">
-                    <!-- Requirements List -->
                     <div class="glass-card p-6">
                         <div class="subsection-title">Requirements List</div>
-                        <p class="text-[10px] text-textMuted mb-4">3 must-haves for the system to be “Playful”</p>
-                        <ul class="text-sm text-textMuted space-y-4">
-                            <li class="flex items-center gap-3"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>[待填写需求 1]</span></li>
-                            <li class="flex items-center gap-3"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>[待填写需求 2]</span></li>
-                            <li class="flex items-center gap-3"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>[待填写需求 3]</span></li>
+                        <ul class="text-sm text-textMuted space-y-4 mt-2">
+                            <li class="flex items-start gap-3"><i data-lucide="star" class="w-5 text-primary shrink-0 mt-0.5"></i><span>[Must-have 1]</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="star" class="w-5 text-primary shrink-0 mt-0.5"></i><span>[Must-have 2]</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="star" class="w-5 text-primary shrink-0 mt-0.5"></i><span>[Must-have 3]</span></li>
                         </ul>
                     </div>
-
-                    <!-- Evidence of Life -->
                     <div class="glass-card p-6">
                         <div class="subsection-title">Evidence of Life</div>
-                        <p class="text-[10px] text-textMuted mb-4">Interviews or Site Observation (5 Photos)</p>
-                        <div class="grid grid-cols-3 gap-2">
-                            <!-- 5个预留图片位置 -->
-                            <img src="evidence-1.jpg" alt="Evidence 1" class="aspect-square rounded-lg">
-                            <img src="evidence-2.jpg" alt="Evidence 2" class="aspect-square rounded-lg">
-                            <img src="evidence-3.jpg" alt="Evidence 3" class="aspect-square rounded-lg">
-                            <img src="evidence-4.jpg" alt="Evidence 4" class="aspect-square rounded-lg">
-                            <img src="evidence-5.jpg" alt="Evidence 5" class="aspect-square rounded-lg">
-                            <div class="aspect-square rounded-lg border border-dashed border-white/10 flex items-center justify-center">
-                                <i data-lucide="plus" class="w-4 text-white/10"></i>
-                            </div>
+                        <div class="grid grid-cols-3 gap-2 mt-4">
+                            <img src="evidence1.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                            <img src="evidence2.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                            <img src="evidence3.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                            <img src="evidence4.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                            <img src="evidence5.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 3: IDEATION & ALTERNATIVES -->
+        <!-- SECTION 3: IDEATION -->
         <section id="ideation" class="space-y-12">
             <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
-            
-            <!-- The “Crazy Eights” -->
             <div class="glass-card p-8">
-                <div class="subsection-title"><i data-lucide="zap" class="w-5"></i> The “Crazy Eights”</div>
-                <p class="text-[10px] text-textMuted mb-6">Photos of 8 rapid hand-drawn sketches of different UI ideas</p>
+                <div class="subsection-title"><i data-lucide="edit-3" class="w-5"></i> The “Crazy Eights”</div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                    <!-- 8个预留图片位置 -->
-                    <img src="sketch-1.jpg" alt="Sketch 1" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-2.jpg" alt="Sketch 2" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-3.jpg" alt="Sketch 3" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-4.jpg" alt="Sketch 4" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-5.jpg" alt="Sketch 5" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-6.jpg" alt="Sketch 6" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-7.jpg" alt="Sketch 7" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
-                    <img src="sketch-8.jpg" alt="Sketch 8" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform shadow-lg">
+                    <img src="sketch-1.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-2.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-3.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-4.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-5.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-6.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-7.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-8.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
                 </div>
             </div>
-
             <div class="grid md:grid-cols-2 gap-8">
-                <!-- Design Alternatives -->
-                <div class="glass-card p-8 flex flex-col">
-                    <div class="subsection-title"><i data-lucide="git-branch" class="w-5"></i> Design Alternatives</div>
-                    <div class="mt-4 flex-1 space-y-6">
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <h4 class="text-xs font-bold text-primary uppercase mb-2">Alternative A</h4>
-                            <p class="text-sm text-textMuted italic">[在此描述第一种设计方案...]</p>
-                        </div>
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <h4 class="text-xs font-bold text-primary uppercase mb-2">Alternative B</h4>
-                            <p class="text-sm text-textMuted italic">[在此描述第二种设计方案...]</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-white/10 text-xs text-textMuted">
-                        <strong>Decision:</strong> [在此解释选择其中一个的原因...]
-                    </div>
-                </div>
-
-                <!-- Low-Fi Prototype -->
+                <div class="glass-card p-8"><div class="subsection-title">Design Alternatives</div><p class="text-sm text-textMuted italic">[描述方案对比...]</p></div>
                 <div class="glass-card p-8 flex flex-col items-center justify-center text-center">
-                    <div class="subsection-title self-start"><i data-lucide="mouse-pointer-2" class="w-5"></i> Low-Fi Prototype</div>
-                    <div class="my-10">
-                        <i data-lucide="layout" class="w-16 h-16 text-white/5"></i>
-                    </div>
-                    <h3 class="text-lg font-bold mb-3">Clickable Figma Prototype</h3>
-                    <p class="text-xs text-textMuted max-w-xs mb-8 italic">[在此填入低保真原型设计说明...]</p>
-                    <a href="#" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 hover:bg-blue-600 transition-colors shadow-lg shadow-primary/20">
-                        Open Figma <i data-lucide="external-link" class="w-4"></i>
-                    </a>
+                    <div class="subsection-title self-start">Low-Fi Prototype</div>
+                    <a href="#" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 mt-10">Open Figma <i data-lucide="external-link" class="w-4"></i></a>
                 </div>
             </div>
         </section>
@@ -187,32 +122,67 @@
         <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
         <section id="technical" class="space-y-12">
             <h2 class="section-title">04. Technical <span class="text-primary">Implementation</span></h2>
+            
             <div class="grid lg:grid-cols-2 gap-8">
+                <!-- System Architecture -->
                 <div class="glass-card p-8">
                     <div class="subsection-title"><i data-lucide="database" class="w-5"></i> System Architecture</div>
-                    <img src="architecture.png" alt="Architecture" class="w-full h-auto rounded-xl border border-white/5 mt-4">
+                    <p class="text-xs text-textMuted mb-4">A diagram showing how your Web App handles data.</p>
+                    <div class="bg-surface rounded-xl overflow-hidden border border-white/5 p-4">
+                        <!-- 预留架构图位置 -->
+                        <img src="system-architecture.png" alt="System Architecture Diagram" class="w-full h-auto object-contain">
+                    </div>
                 </div>
+
+                <!-- High-Fi Prototype -->
                 <div class="glass-card p-8 flex flex-col">
                     <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
-                    <div class="flex-1 flex items-center justify-center">
-                        <p class="text-xs text-textMuted font-mono">fitmatrix.github.io</p>
+                    <p class="text-xs text-textMuted mb-6">URL to the hosted system.</p>
+                    <div class="flex-1 flex flex-col items-center justify-center space-y-6">
+                        <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl w-full text-center">
+                            <code class="text-primary font-mono text-sm">https://yourproject.github.io</code>
+                        </div>
+                        <a href="https://yourproject.github.io" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 transition-colors">
+                            Visit Live Site
+                        </a>
                     </div>
-                    <button class="w-full py-4 bg-white text-black font-bold rounded-full">Launch App</button>
                 </div>
             </div>
 
+            <!-- Individual Contributions Table -->
             <div class="glass-card p-8">
-                <div class="subsection-title">Individual Contributions</div>
-                <div class="overflow-x-auto mt-6">
+                <div class="subsection-title"><i data-lucide="user-check" class="w-5"></i> Individual Contributions</div>
+                <p class="text-xs text-textMuted mb-6">Specific contributions of each team member.</p>
+                <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
                         <thead class="text-textMuted border-b border-white/10 uppercase text-[10px] tracking-widest">
-                            <tr><th class="pb-4">Member</th><th class="pb-4">Role</th><th class="pb-4">Deliverables</th></tr>
+                            <tr>
+                                <th class="pb-4 pr-4">Member Name</th>
+                                <th class="pb-4 pr-4">Focus Area</th>
+                                <th class="pb-4">Specific Contributions (Code, UI, Content, Testing, etc.)</th>
+                            </tr>
                         </thead>
                         <tbody class="divide-y divide-white/5 text-gray-300">
-                            <tr><td class="py-4 font-bold">You</td><td>Lead Dev</td><td>MET Algorithm</td></tr>
-                            <tr><td class="py-4 font-bold">Haijin Xia</td><td>Frontend</td><td>Live Dashboard</td></tr>
-                            <tr><td class="py-4 font-bold">Yifan Xu</td><td>Architect</td><td>DB Schema</td></tr>
-                            <tr><td class="py-4 font-bold">Yiyang Lu</td><td>UI/UX</td><td>Design System</td></tr>
+                            <tr>
+                                <td class="py-4 font-bold pr-4">You (Student)</td>
+                                <td class="py-4 pr-4">Development / Logic</td>
+                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-bold pr-4">Haijin Xia</td>
+                                <td class="py-4 pr-4">[待填角色]</td>
+                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-bold pr-4">Yifan Xu</td>
+                                <td class="py-4 pr-4">[待填角色]</td>
+                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 font-bold pr-4">Yiyang Lu</td>
+                                <td class="py-4 pr-4">[待填角色]</td>
+                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -222,31 +192,11 @@
         <!-- SECTION 5: EVALUATION & REFLECTION -->
         <section id="evaluation" class="space-y-12">
             <h2 class="section-title">05. Evaluation & <span class="text-primary">Reflection</span></h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8">
-                    <div class="subsection-title">Usability Testing</div>
-                    <p class="text-sm text-textMuted italic">[填入基于 3 个真实用户的 Alpha 版本测试结果...]</p>
-                </div>
-                <div class="glass-card p-8">
-                    <div class="subsection-title">Iterative Refinement</div>
-                    <div class="grid grid-cols-2 gap-4 mt-4">
-                        <img src="before.png" alt="Before" class="aspect-video rounded-lg border border-white/5">
-                        <img src="after.png" alt="After" class="aspect-video rounded-lg border border-primary/20">
-                    </div>
-                </div>
-            </div>
-
             <div class="glass-card p-8 border-t-4 border-accent">
                 <div class="subsection-title">Final Reflection</div>
                 <div class="grid md:grid-cols-2 gap-8 mt-4 text-sm text-textMuted">
-                    <div>
-                        <h4 class="text-white font-bold mb-2">Social & Ethical</h4>
-                        <p>[讨论设计的社会或伦理性影响...]</p>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold mb-2">AI Usage</h4>
-                        <p>[声明本项目中 AI 的使用情况...]</p>
-                    </div>
+                    <div><h4 class="text-white font-bold mb-2 underline">Social & Ethical</h4><p>[待填写...]</p></div>
+                    <div><h4 class="text-white font-bold mb-2 underline">AI Usage</h4><p>[待填写...]</p></div>
                 </div>
             </div>
         </section>
@@ -254,7 +204,7 @@
     </main>
 
     <footer class="py-20 text-center border-t border-white/5">
-        <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITMATRIX PROJECT TEAM</p>
+        <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
     </footer>
 
     <script>
