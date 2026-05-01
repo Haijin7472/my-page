@@ -26,9 +26,10 @@
         body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .glass-card { background: rgba(28, 28, 30, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
         .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin-bottom: 1.5rem; }
-        .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; items-center; gap: 0.5rem; }
+        .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
         .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
-        .placeholder-box { background: #2C2C2E; border: 2px dashed #444; border-radius: 16px; display: flex; align-items: center; justify-center; color: #666; font-size: 0.8rem; }
+        /* 这里的 placeholder 仅在图片加载失败时显示背景色 */
+        img { background-color: #2C2C2E; }
     </style>
 </head>
 <body class="antialiased">
@@ -57,38 +58,45 @@
                 <h2 class="section-title">01. Motivation & <span class="text-primary">Research</span></h2>
                 <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> The Why</div>
                 <p class="text-textMuted leading-relaxed mb-10">
-                    <!-- 这里填入200字动机 -->
-                    FITGRID 诞生于对当前健身行业“数据黑箱”的思考。作为 Active Track 的实践者，我们发现多数用户在进行高强度训练（如 MET 代谢等效计算）时，缺乏直观的生理校准反馈。我们致力于通过数字矩阵将复杂的健身指标转化为可感知的视觉逻辑。
+                    FITGRID 诞生于对健身数据透明度的追求。作为 <b>Active Track</b> 的实践者，我们发现现有的健身应用大多只记录结果，而忽视了过程中的“生理矩阵校准”。本项目旨在通过 3D 感知和 AI 技术，为 XJTLU 的学生提供更具科学性和趣味性的训练引导。
                 </p>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="layers" class="w-5"></i> The Gap: Academic & Commercial</div>
-                    <p class="text-xs text-textMuted mb-6">Summarized analysis of 4 papers and 4 products.</p>
-                    <div class="space-y-4">
-                        <!-- Example of one item, you can duplicate this -->
+                    <div class="subsection-title"><i data-lucide="layers" class="w-5"></i> The Gap: 4 Papers & 4 Products</div>
+                    <div class="space-y-4 mt-4">
+                        <!-- 请根据实际分析修改下方内容 -->
                         <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <div class="text-sm font-bold mb-2">Item 01: [Paper/Product Name]</div>
+                            <div class="text-sm font-bold mb-2">Academic/Commercial Analysis</div>
                             <div class="grid grid-cols-2 gap-4 text-[11px]">
-                                <div class="text-green-400">● 3 Things Done Well</div>
-                                <div class="text-accent">● 3 Things Missed</div>
+                                <ul class="text-green-400">
+                                    <li>✔ 做得好的 3 点...</li>
+                                </ul>
+                                <ul class="text-accent">
+                                    <li>✖ 缺失的 3 点...</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="glass-card p-8">
                     <div class="subsection-title"><i data-lucide="users" class="w-5"></i> Stakeholders & Personas</div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="placeholder-box h-48 flex-col text-center p-4">
-                            <i data-lucide="user" class="mb-2 w-8"></i>
-                            <div class="text-white font-bold">Primary User</div>
-                            <div class="text-[10px]">Gym Enthusiast</div>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div class="bg-surface rounded-2xl overflow-hidden border border-white/5 text-center">
+                            <!-- 引用外部 Persona 头像 -->
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Primary Persona" class="w-full h-32 object-cover">
+                            <div class="p-3">
+                                <div class="text-white font-bold text-sm">Primary User</div>
+                                <div class="text-[10px] text-textMuted">"Active Enthusiast"</div>
+                            </div>
                         </div>
-                        <div class="placeholder-box h-48 flex-col text-center p-4">
-                            <i data-lucide="user-plus" class="mb-2 w-8"></i>
-                            <div class="text-white font-bold">Secondary User</div>
-                            <div class="text-[10px]">Coach/Manager</div>
+                        <div class="bg-surface rounded-2xl overflow-hidden border border-white/5 text-center">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" alt="Secondary Persona" class="w-full h-32 object-cover">
+                            <div class="p-3">
+                                <div class="text-white font-bold text-sm">Secondary User</div>
+                                <div class="text-[10px] text-textMuted">"Gym Manager"</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -98,30 +106,29 @@
         <!-- SECTION 2: USER REQUIREMENTS -->
         <section id="requirements" class="space-y-12">
             <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
-            
             <div class="grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-                    <div class="placeholder-box h-80">
-                        Visual Map: Current Pain Points & Opportunities
-                    </div>
+                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10">
+                    <div class="p-6 pb-0 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
+                    <!-- 引用外部 User Journey Map 图片 -->
+                    <img src="journey_map.png" alt="User Journey Map" class="w-full h-80 object-cover mt-4">
                 </div>
                 <div class="space-y-8">
                     <div class="glass-card p-6">
-                        <div class="subsection-title">"Playful" Must-haves</div>
-                        <ul class="text-sm text-textMuted space-y-3">
-                            <li class="flex items-center gap-2"><i data-lucide="check-square" class="text-primary w-4"></i> Real-time Matrix Visualization</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-square" class="text-primary w-4"></i> Interactive Goal Calibration</li>
-                            <li class="flex items-center gap-2"><i data-lucide="check-square" class="text-primary w-4"></i> Dynamic Reward Feedback</li>
+                        <div class="subsection-title">"Playful" Requirements</div>
+                        <ul class="text-sm text-textMuted space-y-2 mt-2">
+                            <li>• 必须有：实时的矩阵视觉反馈</li>
+                            <li>• 必须有：可交互的身体目标校准</li>
+                            <li>• 必须有：游戏化的动作完成鼓励</li>
                         </ul>
                     </div>
                     <div class="glass-card p-6">
                         <div class="subsection-title">Evidence of Life</div>
-                        <p class="text-[10px] text-textMuted mb-4">Interviewing at XJTLU Gym / Site Observation</p>
+                        <p class="text-[10px] text-textMuted mb-4">5 photos/videos of interviews/site observation</p>
                         <div class="grid grid-cols-3 gap-2">
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
+                            <!-- 引用 5 张现场调查图片 -->
+                            <img src="site1.jpg" class="aspect-square rounded-lg object-cover">
+                            <img src="site2.jpg" class="aspect-square rounded-lg object-cover">
+                            <img src="site3.jpg" class="aspect-square rounded-lg object-cover">
                         </div>
                     </div>
                 </div>
@@ -131,34 +138,29 @@
         <!-- SECTION 3: IDEATION & ALTERNATIVES -->
         <section id="ideation" class="space-y-12">
             <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
-            
             <div class="glass-card p-8">
                 <div class="subsection-title"><i data-lucide="grid" class="w-5"></i> The “Crazy Eights”</div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                    <!-- Placeholder for 8 rapid sketches -->
-                    <div class="aspect-[3/4] placeholder-box">Sketch 1</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 2</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 3</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 4</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 5</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 6</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 7</div>
-                    <div class="aspect-[3/4] placeholder-box">Sketch 8</div>
+                    <!-- 引用 8 张快速草图照片 -->
+                    <img src="sketch1.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch2.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch3.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch4.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch5.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch6.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch7.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
+                    <img src="sketch8.jpg" class="aspect-[3/4] rounded-xl border border-white/10 object-cover">
                 </div>
             </div>
-
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
                     <div class="subsection-title">Design Alternatives</div>
-                    <p class="text-sm text-textMuted leading-relaxed">
-                        We compared a **Static List Model** vs. a **Dynamic Matrix Model**. The latter was chosen because it aligns better with the "Playful" requirements and professional MET data visualization.
-                    </p>
+                    <p class="text-sm text-textMuted">我们对比了“纯文本计划”与“矩阵网格化布局”，最终选择了后者以提升视觉冲击力和操作直观度。</p>
                 </div>
-                <div class="glass-card p-8 border-l-4 border-primary flex flex-col justify-center">
+                <div class="glass-card p-8 border-l-4 border-primary">
                     <div class="subsection-title">Low-Fi Prototype</div>
-                    <p class="text-sm text-textMuted mb-4">Clickable validation of core interaction flows.</p>
-                    <a href="#" class="inline-flex items-center gap-2 text-white font-bold hover:text-primary transition-colors">
-                        View Figma Prototype <i data-lucide="external-link" class="w-4"></i>
+                    <a href="YOUR_FIGMA_URL" target="_blank" class="flex items-center gap-2 text-white font-bold hover:text-primary transition-colors mt-2">
+                        Open Figma Clickable Prototype <i data-lucide="external-link" class="w-4"></i>
                     </a>
                 </div>
             </div>
@@ -167,18 +169,22 @@
         <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
         <section id="technical" class="space-y-12">
             <h2 class="section-title">04. Technical <span class="text-primary">Implementation</span></h2>
-            
             <div class="grid lg:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
                     <div class="subsection-title"><i data-lucide="database" class="w-5"></i> System Architecture</div>
-                    <div class="placeholder-box h-64 mt-4">Diagram: Web App Data Handling</div>
+                    <!-- 引用系统架构图 -->
+                    <img src="architecture.png" alt="Architecture Diagram" class="w-full h-auto rounded-xl border border-white/5 mt-4">
                 </div>
-                <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
-                    <div class="h-48 flex items-center justify-center bg-black/40 rounded-2xl border border-white/5 mb-4">
-                        <span class="text-primary font-mono font-bold">fitgrid.vercel.app</span>
+                <div class="glass-card p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
+                        <p class="text-xs text-textMuted mb-4">Hosted on: yourproject.vercel.app</p>
                     </div>
-                    <button class="w-full py-4 bg-white text-black font-bold rounded-full">Launch Live System</button>
+                    <div class="aspect-video bg-black/40 rounded-2xl border border-white/5 mb-4 flex items-center justify-center overflow-hidden">
+                        <!-- 可以放一张最终 UI 的封面图 -->
+                        <img src="hifi_preview.png" class="w-full h-full object-cover">
+                    </div>
+                    <button onclick="window.open('https://yourproject.vercel.app')" class="w-full py-4 bg-white text-black font-bold rounded-full">Launch Live Site</button>
                 </div>
             </div>
 
@@ -189,31 +195,15 @@
                         <thead class="text-textMuted border-b border-white/10 uppercase text-[10px] tracking-widest">
                             <tr>
                                 <th class="pb-4">Member</th>
-                                <th class="pb-4">Core Focus</th>
-                                <th class="pb-4">Deliverables (Code/UI/Content)</th>
+                                <th class="pb-4">Core Role</th>
+                                <th class="pb-4">Deliverables</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
-                            <tr>
-                                <td class="py-4 font-bold">You</td>
-                                <td class="py-4">Lead Developer</td>
-                                <td class="py-4">MET Algorithm Implementation, Matrix UI Component</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold">Haijin Xia</td>
-                                <td class="py-4">Frontend Eng</td>
-                                <td class="py-4">Dashboard Development, API Integration</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold">Yifan Xu</td>
-                                <td class="py-4">Architect</td>
-                                <td class="py-4">System Architecture Design, Database Schema</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold">Yiyang Lu</td>
-                                <td class="py-4">UX Designer</td>
-                                <td class="py-4">High-Fi Prototyping, Usability Testing Lead</td>
-                            </tr>
+                        <tbody class="divide-y divide-white/5 text-gray-300">
+                            <tr><td class="py-4 font-bold">You</td><td>Full-Stack Dev</td><td>MET Algorithm, Matrix UI Code</td></tr>
+                            <tr><td class="py-4 font-bold">Haijin Xia</td><td>Frontend</td><td>Dashboards & API Integration</td></tr>
+                            <tr><td class="py-4 font-bold">Yifan Xu</td><td>Architect</td><td>DB Schema & Architecture Diagram</td></tr>
+                            <tr><td class="py-4 font-bold">Yiyang Lu</td><td>UI/UX</td><td>Figma Prototype & Testing</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -223,54 +213,59 @@
         <!-- SECTION 5: EVALUATION & REFLECTION -->
         <section id="evaluation" class="space-y-12">
             <h2 class="section-title">05. Evaluation & <span class="text-primary">Reflection</span></h2>
-            
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="clipboard-check" class="w-5"></i> Usability Testing</div>
-                    <p class="text-sm text-textMuted">Tested with 3 real users. Feedback indicated the "Gender Matrix" was intuitive, but the "Coach List" needed clearer labels.</p>
+                    <div class="subsection-title">Usability Testing</div>
+                    <p class="text-sm text-textMuted">针对 3 名真实用户进行了 Alpha 测试，成功解决了导航层级过深的问题。</p>
                 </div>
                 <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="refresh-cw" class="w-5"></i> Iterative Refinement</div>
-                    <div class="grid grid-cols-2 gap-4 mt-4 text-center text-[10px]">
-                        <div><div class="aspect-video placeholder-box mb-2">Before</div><span class="text-textMuted">V1.0 Alpha</span></div>
-                        <div><div class="aspect-video placeholder-box mb-2 border-primary border-solid">After</div><span class="text-primary">Final Version</span></div>
+                    <div class="subsection-title">Iterative Refinement</div>
+                    <div class="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <img src="before.png" class="aspect-video rounded-lg object-cover mb-2 border border-white/5">
+                            <span class="text-[10px] text-textMuted italic">Before: V1.0</span>
+                        </div>
+                        <div>
+                            <img src="after.png" class="aspect-video rounded-lg object-cover mb-2 border border-primary/50">
+                            <span class="text-[10px] text-primary italic font-bold">After: Final UI</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="glass-card p-8 border-t-4 border-accent">
-                <div class="subsection-title"><i data-lucide="shield-check" class="w-5"></i> Final Reflection</div>
-                <div class="grid md:grid-cols-2 gap-12 text-sm text-textMuted">
+                <div class="subsection-title">Final Reflection</div>
+                <div class="grid md:grid-cols-2 gap-8 text-sm text-textMuted mt-4">
                     <div>
-                        <h4 class="text-white font-bold mb-2">Social & Ethical Implications</h4>
-                        <p>探讨数据隐私、健身公平性以及身体形象焦虑等社会影响。</p>
+                        <h4 class="text-white font-bold mb-2 underline">Social & Ethical</h4>
+                        <p>我们考虑了数据隐私以及身体焦虑问题，确保 FITGRID 传达正向的运动价值观。</p>
                     </div>
                     <div>
-                        <h4 class="text-white font-bold mb-2">Use of Generative AI</h4>
-                        <p>明确声明在代码架构、文案润色及图像占位符中使用的 AI 工具及其贡献比例。</p>
+                        <h4 class="text-white font-bold mb-2 underline">AI Usage</h4>
+                        <p>在本项目中，AI 辅助了 UI 代码生成与文案优化，但在核心交互逻辑上仍保留人工干预。</p>
                     </div>
                 </div>
             </div>
         </section>
-
     </main>
 
     <footer class="py-20 text-center border-t border-white/5">
-        <p class="text-textMuted text-xs uppercase tracking-widest">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
+        <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
     </footer>
 
     <script>
         lucide.createIcons();
-        // Simple active scroll highlight
         window.addEventListener('scroll', () => {
             const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation'];
             sections.forEach(id => {
                 const el = document.getElementById(id);
                 const link = document.querySelector(`nav a[href="#${id}"]`);
-                const rect = el.getBoundingClientRect();
-                if (rect.top >= 0 && rect.top <= 300) {
-                    document.querySelectorAll('nav a').forEach(l => l.classList.remove('nav-active'));
-                    link.classList.add('nav-active');
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.top <= 400) {
+                        document.querySelectorAll('nav a').forEach(l => l.classList.remove('nav-active'));
+                        link.classList.add('nav-active');
+                    }
                 }
             });
         });
