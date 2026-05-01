@@ -28,8 +28,7 @@
         .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin-bottom: 1.5rem; }
         .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
         .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
-        img { background-color: #2C2C2E; object-fit: cover; transition: transform 0.3s ease; }
-        img:hover { transform: scale(1.02); }
+        img { background-color: #2C2C2E; object-fit: cover; }
     </style>
 </head>
 <body class="antialiased">
@@ -52,67 +51,78 @@
 
     <main class="pt-32 pb-20 max-w-7xl mx-auto px-6 space-y-40">
 
-        <!-- SECTION 1 & 2 保持之前结构 ... -->
+        <!-- SECTION 1 & 2 省略 ... -->
 
         <!-- SECTION 3: IDEATION & ALTERNATIVES -->
         <section id="ideation" class="space-y-12">
             <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
             
-            <!-- A. The “Crazy Eights” -->
+            <!-- 1. The “Crazy Eights” -->
             <div class="glass-card p-8">
-                <div class="subsection-title"><i data-lucide="zap" class="w-5"></i> The “Crazy Eights”</div>
-                <p class="text-xs text-textMuted mb-6">8 rapid hand-drawn sketches exploring diverse UI concepts for FitMatrix.</p>
+                <div class="subsection-title"><i data-lucide="edit-3" class="w-5"></i> The “Crazy Eights”</div>
+                <p class="text-[10px] text-textMuted mb-6">Photos of 8 rapid hand-drawn sketches of different UI ideas</p>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- 预留 8 个位置给手绘草图照片 -->
-                    <img src="sketch-1.jpg" alt="Sketch 1" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-2.jpg" alt="Sketch 2" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-3.jpg" alt="Sketch 3" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-4.jpg" alt="Sketch 4" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-5.jpg" alt="Sketch 5" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-6.jpg" alt="Sketch 6" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-7.jpg" alt="Sketch 7" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
-                    <img src="sketch-8.jpg" alt="Sketch 8" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg">
+                    <!-- 预留 8 个引用外部图片的 img 标签 -->
+                    <img src="sketch-1.jpg" alt="Crazy Eight Sketch 1" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-2.jpg" alt="Crazy Eight Sketch 2" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-3.jpg" alt="Crazy Eight Sketch 3" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-4.jpg" alt="Crazy Eight Sketch 4" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-5.jpg" alt="Crazy Eight Sketch 5" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-6.jpg" alt="Crazy Eight Sketch 6" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-7.jpg" alt="Crazy Eight Sketch 7" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
+                    <img src="sketch-8.jpg" alt="Crazy Eight Sketch 8" class="aspect-[3/4] rounded-xl border border-white/5 shadow-lg hover:scale-105 transition-transform">
                 </div>
             </div>
 
-            <!-- B. Design Alternatives -->
             <div class="grid md:grid-cols-2 gap-8">
+                <!-- 2. Design Alternatives -->
                 <div class="glass-card p-8 flex flex-col">
-                    <div class="subsection-title"><i data-lucide="git-branch" class="w-5"></i> Design Alternatives</div>
-                    <div class="flex-1 space-y-6 mt-4">
+                    <div class="subsection-title"><i data-lucide="git-compare" class="w-5"></i> Design Alternatives</div>
+                    <div class="mt-4 flex-1 space-y-6">
+                        <!-- 对比方案 1 -->
                         <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <h4 class="text-white font-bold text-sm mb-2">Option A: [例如：基于列表的传统设计]</h4>
-                            <p class="text-xs text-textMuted">在此处描述第一种系统运作方式及其优缺点。</p>
+                            <h4 class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Alternative A</h4>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                [在此处填入第一种方案的运作方式描述...]
+                            </p>
                         </div>
+                        <!-- 对比方案 2 -->
                         <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-                            <h4 class="text-white font-bold text-sm mb-2">Option B: [例如：基于矩阵的交互式设计]</h4>
-                            <p class="text-xs text-textMuted">在此处描述第二种系统运作方式及其优缺点。</p>
+                            <h4 class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Alternative B</h4>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                [在此处填入第二种方案的运作方式描述...]
+                            </p>
                         </div>
                     </div>
-                    <div class="mt-6 pt-6 border-t border-white/10 text-sm italic text-primary">
-                        <strong>Rationale:</strong> [在此处解释为什么最终选择了其中一个方案]
+                    <!-- 解释选择 -->
+                    <div class="mt-8 pt-6 border-t border-white/10">
+                        <h4 class="text-sm font-bold text-white mb-2">Selection Rationale</h4>
+                        <p class="text-xs text-textMuted leading-relaxed">
+                            [在此处解释为什么最终选择了其中一个方案，以及它如何优于其他选项...]
+                        </p>
                     </div>
                 </div>
 
-                <!-- C. Low-Fi Prototype -->
+                <!-- 3. Low-Fi Prototype -->
                 <div class="glass-card p-8 flex flex-col items-center justify-center text-center group">
-                    <div class="subsection-title self-start"><i data-lucide="mouse-pointer-2" class="w-5"></i> Low-Fi Prototype</div>
-                    <div class="my-8">
-                        <i data-lucide="layout" class="w-20 h-20 text-white/10 group-hover:text-primary/40 transition-colors"></i>
+                    <div class="subsection-title self-start"><i data-lucide="mouse-pointer-click" class="w-5"></i> Low-Fi Prototype</div>
+                    <div class="my-10">
+                        <i data-lucide="layout" class="w-16 h-16 text-white/5 group-hover:text-primary/30 transition-colors"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-2">Clickable Figma Prototype</h3>
-                    <p class="text-sm text-textMuted mb-8 max-w-xs">
-                        A low-fidelity interactive flow to validate the user requirements and information architecture.
+                    <h3 class="text-lg font-bold mb-3">Clickable Figma Prototype</h3>
+                    <p class="text-xs text-textMuted max-w-xs mb-8">
+                        [此处可填入关于原型设计的简短说明，例如测试的核心流程或交互逻辑...]
                     </p>
-                    <a href="YOUR_FIGMA_URL_HERE" target="_blank" class="px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-blue-600 transition-all flex items-center gap-2">
-                        Open Figma <i data-lucide="external-link" class="w-4"></i>
+                    <!-- Figma 链接占位 -->
+                    <a href="https://www.figma.com/file/..." target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full hover:bg-blue-600 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
+                        Open Figma Prototype <i data-lucide="external-link" class="w-4"></i>
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4 & 5 ... -->
+        <!-- SECTION 4 & 5 省略 ... -->
 
     </main>
 
