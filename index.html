@@ -1,242 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FITGRID | Process Portfolio</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0A84FF',
-                        accent: '#FF375F',
-                        surface: '#1C1C1E',
-                        surfaceLight: '#2C2C2E',
-                        textMuted: '#8E8E93',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .glass-card { background: rgba(28, 28, 30, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
-        .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin-bottom: 1.5rem; }
-        .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
-        img { background-color: #2C2C2E; object-fit: cover; }
-    </style>
-</head>
-<body class="antialiased">
-
-    <!-- Fixed Navigation -->
-    <header class="fixed top-0 w-full z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 font-bold text-xl">
-                <i data-lucide="activity" class="text-primary"></i> FITGRID
-            </div>
-            <nav class="hidden md:flex gap-8 text-sm font-medium text-textMuted">
-                <a href="#motivation" class="hover:text-white transition-colors">1. Motivation</a>
-                <a href="#requirements" class="hover:text-white transition-colors">2. Requirements</a>
-                <a href="#ideation" class="hover:text-white transition-colors">3. Ideation</a>
-                <a href="#technical" class="hover:text-white transition-colors">4. Technical</a>
-                <a href="#evaluation" class="hover:text-white transition-colors">5. Reflection</a>
-            </nav>
-        </div>
-    </header>
-
-    <main class="pt-32 pb-20 max-w-7xl mx-auto px-6 space-y-40">
-
-        <!-- SECTION 1 & 2 ... -->
-        <section id="motivation" class="space-y-12">
-            <div class="max-w-3xl">
+<!-- SECTION 1: MOTIVATION & RESEARCH -->
+        <section id="motivation" class="space-y-16">
+            <div>
                 <h2 class="section-title">01. Motivation & <span class="text-primary">Research</span></h2>
-                <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> The Why</div>
-                <p class="text-textMuted leading-relaxed mb-10 text-justify">
-                    FITGRID (或称 FitMatrix) 旨在通过科学的数字化手段解决健身房资源分配不均与训练计划混乱的痛点。我们致力于将复杂的生理校准转化为直观、有趣的交互体验。
-                </p>
-            </div>
-        </section>
-
-        <section id="requirements" class="space-y-12">
-            <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
-            <div class="grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10 flex flex-col">
-                    <div class="p-6 pb-2 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-                    <div class="flex-1 p-6">
-                        <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-full object-contain rounded-xl">
-                    </div>
-                </div>
                 
-               <div class="space-y-8">
-                    <!-- 2. Requirements List (Playful Must-haves) -->
-                    <div class="glass-card p-6">
-                        <div class="subsection-title">Requirements List</div>
-                        <p class="text-[10px] text-textMuted mb-4">3 must-haves for the system to be considered “Playful”</p>
-                        <ul class="text-xs text-textMuted space-y-4">
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="layout-grid" class="w-4 text-primary shrink-0"></i>
-                                <span><b>Visual Matrix Interaction:</b> Visual Grid Calibration: Replaces traditional text inputs with an interactive 3x3 grid to make physiological goal-setting intuitive and engaging.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="activity" class="w-4 text-primary shrink-0"></i>
-                                <span><b>Live Status Indicators:</b> Live Occupancy Feedback: Utilizes dynamic pulses and color-coded scales to display real-time gym load, significantly increasing data transparency for the user.</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <i data-lucide="palette" class="w-4 text-primary shrink-0"></i>
-                                <span><b>Adaptive Theme Response:</b> Adaptive Interface Theming: Switches UI color schemes and iconography dynamically based on user attributes (e.g., gender) to provide immediate, personalized visual confirmation.</span>
-                            </li>
-                        </ul>
-                    </div>
+                <!-- 1.1 The Why -->
+                <div class="glass-card p-8 mb-12 border-l-4 border-primary">
+                    <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> The Why: Choosing the Active Track</div>
+                    <p class="text-textMuted leading-relaxed text-justify">
+                        Our team selected the <b>Active Track</b> because we identified a critical disconnect between the high-quality fitness facilities at XJTLU and the actual training efficiency of students. While many students are motivated to improve their physical health, they often face "analysis paralysis" due to scientific data opacity. We chose this track to transform the solitary and often confusing gym experience into a data-driven, scientific journey. FITGRID addresses the "Active" challenge by integrating Metabolic Equivalent (MET) calculations with real-time occupancy tracking, ensuring that physical activity is not just frequent, but purposeful and synchronized with personal physiological limits. By focusing on this track, we aim to leverage software engineering to solve the real-world problem of training plateaus and gym congestion, ultimately fostering a more sustainable and scientific fitness culture within our university community.
+                    </p>
+                </div>
 
+                <!-- 1.2 The Gap (4 Papers & 4 Products) -->
+                <div class="space-y-8">
+                    <div class="subsection-title"><i data-lucide="layers" class="w-5"></i> The Gap: Comparative Analysis</div>
                     
-                    <div class="glass-card p-6">
-                        <div class="subsection-title">Evidence of Life</div>
-                        <div class="grid grid-cols-3 gap-2 mt-4">
-                            <img src="evidence-of-life1.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life2.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life3.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life4.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life5.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                    <!-- Academic Papers Analysis -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Paper 1 -->
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                            <h4 class="text-primary text-[10px] font-bold uppercase mb-2">Paper 01: [Title]</h4>
+                            <div class="space-y-3">
+                                <ul class="text-[9px] text-green-400 space-y-1 list-disc pl-3">
+                                    <li>Accurate MET logic</li>
+                                    <li>Data-driven approach</li>
+                                    <li>Clinical validation</li>
+                                </ul>
+                                <ul class="text-[9px] text-accent space-y-1 list-disc pl-3">
+                                    <li>Poor UI accessibility</li>
+                                    <li>No real-time tracking</li>
+                                    <li>Too academic for students</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 复制上面的 Paper 块以补全 4 个 -->
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Paper 02-04 Placeholder</div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Paper 03 Placeholder</div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Paper 04 Placeholder</div>
+                    </div>
+
+                    <!-- Commercial Products Analysis -->
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Product 1 -->
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                            <h4 class="text-accent text-[10px] font-bold uppercase mb-2">Product 01: [e.g. Keep]</h4>
+                            <div class="space-y-3">
+                                <ul class="text-[9px] text-green-400 space-y-1 list-disc pl-3">
+                                    <li>Excellent UX Design</li>
+                                    <li>Huge content library</li>
+                                    <li>Social gamification</li>
+                                </ul>
+                                <ul class="text-[9px] text-accent space-y-1 list-disc pl-3">
+                                    <li>Privacy concerns</li>
+                                    <li>Ads-heavy interface</li>
+                                    <li>No gym load metrics</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- 复制上面的 Product 块以补全 4 个 -->
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Product 02 Placeholder</div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Product 03 Placeholder</div>
+                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 opacity-50 flex items-center justify-center italic text-[10px] text-textMuted">Product 04 Placeholder</div>
+                    </div>
+                </div>
+
+                <!-- 1.3 Stakeholders & Personas -->
+                <div class="mt-16">
+                    <div class="subsection-title mb-6"><i data-lucide="users" class="w-5"></i> The Stakeholders: Personas</div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Primary User Persona -->
+                        <div class="premium-card p-6 border-t-2 border-primary">
+                            <div class="flex gap-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200" class="w-16 h-16 rounded-xl object-cover border-2 border-primary/20">
+                                <div>
+                                    <h4 class="text-lg font-bold">Primary: "Overwhelmed Leo"</h4>
+                                    <p class="text-[10px] text-primary uppercase font-bold tracking-widest">XJTLU Undergraduate</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4 text-xs text-textMuted">
+                                <p><b>Motivation:</b> Wants to build muscle scientifically but gets discouraged by gym crowds and complex plans.</p>
+                                <p><b>Pain Points:</b> Wastes time waiting for equipment; doesn't know if his current heart rate matches his goals.</p>
+                            </div>
+                        </div>
+
+                        <!-- Secondary User Persona -->
+                        <div class="premium-card p-6 border-t-2 border-accent">
+                            <div class="flex gap-4 mb-4">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200" class="w-16 h-16 rounded-xl object-cover border-2 border-accent/20">
+                                <div>
+                                    <h4 class="text-lg font-bold">Secondary: "Data Sarah"</h4>
+                                    <p class="text-[10px] text-accent uppercase font-bold tracking-widest">Gym Manager / Coach</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4 text-xs text-textMuted">
+                                <p><b>Motivation:</b> Needs to monitor facility flow and provide precise metabolic guidance to clients.</p>
+                                <p><b>Pain Points:</b> Manually tracking gym usage is inefficient; needs a unified system to see member progress.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- SECTION 3: IDEATION -->
-        <section id="ideation" class="space-y-12">
-            <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
-            <div class="glass-card p-8">
-                <div class="subsection-title"><i data-lucide="edit-3" class="w-5"></i> The “Crazy Eights”</div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                    <img src="sketch-1.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-2.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-3.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-4.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-5.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-6.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-7.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-8.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                </div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8"><div class="subsection-title">Design Alternatives</div><p class="text-sm text-textMuted italic">[描述方案对比...]</p></div>
-                <div class="glass-card p-8 flex flex-col items-center justify-center text-center">
-                    <div class="subsection-title self-start">Low-Fi Prototype</div>
-                    <a href="#" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 mt-10">Open Figma <i data-lucide="external-link" class="w-4"></i></a>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
-        <section id="technical" class="space-y-12">
-            <h2 class="section-title">04. Technical <span class="text-primary">Implementation</span></h2>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- System Architecture -->
-                <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="database" class="w-5"></i> System Architecture</div>
-                    <p class="text-xs text-textMuted mb-4">A diagram showing how your Web App handles data.</p>
-                    <div class="bg-surface rounded-xl overflow-hidden border border-white/5 p-4">
-                        <!-- 预留架构图位置 -->
-                        <img src="system-architecture.png" alt="System Architecture Diagram" class="w-full h-auto object-contain">
-                    </div>
-                </div>
-
-                <!-- High-Fi Prototype -->
-                <div class="glass-card p-8 flex flex-col">
-                    <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
-                    <p class="text-xs text-textMuted mb-6">URL to the hosted system.</p>
-                    <div class="flex-1 flex flex-col items-center justify-center space-y-6">
-                        <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl w-full text-center">
-                            <code class="text-primary font-mono text-sm">https://yourproject.github.io</code>
-                        </div>
-                        <a href="https://yourproject.github.io" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 transition-colors">
-                            Visit Live Site
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Individual Contributions Table -->
-            <div class="glass-card p-8">
-                <div class="subsection-title"><i data-lucide="user-check" class="w-5"></i> Individual Contributions</div>
-                <p class="text-xs text-textMuted mb-6">Specific contributions of each team member.</p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-textMuted border-b border-white/10 uppercase text-[10px] tracking-widest">
-                            <tr>
-                                <th class="pb-4 pr-4">Member Name</th>
-                                <th class="pb-4 pr-4">Focus Area</th>
-                                <th class="pb-4">Specific Contributions (Code, UI, Content, Testing, etc.)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-white/5 text-gray-300">
-                            <tr>
-                                <td class="py-4 font-bold pr-4">You (Student)</td>
-                                <td class="py-4 pr-4">Development / Logic</td>
-                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold pr-4">Haijin Xia</td>
-                                <td class="py-4 pr-4">[待填角色]</td>
-                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold pr-4">Yifan Xu</td>
-                                <td class="py-4 pr-4">[待填角色]</td>
-                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
-                            </tr>
-                            <tr>
-                                <td class="py-4 font-bold pr-4">Yiyang Lu</td>
-                                <td class="py-4 pr-4">[待填角色]</td>
-                                <td class="py-4 text-textMuted">[待填写具体贡献...]</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 5: EVALUATION & REFLECTION -->
-        <section id="evaluation" class="space-y-12">
-            <h2 class="section-title">05. Evaluation & <span class="text-primary">Reflection</span></h2>
-            <div class="glass-card p-8 border-t-4 border-accent">
-                <div class="subsection-title">Final Reflection</div>
-                <div class="grid md:grid-cols-2 gap-8 mt-4 text-sm text-textMuted">
-                    <div><h4 class="text-white font-bold mb-2 underline">Social & Ethical</h4><p>[待填写...]</p></div>
-                    <div><h4 class="text-white font-bold mb-2 underline">AI Usage</h4><p>[待填写...]</p></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="py-20 text-center border-t border-white/5">
-        <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-        window.addEventListener('scroll', () => {
-            const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation'];
-            sections.forEach(id => {
-                const el = document.getElementById(id);
-                const link = document.querySelector(`nav a[href="#${id}"]`);
-                if (el && link) {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top <= 400) {
-                        document.querySelectorAll('nav a').forEach(l => l.classList.remove('nav-active'));
-                        link.classList.add('nav-active');
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>
