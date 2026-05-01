@@ -28,7 +28,7 @@
         .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin-bottom: 1.5rem; }
         .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
         .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
-        img { background-color: #2C2C2E; }
+        img { background-color: #2C2C2E; object-cover: cover; }
     </style>
 </head>
 <body class="antialiased">
@@ -56,7 +56,6 @@
             <div class="max-w-3xl">
                 <h2 class="section-title">01. Motivation & <span class="text-primary">Research</span></h2>
                 <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> The Why</div>
-                <!-- 根据用户修正历史，采用段落形式整合目标陈述 -->
                 <p class="text-textMuted leading-relaxed mb-10 text-justify">
                     FITGRID (或称 FitMatrix) 旨在通过科学的数字化手段解决健身房资源分配不均与训练计划混乱的痛点。作为西交利物浦大学 (XJTLU) 的学生，我们注意到用户常因高峰期场地拥挤而产生挫败感。通过引入代谢等效值 (MET) 计算 与实时流量追踪，我们致力于将复杂的生理校准转化为直观、有趣的交互体验，从而提升用户的长期训练动力。
                 </p>
@@ -101,27 +100,40 @@
         <section id="requirements" class="space-y-12">
             <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
             <div class="grid lg:grid-cols-3 gap-8">
+                <!-- User Journey Map -->
                 <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10">
                     <div class="p-6 pb-0 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-                    <!-- 此处已替换为指定的图片文件名 -->
                     <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-auto object-contain mt-4">
                 </div>
+
                 <div class="space-y-8">
+                    <!-- Requirements List (Playful Must-haves) -->
                     <div class="glass-card p-6">
-                        <div class="subsection-title">"Playful" Requirements</div>
+                        <div class="subsection-title">Requirements List</div>
+                        <p class="text-[10px] text-textMuted mb-3">3 must-haves for the system to be “Playful”</p>
                         <ul class="text-sm text-textMuted space-y-3 mt-2">
-                            <li class="flex items-center gap-2"><i data-lucide="grid-3x3" class="w-4 text-primary"></i> 9-grid 导航菜单交互</li>
-                            <li class="flex items-center gap-2"><i data-lucide="bar-chart-2" class="w-4 text-primary"></i> 实时拥挤度 (Occupancy) 可视化</li>
-                            <li class="flex items-center gap-2"><i data-lucide="smile" class="w-4 text-primary"></i> 情感导向的进度反馈机制</li>
+                            <li class="flex items-center gap-2"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>待填：第一项有趣的需求</span></li>
+                            <li class="flex items-center gap-2"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>待填：第二项有趣的需求</span></li>
+                            <li class="flex items-center gap-2"><i data-lucide="circle-dashed" class="w-4 text-primary"></i> <span>待填：第三项有趣的需求</span></li>
                         </ul>
                     </div>
+
+                    <!-- Evidence of Life (5 Photo Slots) -->
                     <div class="glass-card p-6">
                         <div class="subsection-title">Evidence of Life</div>
-                        <p class="text-[10px] text-textMuted mb-4">Observation at XJTLU Gym</p>
+                        <p class="text-[10px] text-textMuted mb-4">Interviews & Site Observation (5 Photos)</p>
                         <div class="grid grid-cols-3 gap-2">
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
-                            <div class="aspect-square bg-surfaceLight rounded-lg"></div>
+                            <!-- 前三张 -->
+                            <img src="evidence-1.jpg" alt="Evidence 1" class="aspect-square rounded-lg">
+                            <img src="evidence-2.jpg" alt="Evidence 2" class="aspect-square rounded-lg">
+                            <img src="evidence-3.jpg" alt="Evidence 3" class="aspect-square rounded-lg">
+                            <!-- 后两张 (占据下方两格) -->
+                            <img src="evidence-4.jpg" alt="Evidence 4" class="aspect-square rounded-lg">
+                            <img src="evidence-5.jpg" alt="Evidence 5" class="aspect-square rounded-lg">
+                            <!-- 空白格占位以保持网格整齐 -->
+                            <div class="aspect-square bg-surfaceLight/20 rounded-lg flex items-center justify-center border border-dashed border-white/10">
+                                <i data-lucide="plus" class="w-4 text-white/10"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
