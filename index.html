@@ -29,10 +29,8 @@
         .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
         .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
         img { background-color: #2C2C2E; object-fit: cover; }
-        
-        /* 强化状态标签样式 */
-        .badge-well { @apply text-[8px] px-1.5 py-0.5 rounded bg-green-500/10 text-green-400 font-bold uppercase tracking-wider border border-green-500/20 mr-1.5; }
-        .badge-missed { @apply text-[8px] px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-bold uppercase tracking-wider border border-red-500/20 mr-1.5; }
+        .well-text { color: #5ED67A; }
+        .missed-text { color: #FF375F; }
     </style>
 </head>
 <body class="antialiased">
@@ -64,69 +62,65 @@
                 <div class="glass-card p-8 mb-12 border-l-4 border-primary shadow-2xl shadow-primary/5">
                     <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> 1.1 The Why: Choosing the Active Track</div>
                     <p class="text-textMuted leading-relaxed text-justify text-sm">
-                        Our team chose the <b>Active Track</b> because we recognized a fundamental gap in how fitness is approached within university environments like XJTLU. While students are health-conscious, the "Active" lifestyle often remains unoptimized due to scientific data opacity. FitMatrix was born from the desire to demystify complex physiological data. By focusing on Active technology, we can address the "gym anxiety" and "training plateaus" that often lead to high dropout rates among beginners. Our platform ensures that physical activity is purposeful, data-driven, and engaging. We believe that by creating a scientific feedback loop—using MET calculations and real-time occupancy tracking—we can empower students to move from intuitive training to precise, high-performance habits.
+                        Our team chose the <b>Active Track</b> because we recognized a fundamental gap in how fitness is approached within university environments like XJTLU. While students are health-conscious, the "Active" lifestyle often remains unoptimized due to scientific data opacity. We chose this track specifically to leverage software engineering to provide real-time, actionable insights that traditional methods overlook. By focusing on Active technology, we can address "gym anxiety" and "training plateaus" that often lead to high dropout rates among beginners. Our platform ensures that physical activity is purposeful, data-driven, and engaging. We believe that by creating a scientific feedback loop—using MET calculations and real-time occupancy tracking—we can empower students to move from intuitive training to precise, high-performance habits. Ultimately, the Active Track allowed us to explore the intersection of HCI and Sports Science, creating a digital coach that fosters a healthier, more informed, and scientifically-active campus community.
                     </p>
                 </div>
 
-                <!-- 1.2 The Gap: Analysis (提示词优化版) -->
+                <!-- 1.2 The Gap (Integrated Full Text Analysis) -->
                 <div class="space-y-8">
                     <div class="subsection-title"><i data-lucide="layers" class="w-5"></i> 1.2 The Gap: Academic & Commercial Analysis</div>
                     
                     <!-- Row 1: Academic Papers -->
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Paper 1 -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
-                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Lyons et al. (2014) [1]</h4>
+                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Paper 01: Lyons et al. [1]</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Insight</span><b>Self-monitoring efficacy:</b> Validated that systematic tracking is the most effective technique for adherence.</li>
-                                    <li><span class="badge-well">Method</span><b>Electronic validation:</b> Proved the utility of lifestyle activity monitors for behavioral change.</li>
-                                    <li><span class="badge-well">Proven</span><b>Behavioral framework:</b> Established data as a core driver for sustained motivation.</li>
-                                    <li class="pt-2"><span class="badge-missed">Oversight</span><b>Cognitive load:</b> Overlooked the intimidation factor beginners face during complex goal setting.</li>
-                                    <li><span class="badge-missed">Gap</span><b>Visual empathy:</b> Failed to explore intuitive, image-based goal setting to lower entry barriers.</li>
-                                    <li><span class="badge-missed">Isolation</span><b>Static focus:</b> Missed the critical link between personal metrics and the external physical environment.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Proved self-monitoring is the most effective behavior change technique.</li>
+                                    <li class="well-text">✔ Validated electronic lifestyle monitors for improving adherence.</li>
+                                    <li class="well-text">✔ Established data tracking as a core motivator for activity.</li>
+                                    <li class="mt-3 missed-text">✖ Ignored the <b>high cognitive load</b> during complex goal setting.</li>
+                                    <li class="missed-text">✖ Missing empathetic UI for fitness beginners.</li>
+                                    <li class="missed-text">✖ Failed to link personal data with physical environment dynamics.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Paper 2 -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
-                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Haynes (2009) [2]</h4>
+                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Paper 02: Haynes [2]</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Discovery</span><b>Decision satisfaction:</b> Identified how prolonged decision time directly degrades user satisfaction.</li>
-                                    <li><span class="badge-well">Strategy</span><b>Choice boundaries:</b> Established the need to minimize cognitive effort in selection loops.</li>
-                                    <li><span class="badge-well">Efficiency</span><b>Loop optimization:</b> Validated streamlined booking-to-check-in flows for higher engagement.</li>
-                                    <li class="pt-2"><span class="badge-missed">Oversight</span><b>Spatial data:</b> Failed to account for real-world facility occupancy in the decision process.</li>
-                                    <li><span class="badge-missed">Gap</span><b>Dynamic context:</b> Ignored how unpredictable gym environments disrupt the satisfaction loop.</li>
-                                    <li><span class="badge-missed">Rigidity</span><b>Limited models:</b> Focused on single-store models, missing flexible hybrid solutions.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Identified how prolonged decision time impacts user satisfaction.</li>
+                                    <li class="well-text">✔ Minimized cognitive effort through choice boundary testing.</li>
+                                    <li class="well-text">✔ Optimized selection loops for better engagement.</li>
+                                    <li class="mt-3 missed-text">✖ Failed to account for <b>spatial data</b> like gym occupancy.</li>
+                                    <li class="missed-text">✖ Missed the impact of <b>unpredictable environments</b> on decisions.</li>
+                                    <li class="missed-text">✖ Ignored the flexibility of "on-demand" intermediate solutions.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Paper 3 -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
-                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Zayim et al. (2023) [3]</h4>
+                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Paper 03: Zayim et al. [3]</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Analysis</span><b>Cognitive metrics:</b> Pioneered task analysis to estimate load in mobile health record UIs.</li>
-                                    <li><span class="badge-well">Barrier</span><b>Data intimidation:</b> Identified BMI/Caloric numbers as significant cognitive barriers for novices.</li>
-                                    <li><span class="badge-well">Validation</span><b>UI Efficiency:</b> Successfully mapped complex data flows to user interaction speed.</li>
-                                    <li class="pt-2"><span class="badge-missed">Gap</span><b>Environment sync:</b> Failed to integrate real-time spatial awareness into the health data loop.</li>
-                                    <li><span class="badge-missed">Oversight</span><b>Novice empathy:</b> Lacked solutions for those overwhelmed by professional-grade medical stats.</li>
-                                    <li><span class="badge-missed">Isolation</span><b>Digital silos:</b> Missed opportunities to break spatial constraints via flexible delivery.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Estimated cognitive load in mobile health record applications.</li>
+                                    <li class="well-text">✔ Used task analysis to identify data intimidation barriers.</li>
+                                    <li class="well-text">✔ Evaluated efficiency of complex data-heavy interfaces.</li>
+                                    <li class="mt-3 missed-text">✖ No focus on <b>visual-based goal setting</b> (e.g. outcome images).</li>
+                                    <li class="missed-text">✖ Missed real-time environment-aware data loops.</li>
+                                    <li class="missed-text">✖ Failed to address spatial constraints of rigid delivery.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Paper 4 -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
-                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Cselik et al. (2026) [4]</h4>
+                            <h4 class="text-primary text-[10px] font-bold uppercase mb-3">Paper 04: Cselik et al. [4]</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Proven</span><b>Environmental link:</b> Solidified the correlation between physical gym atmosphere and motivation.</li>
-                                    <li><span class="badge-well">Metric</span><b>Deterministic factors:</b> Defined key motivational markers from a public health perspective.</li>
-                                    <li><span class="badge-well">Insight</span><b>Long-term behavior:</b> Identified facility atmosphere as the key to sustainable gym usage.</li>
-                                    <li class="pt-2"><span class="badge-missed">Oversight</span><b>Static Analysis:</b> Lacked a software-based mechanism to solve gym "Blind Box" uncertainty.</li>
-                                    <li><span class="badge-missed">Gap</span><b>Social anxiety:</b> Missed live occupancy tracking as a tool to mitigate user social discomfort.</li>
-                                    <li><span class="badge-missed">Rigidity</span><b>At-home logic:</b> Failed to integrate home-private flexibility into store-centric models.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Proved physical environments impact exercise motivation.</li>
+                                    <li class="well-text">✔ Identified motivational determinants in fitness centers.</li>
+                                    <li class="well-text">✔ Linked public health perspectives with center design.</li>
+                                    <li class="mt-3 missed-text">✖ No software-based fix for gym <b>"Blind Box"</b> experiences.</li>
+                                    <li class="missed-text">✖ Missed live occupancy as a mitigation for social anxiety.</li>
+                                    <li class="missed-text">✖ Lacked integration of at-home private coaching models.</li>
                                 </ul>
                             </div>
                         </div>
@@ -134,59 +128,55 @@
 
                     <!-- Row 2: Commercial Products -->
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <!-- Keep -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
                             <h4 class="text-accent text-[10px] font-bold uppercase mb-3">Product: Keep</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Strength</span><b>Vast library:</b> Offers the most comprehensive standardized video guides available.</li>
-                                    <li><span class="badge-well">UX Loop</span><b>Seamless friction:</b> Highly optimized "booking-payment-consumption" online cycle.</li>
-                                    <li><span class="badge-well">Economy</span><b>Low barrier:</b> Subscription models that greatly alleviate user financial pressure.</li>
-                                    <li class="pt-2"><span class="badge-missed">UX Overs</span><b>Data intimidation:</b> Forces beginners to face overwhelming BMI/Caloric numbers.</li>
-                                    <li><span class="badge-missed">Spatial</span><b>No gym load:</b> Fails to provide real-time data on facility congestion for offline users.</li>
-                                    <li><span class="badge-missed">Delivery</span><b>Rigid solitary:</b> Limits users to purely online or store-centric solitary training.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Massive video content library & community.</li>
+                                    <li class="well-text">✔ Seamless online booking and payment loop.</li>
+                                    <li class="well-text">✔ Flexible subscription-based financial model.</li>
+                                    <li class="mt-3 missed-text">✖ <b>High Cognitive Load:</b> Confronts users with intimidating numbers.</li>
+                                    <li class="missed-text">✖ Solitary workouts lack real-world spatial connection.</li>
+                                    <li class="missed-text">✖ No real-time data on facility congestion.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Leke -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
                             <h4 class="text-accent text-[10px] font-bold uppercase mb-3">Product: Leke Gym</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Model</span><b>Smart automation:</b> Successful implementation of self-service, unmanned facility loops.</li>
-                                    <li><span class="badge-well">Decision</span><b>Minimal friction:</b> Drastically reduced time required for offline check-ins.</li>
-                                    <li><span class="badge-well">Finance</span><b>Pay-as-you-go:</b> Modern financial model that abandons aggressive hard-selling.</li>
-                                    <li class="pt-2"><span class="badge-missed">Blind Box</span><b>Status opacity:</b> Actual gym environment remains unpredictable without live data.</li>
-                                    <li><span class="badge-missed">Anxiety</span><b>Congestion:</b> Users remain vulnerable to equipment shortages and peak-hour crowds.</li>
-                                    <li><span class="badge-missed">Spatial</span><b>Rigid store:</b> No intermediate flexible solutions for busy home-based users.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Smart self-service offline loop.</li>
+                                    <li class="well-text">✔ Minimized decision-making time for check-ins.</li>
+                                    <li class="well-text">✔ Pay-as-you-go financial flexibility.</li>
+                                    <li class="mt-3 missed-text">✖ <b>Blind Box:</b> No data on live facility crowdedness.</li>
+                                    <li class="missed-text">✖ Rigid service delivery (Store-only).</li>
+                                    <li class="missed-text">✖ Equipment unavailability due to congestion.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Xunji -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
                             <h4 class="text-accent text-[10px] font-bold uppercase mb-3">Product: Xunji</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Strength</span><b>Quantified-self:</b> Unmatched precision in recording workout trajectories and load.</li>
-                                    <li><span class="badge-well">Tracking</span><b>Progression:</b> Effectively enables long-term adherence via detailed weight logs.</li>
-                                    <li><span class="badge-well">Scientific</span><b>Hardcore focus:</b> Designed specifically for data-driven, experienced lifters.</li>
-                                    <li class="pt-2"><span class="badge-missed">UX Overs</span><b>Cognitive Load:</b> Extreme data density intimidates and confuses beginners.</li>
-                                    <li><span class="badge-missed">Empathy</span><b>Goal setting:</b> Missing visual-based, intuitive calibration methods.</li>
-                                    <li><span class="badge-missed">Spatial</span><b>Environment:</b> Completely ignores external factors like live gym traffic.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Hardcore tracking for weight progression.</li>
+                                    <li class="well-text">✔ Accurate "Quantified-Self" data trajectories.</li>
+                                    <li class="well-text">✔ Precise scientific recording tools.</li>
+                                    <li class="mt-3 missed-text">✖ <b>Low Empathy:</b> Missing visual-based goal setting.</li>
+                                    <li class="missed-text">✖ Intimidating for beginners (BMI/Caloric overload).</li>
+                                    <li class="missed-text">✖ Missed opportunities to break spatial constraints.</li>
                                 </ul>
                             </div>
                         </div>
-                        <!-- Supermonkey -->
                         <div class="p-5 bg-white/5 rounded-xl border border-white/10 flex flex-col h-full">
                             <h4 class="text-accent text-[10px] font-bold uppercase mb-3">Product: Supermonkey</h4>
                             <div class="space-y-4 text-[9px] leading-relaxed flex-1">
-                                <ul class="list-none space-y-3">
-                                    <li><span class="badge-well">Design</span><b>Immersive O2O:</b> Successfully combined high-end branding with online booking.</li>
-                                    <li><span class="badge-well">Decision</span><b>Fast friction:</b> Minimal time spent between booking and entering the class.</li>
-                                    <li><span class="badge-well">Model</span><b>Class-based:</b> Pioneered a successful model without long-term membership pressure.</li>
-                                    <li class="pt-2"><span class="badge-missed">Crowding</span><b>Congestion:</b> Unable to solve the gap in equipment and locker availability.</li>
-                                    <li><span class="badge-missed">Rigidity</span><b>Location-only:</b> Rigidly tied to store schedules with no at-home flexibility.</li>
-                                    <li><span class="badge-missed">Anxiety</span><b>Privacy:</b> Boutique environments can heighten social anxiety during over-capacity.</li>
+                                <ul class="list-none space-y-2">
+                                    <li class="well-text">✔ Immersive O2O group class platform.</li>
+                                    <li class="well-text">✔ Abandoned aggressive hard-selling tactics.</li>
+                                    <li class="well-text">✔ Fast decision-to-booking friction.</li>
+                                    <li class="mt-3 missed-text">✖ <b>Unpredictable Environments:</b> Social anxiety in peak.</li>
+                                    <li class="missed-text">✖ No "On-demand" at-home private flexibility.</li>
+                                    <li class="missed-text">✖ Rigid reliance on store availability.</li>
                                 </ul>
                             </div>
                         </div>
@@ -197,13 +187,13 @@
                 <div class="mt-16">
                     <div class="subsection-title mb-6"><i data-lucide="users" class="w-5"></i> 1.3 The Stakeholders: Personas</div>
                     <div class="grid md:grid-cols-2 gap-8">
-                        <div class="glass-card overflow-hidden border border-primary/20 shadow-lg">
+                        <div class="glass-card overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
                             <img src="persona1.png" alt="Primary Persona" class="w-full h-auto object-contain">
                             <div class="p-3 bg-primary/10 text-center border-t border-white/5">
                                 <span class="text-[10px] text-primary font-bold uppercase tracking-widest">Primary Persona: Beginner Student</span>
                             </div>
                         </div>
-                        <div class="glass-card overflow-hidden border border-accent/20 shadow-lg">
+                        <div class="glass-card overflow-hidden border border-accent/20 shadow-lg shadow-accent/5">
                             <img src="persona2.png" alt="Secondary Persona" class="w-full h-auto object-contain">
                             <div class="p-3 bg-accent/10 text-center border-t border-white/5">
                                 <span class="text-[10px] text-accent font-bold uppercase tracking-widest">Secondary Persona: Gym Manager</span>
@@ -214,7 +204,7 @@
             </div>
         </section>
 
-        <!-- SECTION 2: USER REQUIREMENTS (已根据前述更新) -->
+        <!-- SECTION 2: USER REQUIREMENTS -->
         <section id="requirements" class="space-y-12">
             <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
             <div class="grid lg:grid-cols-3 gap-8">
@@ -241,416 +231,116 @@
                             <img src="evidence-of-life3.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
                             <img src="evidence-of-life4.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
                             <img src="evidence-of-life5.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
+                            <div class="aspect-square rounded-lg border border-dashed border-white/10 flex items-center justify-center"><i data-lucide="plus" class="text-white/10 w-4"></i></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        
-
-       <!-- SECTION 2: USER REQUIREMENTS -->
-
-        <section id="requirements" class="space-y-12">
-
-            <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
-
-            <div class="grid lg:grid-cols-3 gap-8">
-
-                <!-- User Journey Map -->
-
-                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10 flex flex-col">
-
-                    <div class="p-6 pb-2 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-
-                    <div class="flex-1 p-6">
-
-                        <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-full object-contain rounded-xl shadow-2xl">
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="space-y-8">
-
-                    <!-- Requirements List (Playful Must-haves) -->
-
-                    <div class="glass-card p-6">
-
-                        <div class="subsection-title">Requirements List</div>
-
-                        <p class="text-[10px] text-textMuted mb-4">3 must-haves for the system to be considered “Playful”</p>
-
-                        <ul class="text-xs text-textMuted space-y-4">
-
-                            <li class="flex items-start gap-3">
-
-                                <i data-lucide="layout-grid" class="w-4 text-primary shrink-0"></i>
-
-                                <span><b>Visual Grid Calibration:</b> Replaces traditional text inputs with an interactive 3x3 grid to make physiological goal-setting intuitive and engaging.</span>
-
-                            </li>
-
-                            <li class="flex items-start gap-3">
-
-                                <i data-lucide="activity" class="w-4 text-primary shrink-0"></i>
-
-                                <span><b>Live Occupancy Feedback:</b> Utilizes dynamic pulses and color-coded scales to display real-time gym load, significantly increasing data transparency.</span>
-
-                            </li>
-
-                            <li class="flex items-start gap-3">
-
-                                <i data-lucide="palette" class="w-4 text-primary shrink-0"></i>
-
-                                <span><b>Adaptive Interface Theming:</b> Switches UI color schemes dynamically based on user attributes to provide immediate, personalized visual confirmation.</span>
-
-                            </li>
-
-                        </ul>
-
-                    </div>
-
-
-
-                    <!-- Evidence of Life (5 Photo Positions) -->
-
-                    <div class="glass-card p-6">
-
-                        <div class="subsection-title">Evidence of Life</div>
-
-                        <p class="text-[10px] text-textMuted mb-4">Interviews or Site Observation (BODI Gym)</p>
-
-                        <div class="grid grid-cols-3 gap-2">
-
-                            <img src="evidence-of-life1.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-
-                            <img src="evidence-of-life2.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-
-                            <img src="evidence-of-life3.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-
-                            <img src="evidence-of-life4.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-
-                            <img src="evidence-of-life5.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-
-                            <div class="aspect-square rounded-lg border border-dashed border-white/10 flex items-center justify-center">
-
-                                <i data-lucide="plus" class="text-white/10 w-4"></i>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
 
         <!-- SECTION 3: IDEATION -->
-
         <section id="ideation" class="space-y-12">
-
             <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
-
-            
-
             <div class="glass-card p-8">
-
                 <div class="subsection-title"><i data-lucide="edit-3" class="w-5"></i> The “Crazy Eights”</div>
-
-                <p class="text-[10px] text-textMuted mb-6">8 rapid hand-drawn sketches of different UI ideas</p>
-
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-
-                    <img src="sketch-1.jpg" alt="Sketch 1" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-2.jpg" alt="Sketch 2" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-3.jpg" alt="Sketch 3" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-4.jpg" alt="Sketch 4" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-5.jpg" alt="Sketch 5" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-6.jpg" alt="Sketch 6" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-7.jpg" alt="Sketch 7" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
-                    <img src="sketch-8.jpg" alt="Sketch 8" class="aspect-[3/4] rounded-xl border border-white/5 hover:scale-105 transition-transform">
-
+                    <img src="sketch-1.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-2.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-3.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-4.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-5.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-6.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-7.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
+                    <img src="sketch-8.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
                 </div>
-
             </div>
-
-
-
             <div class="grid md:grid-cols-2 gap-8">
-
-                <div class="glass-card p-8 flex flex-col">
-
-                    <div class="subsection-title">Design Alternatives</div>
-
-                    <div class="space-y-4 mt-4">
-
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-
-                            <h4 class="text-xs font-bold text-primary uppercase mb-2">Alternative A: List-based Plan</h4>
-
-                            <p class="text-sm text-textMuted">Traditional text-heavy exercise lists without visual context.</p>
-
-                        </div>
-
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/5">
-
-                            <h4 class="text-xs font-bold text-primary uppercase mb-2">Alternative B: Matrix-driven UI</h4>
-
-                            <p class="text-sm text-textMuted">Interactive grid mapping body types to scientific MET protocols.</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
+                <div class="glass-card p-8 flex flex-col h-full"><div class="subsection-title">Design Alternatives</div><p class="text-sm text-textMuted italic mt-4 flex-1">We compared a static list-based exercise plan (Alternative A) against our chosen interactive matrix calibration system (Alternative B)...</p></div>
                 <div class="glass-card p-8 flex flex-col items-center justify-center text-center">
-
                     <div class="subsection-title self-start">Low-Fi Prototype</div>
-
-                    <div class="my-6">
-
-                        <i data-lucide="mouse-pointer-2" class="w-12 h-12 text-primary/40"></i>
-
-                    </div>
-
-                    <a href="#" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 hover:bg-blue-600 transition-all">
-
-                        Open Figma Prototype <i data-lucide="external-link" class="w-4"></i>
-
-                    </a>
-
+                    <a href="YOUR_FIGMA_URL" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 mt-10 hover:bg-blue-600 transition-all">Open Figma <i data-lucide="external-link" class="w-4"></i></a>
                 </div>
-
             </div>
-
         </section>
-
-
 
         <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
-
         <section id="technical" class="space-y-12">
-
             <h2 class="section-title">04. Technical <span class="text-primary">Implementation</span></h2>
-
-            
-
             <div class="grid lg:grid-cols-2 gap-8">
-
                 <div class="glass-card p-8">
-
                     <div class="subsection-title"><i data-lucide="database" class="w-5"></i> System Architecture</div>
-
                     <div class="bg-surface rounded-xl overflow-hidden border border-white/5 p-4 mt-4">
-
                         <img src="system-architecture.png" alt="Architecture" class="w-full h-auto object-contain">
-
                     </div>
-
                 </div>
-
-
-
                 <div class="glass-card p-8 flex flex-col">
-
                     <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
-
                     <div class="flex-1 flex flex-col items-center justify-center space-y-6">
-
                         <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl w-full text-center">
-
                             <code class="text-primary font-mono text-sm">https://fitgrid-demo.vercel.app</code>
-
                         </div>
-
-                        <a href="#" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 transition-colors">
-
-                            Launch Live System
-
-                        </a>
-
+                        <a href="YOUR_VERCEL_URL" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 transition-colors">Launch Live Site</a>
                     </div>
-
                 </div>
-
             </div>
-
-
-
             <div class="glass-card p-8">
-
-                <div class="subsection-title"><i data-lucide="user-check" class="w-5"></i> Individual Contributions</div>
-
+                <div class="subsection-title">Individual Contributions</div>
                 <div class="overflow-x-auto mt-6">
-
                     <table class="w-full text-sm text-left">
-
                         <thead class="text-textMuted border-b border-white/10 uppercase text-[10px] tracking-widest">
-
-                            <tr>
-
-                                <th class="pb-4 pr-4">Member Name</th>
-
-                                <th class="pb-4 pr-4">Focus Area</th>
-
-                                <th class="pb-4">Specific Contributions</th>
-
-                            </tr>
-
+                            <tr><th class="pb-4">Member</th><th class="pb-4">Focus</th><th class="pb-4">Deliverables</th></tr>
                         </thead>
-
                         <tbody class="divide-y divide-white/5 text-gray-300">
-
-                            <tr>
-
-                                <td class="py-4 font-bold pr-4">You</td>
-
-                                <td class="py-4 pr-4">Full-Stack Dev</td>
-
-                                <td class="py-4 text-textMuted">Core MET/TDEE algorithm logic, Firebase integration, and Matrix UI implementation.</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td class="py-4 font-bold pr-4">Haijin Xia</td>
-
-                                <td class="py-4 pr-4">Frontend Dev</td>
-
-                                <td class="py-4 text-textMuted">Chart.js data visualization components and real-time gym load chart rendering.</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td class="py-4 font-bold pr-4">Yifan Xu</td>
-
-                                <td class="py-4 pr-4">Architect</td>
-
-                                <td class="py-4 text-textMuted">System data flow design, Firestore schema definition, and backend API setup.</td>
-
-                            </tr>
-
-                            <tr>
-
-                                <td class="py-4 font-bold pr-4">Yiyang Lu</td>
-
-                                <td class="py-4 pr-4">UI/UX Design</td>
-
-                                <td class="py-4 text-textMuted">High-fidelity Figma prototyping, component styling, and usability testing coordination.</td>
-
-                            </tr>
-
+                            <tr><td class="py-4 font-bold">You</td><td>Lead Dev</td><td>MET/TDEE algorithms & Matrix UI</td></tr>
+                            <tr><td class="py-4 font-bold">Haijin Xia</td><td>Frontend</td><td>Chart.js visualizations & Dashboards</td></tr>
+                            <tr><td class="py-4 font-bold">Yifan Xu</td><td>Architect</td><td>Firebase schema & Data management</td></tr>
+                            <tr><td class="py-4 font-bold">Yiyang Lu</td><td>UI/UX</td><td>Design System & Prototyping</td></tr>
                         </tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </section>
 
-
-
-        <!-- SECTION 5: EVALUATION & REFLECTION -->
-
+        <!-- SECTION 5: EVALUATION -->
         <section id="evaluation" class="space-y-12">
-
             <h2 class="section-title">05. Evaluation & <span class="text-primary">Reflection</span></h2>
-
             <div class="glass-card p-8 border-t-4 border-accent">
-
                 <div class="subsection-title">Final Reflection</div>
-
-                <div class="grid md:grid-cols-2 gap-8 mt-4 text-sm text-textMuted">
-
+                <div class="grid md:grid-cols-2 gap-8 mt-4 text-sm text-textMuted text-justify">
                     <div>
-
                         <h4 class="text-white font-bold mb-2 underline">Social & Ethical Implications</h4>
-
-                        <p>We addressed data privacy by using Firebase Auth and ensured body-positive language in our matrix descriptions to avoid promoting body dysmorphia among students.</p>
-
+                        <p>Our design prioritizes user data privacy and promotes positive body imaging by moving away from traditional shaming metrics to scientific physiological progress markers.</p>
                     </div>
-
                     <div>
-
-                        <h4 class="text-white font-bold mb-2 underline">AI Usage</h4>
-
-                        <p>AI was used to optimize Tailwind CSS layouts, polish the Energy Systems Guide content, and assist in debuggin complex Chart.js configurations.</p>
-
+                        <h4 class="text-white font-bold mb-2 underline">AI Usage Statement</h4>
+                        <p>We used AI to assist in CSS component optimization and content polishing while maintaining full manual control over core architectural decisions.</p>
                     </div>
-
                 </div>
-
             </div>
-
         </section>
-
-
 
     </main>
 
-
-
     <footer class="py-20 text-center border-t border-white/5">
-
         <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
-
     </footer>
 
-
-
     <script>
-
         lucide.createIcons();
-
         window.addEventListener('scroll', () => {
-
             const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation'];
-
             sections.forEach(id => {
-
                 const el = document.getElementById(id);
-
                 const link = document.querySelector(`nav a[href="#${id}"]`);
-
                 if (el && link) {
-
                     const rect = el.getBoundingClientRect();
-
                     if (rect.top >= 0 && rect.top <= 400) {
-
                         document.querySelectorAll('nav a').forEach(l => l.classList.remove('nav-active'));
-
                         link.classList.add('nav-active');
-
                     }
-
                 }
-
             });
-
         });
-
     </script>
-
-  </body>
-
+</body>
 </html>
