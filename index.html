@@ -1,215 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FITGRID | Process Portfolio</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#0A84FF',
-                        accent: '#FF375F',
-                        surface: '#1C1C1E',
-                        surfaceLight: '#2C2C2E',
-                        textMuted: '#8E8E93',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { background-color: #000; color: #fff; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .glass-card { background: rgba(28, 28, 30, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; }
-        .section-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.05em; margin-bottom: 1.5rem; }
-        .subsection-title { color: #0A84FF; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
-        .nav-active { color: #fff !important; border-bottom: 2px solid #0A84FF; }
-        img { background-color: #2C2C2E; object-fit: cover; }
-        .well-text { color: #5ED67A; }
-        .missed-text { color: #FF375F; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FITGRID | Process Portfolio</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A84FF',
+                        primaryHover: '#0066CC',
+                        accent: '#FF375F',
+                        surface: '#1C1C1E',
+                        surfaceLight: '#2C2C2E',
+                        textMuted: '#8E8E93',
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+        
+        body { 
+            background-color: #000; 
+            color: #fff; 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth; 
+        }
+        
+        /* Enhanced Glassmorphism with smooth transitions */
+        .glass-card { 
+            background: rgba(28, 28, 30, 0.6); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border-radius: 24px; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(35, 35, 38, 0.7);
+        }
+
+        .section-title { 
+            font-size: 2.75rem; 
+            font-weight: 800; 
+            letter-spacing: -0.04em; 
+            margin-bottom: 2rem; 
+        }
+        
+        .subsection-title { 
+            color: #0A84FF; 
+            font-weight: 600; 
+            font-size: 1.1rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.12em; 
+            margin-bottom: 1rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 0.6rem; 
+        }
+        
+        .nav-active { 
+            color: #fff !important; 
+            font-weight: 600;
+        }
+        
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -1.25rem;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #0A84FF;
+            border-radius: 2px;
+        }
+
+        img { background-color: #2C2C2E; object-fit: cover; }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+    </style>
 </head>
-<body class="antialiased">
+<body class="antialiased bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-surfaceLight/20 via-black to-black min-h-screen">
 
-    <!-- Fixed Navigation -->
-    <header class="fixed top-0 w-full z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 font-bold text-xl">
-                <i data-lucide="activity" class="text-primary"></i> FITGRID
-            </div>
-            <nav class="hidden md:flex gap-8 text-sm font-medium text-textMuted">
-                <a href="#motivation" class="hover:text-white transition-colors">1. Motivation</a>
-                <a href="#requirements" class="hover:text-white transition-colors">2. Requirements</a>
-                <a href="#ideation" class="hover:text-white transition-colors">3. Ideation</a>
-                <a href="#technical" class="hover:text-white transition-colors">4. Technical</a>
-                <a href="#evaluation" class="hover:text-white transition-colors">5. Reflection</a>
-            </nav>
-        </div>
-    </header>
+    <header class="fixed top-0 w-full z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4 shadow-2xl shadow-black/50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3 font-extrabold text-xl tracking-tight">
+                <div class="p-2 bg-primary/10 rounded-lg">
+                    <i data-lucide="activity" class="text-primary w-5 h-5"></i>
+                </div>
+                FITGRID
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-textMuted relative">
+                <a href="#motivation" class="relative hover:text-white transition-colors py-1">1. Motivation</a>
+                <a href="#requirements" class="relative hover:text-white transition-colors py-1">2. Requirements</a>
+                <a href="#ideation" class="relative hover:text-white transition-colors py-1">3. Ideation</a>
+                <a href="#technical" class="relative hover:text-white transition-colors py-1">4. Technical</a>
+                <a href="#evaluation" class="relative hover:text-white transition-colors py-1">5. Reflection</a>
+            </nav>
+        </div>
+    </header>
 
-    <main class="pt-32 pb-20 max-w-7xl mx-auto px-6 space-y-40">
+    <main class="pt-36 pb-24 max-w-7xl mx-auto px-6 space-y-40">
 
-        <!-- SECTION 1: MOTIVATION & RESEARCH -->
-        <section id="motivation" class="space-y-16">
-            <div>
-                <h2 class="section-title">01. Motivation & <span class="text-primary">Research</span></h2>
-                
-                <!-- 1.1 The Why -->
-                <div class="glass-card p-8 mb-12 border-l-4 border-primary shadow-2xl shadow-primary/5">
-                    <div class="subsection-title"><i data-lucide="help-circle" class="w-5"></i> 1.1 The Why: Choosing the Active Track</div>
-                    <p class="text-textMuted leading-relaxed text-justify text-sm">
-                       We selected the Active track driven by both macro-societal needs and our micro-level team expertise.
-First, from a demand perspective, public health awareness has surged. 'Staying active' has transitioned from a niche hobby to a universal lifestyle goal. However, despite this growing enthusiasm, there remains a gap for highly empathetic applications. Current market solutions often rely on complex data that intimidates beginners. The public urgently needs intuitive software that lowers the cognitive barrier to scientific exercise.
-Second, our team possesses a profound, lived understanding of this domain. Compared to the Heritage or Social tracks, we are active fitness participants ourselves. We firmly believe that the most resonant user experiences are designed when developers deeply understand the users' daily struggles. Operating as both creators and target users grants us genuine empathy. This familiarity allows us to accurately capture real-world pain points—such as data anxiety and gym crowding—enabling us to develop a product that truly aligns with the public's practical needs.
-                    </p>
-                </div>
+        <section id="motivation" class="space-y-16">
+            <div>
+                <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                    01. Motivation & <span class="text-primary bg-none">Research</span>
+                </h2>
+                
+                <div class="glass-card p-8 md:p-10 mb-16 border-l-4 border-l-primary shadow-2xl shadow-primary/5 hover:-translate-y-1">
+                    <div class="subsection-title"><i data-lucide="help-circle" class="w-5 h-5"></i> 1.1 The Why: Choosing the Active Track</div>
+                    <p class="text-textMuted leading-loose text-justify text-sm md:text-base mt-4">
+                        We selected the Active track driven by both macro-societal needs and our micro-level team expertise.
+                        First, from a demand perspective, public health awareness has surged. 'Staying active' has transitioned from a niche hobby to a universal lifestyle goal. However, despite this growing enthusiasm, there remains a gap for highly empathetic applications. Current market solutions often rely on complex data that intimidates beginners. The public urgently needs intuitive software that lowers the cognitive barrier to scientific exercise.
+                        <br><br>
+                        Second, our team possesses a profound, lived understanding of this domain. Compared to the Heritage or Social tracks, we are active fitness participants ourselves. We firmly believe that the most resonant user experiences are designed when developers deeply understand the users' daily struggles. Operating as both creators and target users grants us genuine empathy. This familiarity allows us to accurately capture real-world pain points—such as data anxiety and gym crowding—enabling us to develop a product that truly aligns with the public's practical needs.
+                    </p>
+                </div>
 
-               <!-- 1.2 The Gap: Analysis of 4 Papers & 4 Products -->
-              <div class="mb-12 space-y-10">
+                <div class="mb-16 space-y-12">
                     
                     <div>
-                        <h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
-                            <i data-lucide="smartphone" class="w-5 text-primary"></i> Industry Gaps: Product Analysis
+                        <h3 class="text-white font-semibold text-lg mb-5 flex items-center gap-3">
+                            <span class="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:bg-primary/20 transition-colors"><i data-lucide="smartphone" class="w-5 h-5 text-primary"></i></span>
+                            Industry Gaps: Product Analysis
                         </h3>
-                        <div class="glass-card overflow-x-auto border border-white/10 rounded-xl shadow-2xl">
+                        <div class="glass-card overflow-x-auto rounded-2xl shadow-2xl">
                             <table class="w-full text-sm text-left border-collapse">
-                                <thead class="bg-white/5 border-b border-white/10 text-[12px] uppercase tracking-wider text-white">
+                                <thead class="bg-white/[0.03] border-b border-white/10 text-xs uppercase tracking-widest text-textMuted">
                                     <tr>
-                                        <th class="p-5 w-1/4">Competitor & Type</th>
-                                        <th class="p-5 w-2/5 text-green-400">Core Pros</th>
-                                        <th class="p-5 w-2/5 text-red-400">Existing Gaps</th>
+                                        <th class="p-6 w-1/4 font-semibold">Competitor & Type</th>
+                                        <th class="p-6 w-2/5 font-semibold text-emerald-400/90">Core Pros</th>
+                                        <th class="p-6 w-2/5 font-semibold text-rose-400/90">Existing Gaps</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-white/5 text-textMuted text-[13px] leading-relaxed text-justify">
-                                    
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">Keep</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">Keep</div>
                                             <div class="text-[11px] italic text-textMuted/70">Comprehensive Online Platform</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Extremely comprehensive exercise library; strong community atmosphere; complete self-monitoring mechanisms.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Blind spots regarding offline physical environments; high cognitive barriers for understanding data [2]; rigid and fixed delivery scenarios.
-                                        </td>
+                                        <td class="p-6 align-top">Extremely comprehensive exercise library; strong community atmosphere; complete self-monitoring mechanisms.</td>
+                                        <td class="p-6 align-top">Blind spots regarding offline physical environments; high cognitive barriers for understanding data [2]; rigid and fixed delivery scenarios.</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">Lefit (乐刻运动)</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">Lefit (乐刻运动)</div>
                                             <div class="text-[11px] italic text-textMuted/70">Smart Self-Service Gym</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Closed-loop service process; highly shortened decision-making time [1]; very low physical entry barriers.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Real-time crowdedness is invisible before arrival [3]; lacks visual progression incentives; completely missing at-home service integration.
-                                        </td>
+                                        <td class="p-6 align-top">Closed-loop service process; highly shortened decision-making time [1]; very low physical entry barriers.</td>
+                                        <td class="p-6 align-top">Real-time crowdedness is invisible before arrival [3]; lacks visual progression incentives; completely missing at-home service integration.</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">Xunji (训记)</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">Xunji (训记)</div>
                                             <div class="text-[11px] italic text-textMuted/70">Hardcore Tracking Tool</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Precise quantitative data tracking; designed with experienced user logic; highly focused on workout efficiency.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Severe cognitive overload for beginners [2]; weak external motivation drivers; fails to resolve spatial and temporal constraints [3].
-                                        </td>
+                                        <td class="p-6 align-top">Precise quantitative data tracking; designed with experienced user logic; highly focused on workout efficiency.</td>
+                                        <td class="p-6 align-top">Severe cognitive overload for beginners [2]; weak external motivation drivers; fails to resolve spatial and temporal constraints [3].</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">Supermonkey (超级猩猩)</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">Supermonkey (超级猩猩)</div>
                                             <div class="text-[11px] italic text-textMuted/70">Boutique Group Class O2O</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Low financial commitment (pay-per-class); provides high emotional value; fast operational decisions [1].
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Heavily constrained by offline venue resources; lacks long-term visual customization; no flexible door-to-door (at-home) model.
-                                        </td>
+                                        <td class="p-6 align-top">Low financial commitment (pay-per-class); provides high emotional value; fast operational decisions [1].</td>
+                                        <td class="p-6 align-top">Heavily constrained by offline venue resources; lacks long-term visual customization; no flexible door-to-door (at-home) model.</td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
-                            <i data-lucide="book-open" class="w-5 text-primary"></i> Academic Gaps: Literature Review
+                        <h3 class="text-white font-semibold text-lg mb-5 flex items-center gap-3">
+                            <span class="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:bg-primary/20 transition-colors"><i data-lucide="book-open" class="w-5 h-5 text-primary"></i></span>
+                            Academic Gaps: Literature Review
                         </h3>
-                        <div class="glass-card overflow-x-auto border border-white/10 rounded-xl shadow-2xl">
+                        <div class="glass-card overflow-x-auto rounded-2xl shadow-2xl">
                             <table class="w-full text-sm text-left border-collapse">
-                                <thead class="bg-white/5 border-b border-white/10 text-[12px] uppercase tracking-wider text-white">
+                                <thead class="bg-white/[0.03] border-b border-white/10 text-xs uppercase tracking-widest text-textMuted">
                                     <tr>
-                                        <th class="p-5 w-1/4">Core Topic (Reference)</th>
-                                        <th class="p-5 w-2/5 text-green-400">Theoretical Pros</th>
-                                        <th class="p-5 w-2/5 text-red-400">Academic Gaps</th>
+                                        <th class="p-6 w-1/4 font-semibold">Core Topic (Reference)</th>
+                                        <th class="p-6 w-2/5 font-semibold text-emerald-400/90">Theoretical Pros</th>
+                                        <th class="p-6 w-2/5 font-semibold text-rose-400/90">Academic Gaps</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-white/5 text-textMuted text-[13px] leading-relaxed text-justify">
-                                    
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">1. Visualizing Goals</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">1. Visualizing Goals</div>
                                             <div class="text-[11px] italic text-textMuted/70">(Affordances in mobile apps, 2025)</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Confirmed that visual design significantly lowers cognitive barriers; demonstrated that app-based health empowerment enhances long-term adherence; provides cutting-edge theoretical support for setting goals via intuitive outcome images.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Lacks practical details on specific visual interaction forms; ignores the expectation gap caused by users' varying genetic differences; fails to explore how online visual goals integrate with offline gym services.
-                                        </td>
+                                        <td class="p-6 align-top">Confirmed that visual design significantly lowers cognitive barriers; demonstrated that app-based health empowerment enhances long-term adherence; provides cutting-edge theoretical support for setting goals via intuitive outcome images.</td>
+                                        <td class="p-6 align-top">Lacks practical details on specific visual interaction forms; ignores the expectation gap caused by users' varying genetic differences; fails to explore how online visual goals integrate with offline gym services.</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">2. Crowding & Anxiety</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">2. Crowding & Anxiety</div>
                                             <div class="text-[11px] italic text-textMuted/70">(Perceived Crowding, 2023)</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Rigorously quantified the destructive impact of "perceived crowding" on exercise motivation; clearly stated that high spatial density triggers social anxiety; theoretically justified the necessity of "real-time crowdedness tracking" from an environmental psychology perspective.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Proposed solutions rely too heavily on passive crowd control by gym operators; lacks discussion on proactive interventions using mobile app data; fails to differentiate crowding levels across various functional zones within the gym.
-                                        </td>
+                                        <td class="p-6 align-top">Rigorously quantified the destructive impact of "perceived crowding" on exercise motivation; clearly stated that high spatial density triggers social anxiety; theoretically justified the necessity of "real-time crowdedness tracking" from an environmental psychology perspective.</td>
+                                        <td class="p-6 align-top">Proposed solutions rely too heavily on passive crowd control by gym operators; lacks discussion on proactive interventions using mobile app data; fails to differentiate crowding levels across various functional zones within the gym.</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">3. Spatial Barriers</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">3. Spatial Barriers</div>
                                             <div class="text-[11px] italic text-textMuted/70">(Home Fitness Application, 2023)</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Identified dual constraints of time and space as core barriers to visiting physical gyms; verified the commercial potential of home fitness models in sustaining exercise routines; supported the logic of "at-home private training" to break physical space barriers.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Limited solely to one-way screen-based video workouts; overlooks the psychological inertia users develop without supervision while exercising alone at home; completely lacks exploration of the highly flexible O2O (online-to-offline) at-home coaching model.
-                                        </td>
+                                        <td class="p-6 align-top">Identified dual constraints of time and space as core barriers to visiting physical gyms; verified the commercial potential of home fitness models in sustaining exercise routines; supported the logic of "at-home private training" to break physical space barriers.</td>
+                                        <td class="p-6 align-top">Limited solely to one-way screen-based video workouts; overlooks the psychological inertia users develop without supervision while exercising alone at home; completely lacks exploration of the highly flexible O2O (online-to-offline) at-home coaching model.</td>
                                     </tr>
-
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="p-5 align-top">
-                                            <div class="font-bold text-white mb-1">4. Decision Friction</div>
+                                    <tr class="hover:bg-white/[0.03] transition-colors">
+                                        <td class="p-6 align-top">
+                                            <div class="font-bold text-white text-base mb-1">4. Decision Friction</div>
                                             <div class="text-[11px] italic text-textMuted/70">(Goal-setting in Apps, 2020)</div>
                                         </td>
-                                        <td class="p-5 align-top">
-                                            Proved that goal-setting mechanisms crucially guide health behaviors based on massive user datasets; confirmed that reducing initial decision friction greatly boosts user activity; highlighted the critical role of lowering psychological barriers in overcoming exercise resistance.
-                                        </td>
-                                        <td class="p-5 align-top">
-                                            Research still focuses on traditional, abstract metrics like calories; severely lacks comparative analysis of "image-based/non-quantified" goal-setting methods; fails to create a closed-loop system connecting app goals with real-world physical spatial experiences.
-                                        </td>
+                                        <td class="p-6 align-top">Proved that goal-setting mechanisms crucially guide health behaviors based on massive user datasets; confirmed that reducing initial decision friction greatly boosts user activity; highlighted the critical role of lowering psychological barriers in overcoming exercise resistance.</td>
+                                        <td class="p-6 align-top">Research still focuses on traditional, abstract metrics like calories; severely lacks comparative analysis of "image-based/non-quantified" goal-setting methods; fails to create a closed-loop system connecting app goals with real-world physical spatial experiences.</td>
                                     </tr>
-
                                 </tbody>
                             </table>
                         </div>
@@ -217,194 +240,285 @@ Second, our team possesses a profound, lived understanding of this domain. Compa
 
                 </div>
 
+                <div class="mt-20">
+                    <div class="subsection-title mb-8"><i data-lucide="users" class="w-5 h-5"></i> 1.3 The Stakeholders: Personas</div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="glass-card overflow-hidden border border-primary/20 shadow-xl shadow-primary/5 group hover:-translate-y-1">
+                            <div class="aspect-[4/3] bg-surfaceLight relative overflow-hidden">
+                                <img src="persona1.png" alt="Primary Persona: Beginner Student Analysis" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="p-4 bg-primary/10 text-center border-t border-white/5 backdrop-blur-md">
+                                <span class="text-xs text-primary font-bold uppercase tracking-[0.2em]">Primary Persona: Beginner Student</span>
+                            </div>
+                        </div>
+                        <div class="glass-card overflow-hidden border border-accent/20 shadow-xl shadow-accent/5 group hover:-translate-y-1">
+                            <div class="aspect-[4/3] bg-surfaceLight relative overflow-hidden">
+                                <img src="persona2.png" alt="Secondary Persona: Gym Manager Analysis" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            </div>
+                            <div class="p-4 bg-accent/10 text-center border-t border-white/5 backdrop-blur-md">
+                                <span class="text-xs text-accent font-bold uppercase tracking-[0.2em]">Secondary Persona: Gym Manager</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <section id="requirements" class="space-y-12">
+            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                02. User <span class="text-primary bg-none">Requirements</span>
+            </h2>
+            <div class="grid lg:grid-cols-3 gap-8 items-start">
+                
+                <div class="lg:col-span-2 glass-card overflow-hidden flex flex-col group hover:-translate-y-1 h-full">
+                    <div class="p-6 pb-4 border-b border-white/5">
+                        <div class="subsection-title m-0"><i data-lucide="map" class="w-5 h-5"></i> User Journey Map</div>
+                    </div>
+                    <div class="flex-1 p-6 bg-surfaceLight/30 flex items-center justify-center">
+                        <img src="user-journey-map.png" alt="End-to-end User Journey Map for FitGrid" class="w-full h-auto object-contain rounded-xl shadow-2xl">
+                    </div>
+                </div>
+                
+                <div class="space-y-8 flex flex-col h-full">
+                    
+                    <div class="glass-card p-6 flex-1 hover:border-white/20 transition-colors flex flex-col">
+                        <div class="subsection-title mb-4"><i data-lucide="list-checks" class="w-5 h-5"></i> Core Requirements</div>
+                        <div class="space-y-4 mt-2">
+                            
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                                <div class="p-2 bg-primary/20 rounded-lg text-primary shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-sm mb-1.5 leading-snug">Visualized & Gamified Feedback</h4>
+                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
+                                        Real-time display of gym crowd density, course matching, and weekly precise training plans, allowing users to clearly see "their own schedule → results → environment", providing immediate feedback and a sense of accomplishment, thereby enhancing the enjoyment of using the gym.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                                <div class="p-2 bg-emerald-500/20 rounded-lg text-emerald-400 shrink-0 group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-sm mb-1.5 leading-snug">Highly Realistic & Practical Integration</h4>
+                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
+                                        The system directly connects with offline gym resources, helping users avoid peak times and transforming the "troublesome fitness decisions" into a convenient, smooth and user-friendly experience. The practicality itself is the source of long-term interest.
+                                    </p>
+                                </div>
+                            </div>
 
+                            <div class="flex items-start gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                                <div class="p-2 bg-accent/20 rounded-lg text-accent shrink-0 group-hover:bg-accent group-hover:text-white transition-colors">
+                                    <i data-lucide="mouse-pointer-click" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-bold text-sm mb-1.5 leading-snug">Intuitive Low-Barrier Experience</h4>
+                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
+                                        Replace complex forms with the 3×3 Body Matrix, allowing users to set their goals simply by making selections instead of filling in cumbersome data. The operation is effortless, enjoyable and not strenuous.
+                                    </p>
+                                </div>
+                            </div>
 
-              
-                <!-- 1.3 Stakeholders (Persona Images) -->
-                <div class="mt-16">
-                    <div class="subsection-title mb-6"><i data-lucide="users" class="w-5"></i> 1.3 The Stakeholders: Personas</div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div class="glass-card overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
-                            <img src="persona1.png" alt="Primary Persona" class="w-full h-auto object-contain">
-                            <div class="p-3 bg-primary/10 text-center border-t border-white/5">
-                                <span class="text-[10px] text-primary font-bold uppercase tracking-widest">Primary Persona: Beginner Student</span>
-                            </div>
-                        </div>
-                        <div class="glass-card overflow-hidden border border-accent/20 shadow-lg shadow-accent/5">
-                            <img src="persona2.png" alt="Secondary Persona" class="w-full h-auto object-contain">
-                            <div class="p-3 bg-accent/10 text-center border-t border-white/5">
-                                <span class="text-[10px] text-accent font-bold uppercase tracking-widest">Secondary Persona: Gym Manager</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card p-6 hover:border-white/20 transition-colors">
+                        <div class="subsection-title text-sm"><i data-lucide="image" class="w-4 h-4"></i> Evidence of Life</div>
+                        <div class="grid grid-cols-3 gap-3 mt-5">
+                            <img src="evidence-of-life1.jpg" alt="Male Body Shape Selection Grid" class="aspect-square rounded-xl bg-surfaceLight border border-white/10 hover:border-primary transition-colors cursor-pointer object-cover shadow-lg">
+                            <img src="evidence-of-life2.jpg" alt="App interface sketching" class="aspect-square rounded-xl bg-surfaceLight border border-white/10 hover:border-primary transition-colors cursor-pointer object-cover shadow-lg">
+                            <img src="evidence-of-life3.jpg" alt="Female Body Shape Selection Grid" class="aspect-square rounded-xl bg-surfaceLight border border-white/10 hover:border-primary transition-colors cursor-pointer object-cover shadow-lg">
+                            <img src="evidence-of-life4.jpg" alt="User testing session" class="aspect-square rounded-xl bg-surfaceLight border border-white/10 hover:border-primary transition-colors cursor-pointer object-cover shadow-lg">
+                            <img src="evidence-of-life5.jpg" alt="Data visualization drafts" class="aspect-square rounded-xl bg-surfaceLight border border-white/10 hover:border-primary transition-colors cursor-pointer object-cover shadow-lg">
+                            <div class="aspect-square rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer">
+                                <i data-lucide="plus" class="text-white/30 w-6 h-6"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
 
+        <section id="ideation" class="space-y-12">
+            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                03. Ideation & <span class="text-primary bg-none">Alternatives</span>
+            </h2>
+            
+            <div class="glass-card p-8 md:p-10 hover:-translate-y-1">
+                <div class="subsection-title"><i data-lucide="pen-tool" class="w-5 h-5"></i> The "Crazy Eights"</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-1.jpg" alt="Crazy Eights Sketch 1" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-2.jpg" alt="Crazy Eights Sketch 2" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-3.jpg" alt="Crazy Eights Sketch 3" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-4.jpg" alt="Crazy Eights Sketch 4" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-5.jpg" alt="Crazy Eights Sketch 5" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-6.jpg" alt="Crazy Eights Sketch 6" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-7.jpg" alt="Crazy Eights Sketch 7" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="aspect-[3/4] rounded-2xl bg-surfaceLight overflow-hidden border border-white/10 group"><img src="sketch-8.jpg" alt="Crazy Eights Sketch 8" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 md:p-10 flex flex-col h-full hover:border-white/20">
+                    <div class="subsection-title"><i data-lucide="split-square-horizontal" class="w-5 h-5"></i> Design Alternatives</div>
+                    <p class="text-base text-textMuted leading-relaxed mt-6 flex-1 text-justify">
+                        We compared a static list-based exercise plan (<span class="text-white font-medium">Alternative A</span>) against our chosen interactive matrix calibration system (<span class="text-white font-medium">Alternative B</span>). User testing revealed that visual goal-setting reduced onboarding friction by 40%.
+                    </p>
+                </div>
+                
+                <div class="glass-card p-8 md:p-10 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors"></div>
+                    <div class="subsection-title self-center relative z-10"><i data-lucide="figma" class="w-5 h-5"></i> Low-Fi Prototype</div>
+                    <p class="text-sm text-textMuted mt-4 mb-8 relative z-10">Explore the foundational wireframes and interaction flows.</p>
+                    <a href="YOUR_FIGMA_URL" target="_blank" class="px-8 py-4 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 hover:bg-primaryHover hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 relative z-10">
+                        Open in Figma <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
 
+        <section id="technical" class="space-y-12">
+            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                04. Technical <span class="text-primary bg-none">Implementation</span>
+            </h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="glass-card p-8 md:p-10 hover:-translate-y-1">
+                    <div class="subsection-title"><i data-lucide="database" class="w-5 h-5"></i> System Architecture</div>
+                    <div class="bg-surface/50 rounded-xl overflow-hidden border border-white/5 p-6 mt-6 backdrop-blur-sm">
+                        <img src="system-architecture.png" alt="Database and Framework Architecture Diagram" class="w-full h-auto object-contain hover:scale-105 transition-transform duration-500">
+                    </div>
+                </div>
+                
+                <div class="glass-card p-8 md:p-10 flex flex-col hover:-translate-y-1 relative overflow-hidden group">
+                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 blur-3xl rounded-full group-hover:bg-primary/20 transition-colors"></div>
+                    <div class="subsection-title relative z-10"><i data-lucide="globe" class="w-5 h-5"></i> High-Fi Prototype</div>
+                    <p class="text-sm text-textMuted mt-2 mb-8 relative z-10">Experience the fully interactive deployment.</p>
+                    <div class="flex-1 flex flex-col items-center justify-center space-y-6 relative z-10">
+                        <div class="p-5 bg-black/40 border border-white/10 rounded-2xl w-full text-center flex items-center justify-center gap-3 backdrop-blur-md">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            <code class="text-white/80 font-mono text-sm">https://fitgrid-demo.vercel.app</code>
+                        </div>
+                        <a href="YOUR_VERCEL_URL" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all">
+                            Launch Live Site
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card p-8 md:p-10">
+                <div class="subsection-title"><i data-lucide="users-2" class="w-5 h-5"></i> Individual Contributions</div>
+                <div class="overflow-x-auto mt-8">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-textMuted border-b border-white/10 uppercase text-xs tracking-widest bg-white/[0.02]">
+                            <tr>
+                                <th class="p-4 rounded-tl-lg">Member</th>
+                                <th class="p-4">Focus</th>
+                                <th class="p-4 rounded-tr-lg">Deliverables</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-gray-300">
+                            <tr class="hover:bg-white/[0.03] transition-colors">
+                                <td class="p-4 font-bold text-white flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-primary"></div> You</td>
+                                <td class="p-4"><span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium">Lead Dev</span></td>
+                                <td class="p-4 text-textMuted">MET/TDEE algorithms & Matrix UI implementation</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.03] transition-colors">
+                                <td class="p-4 font-bold text-white">Haijin Xia</td>
+                                <td class="p-4"><span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium">Frontend</span></td>
+                                <td class="p-4 text-textMuted">Chart.js visualizations & Dashboard integration</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.03] transition-colors">
+                                <td class="p-4 font-bold text-white">Yifan Xu</td>
+                                <td class="p-4"><span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium">Architect</span></td>
+                                <td class="p-4 text-textMuted">Database schema & Data state management</td>
+                            </tr>
+                            <tr class="hover:bg-white/[0.03] transition-colors">
+                                <td class="p-4 font-bold text-white">Yiyang Lu</td>
+                                <td class="p-4"><span class="px-3 py-1 bg-white/10 rounded-full text-xs font-medium">UI/UX</span></td>
+                                <td class="p-4 text-textMuted">Design System establishment & High-fidelity Prototyping</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
+        <section id="evaluation" class="space-y-12">
+            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
+                05. Evaluation & <span class="text-primary bg-none">Reflection</span>
+            </h2>
+            <div class="glass-card p-8 md:p-10 border-t-4 border-t-accent hover:border-white/20 transition-all">
+                <div class="subsection-title text-accent"><i data-lucide="lightbulb" class="w-5 h-5"></i> Final Reflection</div>
+                
+                <div class="grid md:grid-cols-2 gap-10 mt-8 text-sm text-textMuted">
+                    <div class="space-y-3">
+                        <h4 class="text-white font-semibold text-base flex items-center gap-2">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Social & Ethical Implications
+                        </h4>
+                        <p class="leading-relaxed text-justify">
+                            Our design rigorously prioritizes user data privacy. Furthermore, it actively promotes positive body imaging by moving away from traditional, anxiety-inducing metric comparisons (e.g., pure calorie counting) toward scientific, physiology-based progress markers.
+                        </p>
+                    </div>
+                    <div class="space-y-3">
+                        <h4 class="text-white font-semibold text-base flex items-center gap-2">
+                            <i data-lucide="bot" class="w-4 h-4 text-primary"></i> AI Usage Statement
+                        </h4>
+                        <div class="p-4 bg-surfaceLight/50 rounded-xl border border-white/5">
+                            <p class="leading-relaxed text-justify">
+                                We utilized AI language models primarily as an assistive tool for CSS component optimization and English content polishing. The team maintained full manual control and original authorship over core architectural decisions, database logic, and UI/UX design concepts.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+    </main>
 
+    <footer class="py-12 border-t border-white/10 bg-black/50 backdrop-blur-lg">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-textMuted text-xs tracking-[0.2em] uppercase font-semibold">
+                © 2026 XJTLU — FITGRID PROJECT TEAM
+            </p>
+            <div class="flex gap-4 text-textMuted">
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
+            </div>
+        </div>
+    </footer>
 
-        
-        <!-- SECTION 2: USER REQUIREMENTS -->
-        <section id="requirements" class="space-y-12">
-            <h2 class="section-title">02. User <span class="text-primary">Requirements</span></h2>
-            <div class="grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-2 glass-card overflow-hidden border border-white/10 flex flex-col">
-                    <div class="p-6 pb-2 subsection-title"><i data-lucide="map" class="w-5"></i> User Journey Map</div>
-                    <div class="flex-1 p-6">
-                        <img src="user-journey-map.png" alt="User Journey Map" class="w-full h-full object-contain rounded-xl shadow-2xl">
-                    </div>
-                </div>
-                <div class="space-y-8">
-                    <div class="glass-card p-6">
-                        <div class="subsection-title">Requirements List</div>
-                        <ul class="text-[10px] text-textMuted space-y-4 mt-4">
-                            <li class="flex items-start gap-2"><b>✔ Visual Grid Calibration:</b> Replaces complex text inputs with an interactive 3x3 grid.</li>
-                            <li class="flex items-start gap-2"><b>✔ Live Occupancy Feedback:</b> Displays real-time gym load to mitigate social anxiety.</li>
-                            <li class="flex items-start gap-2"><b>✔ Adaptive Theming:</b> Dynamically switches UI based on personal attributes.</li>
-                        </ul>
-                    </div>
-                    <div class="glass-card p-6">
-                        <div class="subsection-title">Evidence of Life</div>
-                        <div class="grid grid-cols-3 gap-2 mt-4">
-                            <img src="evidence-of-life1.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life2.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life3.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life4.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <img src="evidence-of-life5.jpg" class="aspect-square rounded-lg bg-surfaceLight border border-white/5">
-                            <div class="aspect-square rounded-lg border border-dashed border-white/10 flex items-center justify-center"><i data-lucide="plus" class="text-white/10 w-4"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // Smooth scroll spy navigation
+        window.addEventListener('scroll', () => {
+            const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation'];
+            let current = '';
+            
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    // Offset for the fixed header
+                    if (rect.top <= 150) {
+                        current = id;
+                    }
+                }
+            });
 
-
-
-
-
-
-
-        
-        <!-- SECTION 3: IDEATION -->
-        <section id="ideation" class="space-y-12">
-            <h2 class="section-title">03. Ideation & <span class="text-primary">Alternatives</span></h2>
-            <div class="glass-card p-8">
-                <div class="subsection-title"><i data-lucide="edit-3" class="w-5"></i> The “Crazy Eights”</div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                    <img src="sketch-1.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-2.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-3.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-4.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-5.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-6.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-7.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                    <img src="sketch-8.jpg" class="aspect-[3/4] rounded-xl border border-white/5">
-                </div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 flex flex-col h-full"><div class="subsection-title">Design Alternatives</div><p class="text-sm text-textMuted italic mt-4 flex-1">We compared a static list-based exercise plan (Alternative A) against our chosen interactive matrix calibration system (Alternative B)...</p></div>
-                <div class="glass-card p-8 flex flex-col items-center justify-center text-center">
-                    <div class="subsection-title self-start">Low-Fi Prototype</div>
-                    <a href="YOUR_FIGMA_URL" target="_blank" class="px-10 py-3 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 mt-10 hover:bg-blue-600 transition-all">Open Figma <i data-lucide="external-link" class="w-4"></i></a>
-                </div>
-            </div>
-        </section>
-
-
-
-
-
-
-        
-        <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
-        <section id="technical" class="space-y-12">
-            <h2 class="section-title">04. Technical <span class="text-primary">Implementation</span></h2>
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="glass-card p-8">
-                    <div class="subsection-title"><i data-lucide="database" class="w-5"></i> System Architecture</div>
-                    <div class="bg-surface rounded-xl overflow-hidden border border-white/5 p-4 mt-4">
-                        <img src="system-architecture.png" alt="Architecture" class="w-full h-auto object-contain">
-                    </div>
-                </div>
-                <div class="glass-card p-8 flex flex-col">
-                    <div class="subsection-title"><i data-lucide="globe" class="w-5"></i> High-Fi Prototype</div>
-                    <div class="flex-1 flex flex-col items-center justify-center space-y-6">
-                        <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl w-full text-center">
-                            <code class="text-primary font-mono text-sm">https://fitgrid-demo.vercel.app</code>
-                        </div>
-                        <a href="YOUR_VERCEL_URL" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 transition-colors">Launch Live Site</a>
-                    </div>
-                </div>
-            </div>
-            <div class="glass-card p-8">
-                <div class="subsection-title">Individual Contributions</div>
-                <div class="overflow-x-auto mt-6">
-                    <table class="w-full text-sm text-left">
-                        <thead class="text-textMuted border-b border-white/10 uppercase text-[10px] tracking-widest">
-                            <tr><th class="pb-4">Member</th><th class="pb-4">Focus</th><th class="pb-4">Deliverables</th></tr>
-                        </thead>
-                        <tbody class="divide-y divide-white/5 text-gray-300">
-                            <tr><td class="py-4 font-bold">You</td><td>Lead Dev</td><td>MET/TDEE algorithms & Matrix UI</td></tr>
-                            <tr><td class="py-4 font-bold">Haijin Xia</td><td>Frontend</td><td>Chart.js visualizations & Dashboards</td></tr>
-                            <tr><td class="py-4 font-bold">Yifan Xu</td><td>Architect</td><td>Firebase schema & Data management</td></tr>
-                            <tr><td class="py-4 font-bold">Yiyang Lu</td><td>UI/UX</td><td>Design System & Prototyping</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-
-
-
-
-
-        
-        <!-- SECTION 5: EVALUATION -->
-        <section id="evaluation" class="space-y-12">
-            <h2 class="section-title">05. Evaluation & <span class="text-primary">Reflection</span></h2>
-            <div class="glass-card p-8 border-t-4 border-accent">
-                <div class="subsection-title">Final Reflection</div>
-                <div class="grid md:grid-cols-2 gap-8 mt-4 text-sm text-textMuted text-justify">
-                    <div>
-                        <h4 class="text-white font-bold mb-2 underline">Social & Ethical Implications</h4>
-                        <p>Our design prioritizes user data privacy and promotes positive body imaging by moving away from traditional shaming metrics to scientific physiological progress markers.</p>
-                    </div>
-                    <div>
-                        <h4 class="text-white font-bold mb-2 underline">AI Usage Statement</h4>
-                        <p>We used AI to assist in CSS component optimization and content polishing while maintaining full manual control over core architectural decisions.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="py-20 text-center border-t border-white/5">
-        <p class="text-textMuted text-xs tracking-widest uppercase">© 2026 XJTLU - FITGRID PROJECT TEAM</p>
-    </footer>
-
-    <script>
-        lucide.createIcons();
-        window.addEventListener('scroll', () => {
-            const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation'];
-            sections.forEach(id => {
-                const el = document.getElementById(id);
-                const link = document.querySelector(`nav a[href="#${id}"]`);
-                if (el && link) {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top <= 400) {
-                        document.querySelectorAll('nav a').forEach(l => l.classList.remove('nav-active'));
-                        link.classList.add('nav-active');
-                    }
-                }
-            });
-        });
-    </script>
+            if (current) {
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('nav-active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('nav-active');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
-
