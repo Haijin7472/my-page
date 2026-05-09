@@ -10,261 +10,349 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#0A84FF',
-                        primaryHover: '#0066CC',
-                        accent: '#FF375F',
-                        surface: '#1C1C1E',
-                        surfaceLight: '#2C2C2E',
-                        textMuted: '#8E8E93',
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'SFMono-Regular', 'Menlo', 'monospace'],
                     },
-                    backgroundImage: {
-                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    colors: {
+                        surface: '#000000',
+                        raunoCyan: '#00E5FF',
+                        raunoLime: '#D4FF00',
+                        raunoRed: '#FF3366',
+                        raunoPurple: '#9D00FF',
                     }
                 }
             }
         }
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
         
+        ::selection { background-color: #D4FF00; color: black; }
+
         body { 
-            background-color: #000; 
-            color: #fff; 
+            background-color: #030303; 
+            color: #ffffff; 
             font-family: 'Inter', sans-serif; 
             scroll-behavior: smooth; 
-        }
-        
-        /* Enhanced Glassmorphism with smooth transitions */
-        .glass-card { 
-            background: rgba(28, 28, 30, 0.6); 
-            backdrop-filter: blur(24px); 
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-            border-radius: 24px; 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            background: rgba(35, 35, 38, 0.7);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .section-title { 
-            font-size: 2.75rem; 
-            font-weight: 800; 
-            letter-spacing: -0.04em; 
-            margin-bottom: 2rem; 
-        }
-        
-        .subsection-title { 
-            color: #0A84FF; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-            text-transform: uppercase; 
-            letter-spacing: 0.12em; 
-            margin-bottom: 1rem; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.6rem; 
-        }
-        
-        .nav-active { 
-            color: #fff !important; 
-            font-weight: 600;
-        }
-        
-        .nav-active::after {
-            content: '';
-            position: absolute;
-            bottom: -1.25rem;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #0A84FF;
-            border-radius: 2px;
+        .ambient-glow {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(0, 229, 255, 0.03), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(212, 255, 0, 0.03), transparent 25%);
         }
 
-        img { background-color: #2C2C2E; object-fit: cover; }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { height: 6px; width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+        /* -------------------------------------------
+           核心动画框架：FLIP Layouts
+           ------------------------------------------- */
+        #dynamic-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+        }
+
+        /* 状态 1：开屏巨大目录 */
+        .intro-layout {
+            height: 100vh;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .intro-layout .logo-el {
+            font-size: clamp(4rem, 8vw, 6rem);
+            margin-bottom: 4rem;
+            color: #fff;
+        }
+        .intro-layout .nav-container {
+            display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+        }
+        .intro-layout .nav-link {
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            color: #71717a; /* zinc-500 */
+            text-transform: uppercase; font-family: 'JetBrains Mono', monospace; 
+            letter-spacing: 0.1em; font-weight: bold; cursor: pointer;
+        }
+        .intro-layout .nav-link:hover { color: #fff; }
+
+        /* 状态 2：吸顶导航栏 */
+        .nav-layout {
+            height: 72px;
+            display: flex; flex-direction: row; align-items: center; justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+        .nav-layout .logo-el {
+            font-size: 1.125rem;
+            margin-bottom: 0;
+            color: #fff;
+        }
+        .nav-layout .nav-container {
+            display: flex; flex-direction: row; align-items: center; gap: 2rem;
+        }
+        .nav-layout .nav-link {
+            font-size: 0.75rem;
+            color: #a1a1aa; /* zinc-400 */
+            text-transform: uppercase; font-family: 'JetBrains Mono', monospace; 
+            letter-spacing: 0.1em; font-weight: bold; cursor: pointer;
+        }
+        .nav-layout .nav-link:hover { color: #fff; }
+
+        @media (max-width: 768px) {
+            .nav-layout .nav-container { gap: 0.75rem; }
+            .nav-layout .nav-link { font-size: 0.6rem; letter-spacing: 0.05em; }
+        }
+
+        .glass-nav {
+            background: rgba(5, 5, 5, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            transition: background 1s, backdrop-filter 1s, border-bottom 1s;
+        }
+
+        /* -------------------------------------------
+           Rauno Card Micro-interactions
+           ------------------------------------------- */
+        .rauno-card {
+            background: rgba(24, 24, 28, 0.5); 
+            border-radius: 20px;
+            position: relative;
+            cursor: crosshair; 
+        }
+        .rauno-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient( 600px circle at var(--mouse-x, 0) var(--mouse-y, 0), var(--glow-color, rgba(255,255,255,0.08)), transparent 40%);
+            border-radius: inherit; opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 1;
+        }
+        .rauno-card::after {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; 
+            background: radial-gradient( 300px circle at var(--mouse-x, 0) var(--mouse-y, 0), var(--glow-color, rgba(255,255,255,0.6)), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity 0.5s ease; pointer-events: none; z-index: 2;
+        }
+        .card-content {
+            position: relative; z-index: 10; height: 100%; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); background: inherit; transition: border-color 0.3s ease;
+        }
+        .rauno-card:hover::before, .rauno-card:hover::after { opacity: 1; }
+        .rauno-card:hover .card-content { border-color: transparent; }
+        .color-collide-target { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rauno-card:hover .color-collide-target {
+            color: var(--glow-color, white) !important; text-shadow: 0 0 20px var(--glow-color); transform: translateX(4px);
+        }
+
+        .section-title { font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 900; letter-spacing: -0.05em; line-height: 1; margin-bottom: 1.5rem; }
+        .section-subtitle { font-size: 1.125rem; color: #A1A1AA; margin-bottom: 4rem; font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; }
+        .reveal { opacity: 0; transform: translateY(30px) scale(0.98); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
+
+        .magnetic-wrap { display: inline-block; padding: 20px; margin: -20px; }
+        .magnetic-inner { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #888; }
     </style>
 </head>
-<body class="antialiased bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-surfaceLight/20 via-black to-black min-h-screen">
+<body style="overflow: hidden;">
 
-    <!-- Fixed Navigation: Added References Link -->
-    <header class="fixed top-0 w-full z-50 glass-card rounded-none border-x-0 border-t-0 px-6 py-4 shadow-2xl shadow-black/50">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3 font-extrabold text-xl tracking-tight">
-                <div class="p-2 bg-primary/10 rounded-lg">
-                    <i data-lucide="activity" class="text-primary w-5 h-5"></i>
+    <!-- 解决字体加载抖动 (FOUT)：专属的字体加载遮罩层 -->
+    <div id="font-preloader" class="fixed inset-0 z-[200] bg-[#030303] transition-opacity duration-500"></div>
+
+    <div class="ambient-glow"></div>
+
+    <!-- 暗幕层，开屏纯黑 -->
+    <div id="intro-bg" class="fixed inset-0 z-40 bg-[#030303] transition-opacity duration-1000 ease-in-out"></div>
+
+    <!-- 单一的动态 Header，配合 JS 实现文字平移 -->
+    <header id="dynamic-header">
+        <div id="header-container" class="intro-layout max-w-7xl mx-auto w-full">
+            <!-- 磁性 Logo -->
+            <div class="flip-el logo-el font-black tracking-tighter flex items-center gap-[0.3em] cursor-pointer intro-link" href="#motivation">
+                <div class="w-[0.9em] h-[0.9em] bg-white flex items-center justify-center rounded-[0.15em] shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="0.6em" height="0.6em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-black"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
                 </div>
-                FITGRID
+                <span>FITGRID</span>
             </div>
-            <nav class="hidden md:flex gap-8 text-sm font-medium text-textMuted relative">
-                <a href="#motivation" class="relative hover:text-white transition-colors py-1">1. Motivation</a>
-                <a href="#requirements" class="relative hover:text-white transition-colors py-1">2. Requirements</a>
-                <a href="#ideation" class="relative hover:text-white transition-colors py-1">3. Ideation</a>
-                <a href="#technical" class="relative hover:text-white transition-colors py-1">4. Technical</a>
-                <a href="#evaluation" class="relative hover:text-white transition-colors py-1">5. Reflection</a>
-                <a href="#references" class="relative hover:text-white transition-colors py-1">6. References</a>
+            <!-- 导航集 -->
+            <nav class="nav-container">
+                <a href="#motivation" class="flip-el nav-link intro-link">Motive</a>
+                <a href="#requirements" class="flip-el nav-link intro-link">Req</a>
+                <a href="#ideation" class="flip-el nav-link intro-link">Idea</a>
+                <a href="#technical" class="flip-el nav-link intro-link">Tech</a>
+                <a href="#evaluation" class="flip-el nav-link intro-link">Eval</a>
             </nav>
+        </div>
+        
+        <div id="intro-hint" class="absolute bottom-12 left-1/2 -translate-x-1/2 text-zinc-500 text-[10px] font-mono uppercase tracking-widest animate-pulse flex flex-col items-center gap-2 transition-opacity duration-500">
+            <div class="w-px h-8 bg-gradient-to-b from-transparent to-zinc-500"></div>
+            Scroll down
         </div>
     </header>
 
-    <main class="pt-36 pb-24 max-w-7xl mx-auto px-6 space-y-40">
+    <main id="real-main" class="pt-40 pb-32 max-w-7xl mx-auto px-6 space-y-48" style="opacity: 0; transform: translateY(100px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);">
 
-        <!-- SECTION 1: MOTIVATION & RESEARCH -->
-        <section id="motivation" class="space-y-16">
-            <div>
-                <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                    01. Motivation & <span class="text-primary bg-none">Research</span>
-                </h2>
+        <!-- SECTION 1: MOTIVATION -->
+        <section id="motivation" class="scroll-mt-32">
+            <div class="reveal">
+                <h2 class="section-title">Motivation <span class="text-zinc-600 italic font-light">&</span><br>Research.</h2>
+                <p class="section-subtitle">Addressing macro-societal health trends through domain expertise.</p>
                 
-                <div class="glass-card p-8 md:p-10 mb-16 border-l-4 border-l-primary shadow-2xl shadow-primary/5 hover:-translate-y-1 transition-all">
-                    <div class="subsection-title"><i data-lucide="help-circle" class="w-5 h-5"></i> 1.1 The Why: Choosing the Active Track</div>
-                    <p class="text-textMuted leading-loose text-justify text-sm md:text-base mt-4 space-y-4 block">
-                        <span>
-                            We selected the Active track driven by a dual motivation: addressing urgent macro-societal health trends and leveraging our team's micro-level domain expertise.
-                        </span>
-                        <br><br>
-                        <span>
-                            First, from a macro-demand perspective, public health awareness has surged dramatically. 'Staying active' has transitioned from a niche, hardcore hobby into a universal lifestyle goal. However, despite this growing enthusiasm, there remains a glaring gap for highly empathetic, user-centric applications. Current market solutions typically rely on complex, overwhelming numerical data—such as rigid calorie counting and advanced physiological metrics—that actively intimidate beginners. The broader public urgently needs intuitive, approachable software that lowers the cognitive barrier to scientific exercise, fostering long-term adherence rather than short-term anxiety.
-                        </span>
-                        <br><br>
-                        <span>
-                            Second, on a micro-level, our team possesses a profound, lived understanding of this specific domain. Compared to the Heritage or Social tracks, we are active fitness participants ourselves. We firmly believe that the most resonant user experiences are crafted when developers intimately understand their users' daily struggles. Operating simultaneously as both creators and target users grants us genuine empathy. This deep familiarity allows us to accurately capture real-world pain points—such as performance data anxiety, decision fatigue, and gym crowding—enabling us to design a product that authentically aligns with the public's practical needs and transforms exercise from a daunting task into a seamless, visual experience.
-                        </span>
-                    </p>
-                </div>
-
-                <div class="mb-16 space-y-12">
-                    <div>
-                        <h3 class="text-white font-semibold text-lg mb-5 flex items-center gap-3">
-                            <span class="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:bg-primary/20 transition-colors"><i data-lucide="smartphone" class="w-5 h-5 text-primary"></i></span>
-                            Industry Gaps: Product Analysis
-                        </h3>
-                        <div class="glass-card overflow-x-auto rounded-2xl shadow-2xl">
-                            <table class="w-full text-sm text-left border-collapse">
-                                <thead class="bg-white/[0.03] border-b border-white/10 text-xs uppercase tracking-widest text-textMuted">
-                                    <tr>
-                                        <th class="p-6 w-1/4 font-semibold">Competitor & Type</th>
-                                        <th class="p-6 w-2/5 font-semibold text-emerald-400/90">Core Pros</th>
-                                        <th class="p-6 w-2/5 font-semibold text-rose-400/90">Existing Gaps</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-white/5 text-textMuted text-[13px] leading-relaxed text-justify">
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">Keep</div>
-                                            <div class="text-[11px] italic text-textMuted/70">Comprehensive Online Platform</div>
-                                        </td>
-                                        <td class="p-6 align-top">Extremely comprehensive exercise library; strong community atmosphere; complete self-monitoring mechanisms.</td>
-                                        <td class="p-6 align-top">Blind spots regarding offline physical environments; high cognitive barriers for understanding data [2]; rigid and fixed delivery scenarios.</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">Lefit (乐刻运动)</div>
-                                            <div class="text-[11px] italic text-textMuted/70">Smart Self-Service Gym</div>
-                                        </td>
-                                        <td class="p-6 align-top">Closed-loop service process; highly shortened decision-making time [1]; very low physical entry barriers.</td>
-                                        <td class="p-6 align-top">Real-time crowdedness is invisible before arrival [3]; lacks visual progression incentives; completely missing at-home service integration.</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">Xunji (训记)</div>
-                                            <div class="text-[11px] italic text-textMuted/70">Hardcore Tracking Tool</div>
-                                        </td>
-                                        <td class="p-6 align-top">Precise quantitative data tracking; designed with experienced user logic; highly focused on workout efficiency.</td>
-                                        <td class="p-6 align-top">Severe cognitive overload for beginners [2]; weak external motivation drivers; fails to resolve spatial and temporal constraints [3].</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">Supermonkey (超级猩猩)</div>
-                                            <div class="text-[11px] italic text-textMuted/70">Boutique Group Class O2O</div>
-                                        </td>
-                                        <td class="p-6 align-top">Low financial commitment (pay-per-class); provides high emotional value; fast operational decisions [1].</td>
-                                        <td class="p-6 align-top">Heavily constrained by offline venue resources; lacks long-term visual customization; no flexible door-to-door (at-home) model.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div class="rauno-card mb-16" style="--glow-color: rgba(212,255,0,0.8);">
+                    <div class="card-content p-8 md:p-12">
+                        <div class="flex items-center gap-4 mb-8 border-b border-white/10 pb-6">
+                            <div class="w-2 h-2 rounded-full bg-[#D4FF00]"></div>
+                            <span class="text-zinc-300 font-mono text-[11px] uppercase tracking-widest font-bold">The Why: Choosing the Active Track</span>
                         </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-white font-semibold text-lg mb-5 flex items-center gap-3">
-                            <span class="p-2 bg-white/5 rounded-lg border border-white/10 group-hover:bg-primary/20 transition-colors"><i data-lucide="book-open" class="w-5 h-5 text-primary"></i></span>
-                            Academic Gaps: Literature Review
-                        </h3>
-                        <div class="glass-card overflow-x-auto rounded-2xl shadow-2xl">
-                            <table class="w-full text-sm text-left border-collapse">
-                                <thead class="bg-white/[0.03] border-b border-white/10 text-xs uppercase tracking-widest text-textMuted">
-                                    <tr>
-                                        <th class="p-6 w-1/4 font-semibold">Core Topic (Reference)</th>
-                                        <th class="p-6 w-2/5 font-semibold text-emerald-400/90">Theoretical Pros</th>
-                                        <th class="p-6 w-2/5 font-semibold text-rose-400/90">Academic Gaps</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-white/5 text-textMuted text-[13px] leading-relaxed text-justify">
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">1. Visualizing Goals</div>
-                                            <div class="text-[11px] italic text-textMuted/70">(Affordances in mobile apps, 2025)</div>
-                                        </td>
-                                        <td class="p-6 align-top">Confirmed that visual design significantly lowers cognitive barriers; demonstrated that app-based health empowerment enhances long-term adherence; provides cutting-edge theoretical support for setting goals via intuitive outcome images.</td>
-                                        <td class="p-6 align-top">Lacks practical details on specific visual interaction forms; ignores the expectation gap caused by users' varying genetic differences; fails to explore how online visual goals integrate with offline gym services.</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">2. Crowding & Anxiety</div>
-                                            <div class="text-[11px] italic text-textMuted/70">(Perceived Crowding, 2023)</div>
-                                        </td>
-                                        <td class="p-6 align-top">Rigorously quantified the destructive impact of "perceived crowding" on exercise motivation; clearly stated that high spatial density triggers social anxiety; theoretically justified the necessity of "real-time crowdedness tracking" from an environmental psychology perspective.</td>
-                                        <td class="p-6 align-top">Proposed solutions rely too heavily on passive crowd control by gym operators; lacks discussion on proactive interventions using mobile app data; fails to differentiate crowding levels across various functional zones within the gym.</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">3. Spatial Barriers</div>
-                                            <div class="text-[11px] italic text-textMuted/70">(Home Fitness Application, 2023)</div>
-                                        </td>
-                                        <td class="p-6 align-top">Identified dual constraints of time and space as core barriers to visiting physical gyms; verified the commercial potential of home fitness models in sustaining exercise routines; supported the logic of "at-home private training" to break physical space barriers.</td>
-                                        <td class="p-6 align-top">Limited solely to one-way screen-based video workouts; overlooks the psychological inertia users develop without supervision while exercising alone at home; completely lacks exploration of the highly flexible O2O (online-to-offline) at-home coaching model.</td>
-                                    </tr>
-                                    <tr class="hover:bg-white/[0.03] transition-colors">
-                                        <td class="p-6 align-top">
-                                            <div class="font-bold text-white text-base mb-1">4. Decision Friction</div>
-                                            <div class="text-[11px] italic text-textMuted/70">(Goal-setting in Apps, 2020)</div>
-                                        </td>
-                                        <td class="p-6 align-top">Proved that goal-setting mechanisms crucially guide health behaviors based on massive user datasets; confirmed that reducing initial decision friction greatly boosts user activity; highlighted the critical role of lowering psychological barriers in overcoming exercise resistance.</td>
-                                        <td class="p-6 align-top">Research still focuses on traditional, abstract metrics like calories; severely lacks comparative analysis of "image-based/non-quantified" goal-setting methods; fails to create a closed-loop system connecting app goals with real-world physical spatial experiences.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="text-zinc-300 leading-loose text-justify text-[15px] md:text-[16px] space-y-6">
+                            <p>
+                                We selected the Active track driven by a dual motivation: addressing urgent <strong class="text-white font-semibold">macro-societal health trends</strong> and leveraging our team's <strong class="text-white font-semibold">micro-level domain expertise</strong>.
+                            </p>
+                            <p>
+                                First, from a macro-demand perspective, public health awareness has surged dramatically. 'Staying active' has transitioned from a niche, hardcore hobby into a <strong class="text-white font-semibold">universal lifestyle goal</strong>. However, despite this growing enthusiasm, there remains a glaring gap for highly empathetic, user-centric applications. Current market solutions typically rely on <span class="text-[#FF3366] font-semibold text-white/90">complex, overwhelming numerical data</span>—such as rigid calorie counting and advanced physiological metrics—that actively intimidate beginners. The broader public urgently needs intuitive, approachable software that <span class="text-[#00E5FF] font-semibold text-white/90">lowers the cognitive barrier</span> to scientific exercise, fostering long-term adherence rather than short-term anxiety.
+                            </p>
+                            <div class="text-white mt-8 font-medium border-l-2 border-[#D4FF00]/50 bg-[#D4FF00]/5 pl-6 py-5 rounded-r-xl">
+                                <p>Second, on a micro-level, our team possesses a <strong class="text-[#D4FF00] font-bold">profound, lived understanding</strong> of this specific domain. Compared to the Heritage or Social tracks, we are active fitness participants ourselves. We firmly believe that the most resonant user experiences are crafted when developers intimately understand their users' daily struggles. Operating simultaneously as both creators and target users grants us genuine empathy. This deep familiarity allows us to accurately capture real-world pain points—such as performance data anxiety, decision fatigue, and gym crowding—enabling us to design a product that authentically aligns with the public's practical needs and transforms exercise from a daunting task into a <strong class="text-[#D4FF00] font-bold">seamless, visual experience</strong>.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-20">
-                    <div class="subsection-title mb-8"><i data-lucide="users" class="w-5 h-5"></i> 1.3 The Stakeholders: Personas</div>
+                <!-- Industry Gaps -->
+                <div class="space-y-6 mt-32 reveal">
+                    <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                        <h3 class="text-white font-bold text-2xl tracking-tight">Industry Gaps</h3>
+                        <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Product Analysis</div>
+                    </div>
+                    
+                    <div class="grid lg:grid-cols-2 gap-4">
+                        <div class="rauno-card group" style="--glow-color: #00E5FF;">
+                            <div class="card-content p-8 flex flex-col">
+                                <div class="flex justify-between items-center mb-10">
+                                    <h4 class="font-black text-white text-3xl tracking-tight color-collide-target">Keep</h4>
+                                    <div class="text-[10px] text-[#00E5FF] bg-[#00E5FF]/10 border border-[#00E5FF]/20 px-3 py-1.5 rounded font-mono uppercase tracking-widest">Online Platform</div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 text-[15px]">
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#00E5FF]"></span> Core Pros
+                                        </div>
+                                        <p class="text-zinc-300 leading-relaxed group-hover:text-white transition-colors">Extremely comprehensive exercise library; strong community atmosphere; complete self-monitoring mechanisms.</p>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span> Existing Gaps
+                                        </div>
+                                        <p class="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">Blind spots regarding offline physical environments; high cognitive barriers for understanding data [2]; rigid and fixed delivery scenarios.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="rauno-card group" style="--glow-color: #D4FF00;">
+                            <div class="card-content p-8 flex flex-col">
+                                <div class="flex justify-between items-center mb-10">
+                                    <h4 class="font-black text-white text-3xl tracking-tight color-collide-target">Lefit</h4>
+                                    <div class="text-[10px] text-[#D4FF00] bg-[#D4FF00]/10 border border-[#D4FF00]/20 px-3 py-1.5 rounded font-mono uppercase tracking-widest">Smart Gym</div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 text-[15px]">
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#D4FF00]"></span> Core Pros
+                                        </div>
+                                        <p class="text-zinc-300 leading-relaxed group-hover:text-white transition-colors">Closed-loop service process; highly shortened decision-making time [1]; very low physical entry barriers.</p>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span> Existing Gaps
+                                        </div>
+                                        <p class="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">Real-time crowdedness is invisible before arrival [3]; lacks visual progression incentives; completely missing at-home service integration.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rauno-card group" style="--glow-color: #FF3366;">
+                            <div class="card-content p-8 flex flex-col">
+                                <div class="flex justify-between items-center mb-10">
+                                    <h4 class="font-black text-white text-3xl tracking-tight color-collide-target">Xunji</h4>
+                                    <div class="text-[10px] text-[#FF3366] bg-[#FF3366]/10 border border-[#FF3366]/20 px-3 py-1.5 rounded font-mono uppercase tracking-widest">Hardcore Tracker</div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 text-[15px]">
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#FF3366]"></span> Core Pros
+                                        </div>
+                                        <p class="text-zinc-300 leading-relaxed group-hover:text-white transition-colors">Precise quantitative data tracking; designed with experienced user logic; highly focused on workout efficiency.</p>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span> Existing Gaps
+                                        </div>
+                                        <p class="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">Severe cognitive overload for beginners [2]; weak external motivation drivers; fails to resolve spatial and temporal constraints [3].</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rauno-card group" style="--glow-color: #9D00FF;">
+                            <div class="card-content p-8 flex flex-col">
+                                <div class="flex justify-between items-center mb-10">
+                                    <h4 class="font-black text-white text-3xl tracking-tight color-collide-target">Supermonkey</h4>
+                                    <div class="text-[10px] text-[#9D00FF] bg-[#9D00FF]/10 border border-[#9D00FF]/20 px-3 py-1.5 rounded font-mono uppercase tracking-widest">Boutique Class</div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1 text-[15px]">
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-300 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#9D00FF]"></span> Core Pros
+                                        </div>
+                                        <p class="text-zinc-300 leading-relaxed group-hover:text-white transition-colors">Low financial commitment (pay-per-class); provides high emotional value; fast operational decisions [1].</p>
+                                    </div>
+                                    <div class="space-y-3">
+                                        <div class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-zinc-600"></span> Existing Gaps
+                                        </div>
+                                        <p class="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">Heavily constrained by offline venue resources; lacks long-term visual customization; no flexible door-to-door (at-home) model.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stakeholders (Bento Style) -->
+                <div class="mt-32 reveal">
+                    <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                        <h3 class="text-white font-bold text-2xl tracking-tight">The Stakeholders</h3>
+                        <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Personas</div>
+                    </div>
                     <div class="grid md:grid-cols-2 gap-8">
-                        <div class="glass-card overflow-hidden border border-primary/20 shadow-xl shadow-primary/5 group hover:-translate-y-1 transition-all">
-                            <div class="bg-surfaceLight/30 relative overflow-hidden flex items-center justify-center p-4 md:p-6">
-                                <img src="persona1.png" alt="Primary Persona: Beginner Student Analysis" class="w-full h-auto object-contain drop-shadow-2xl rounded-lg group-hover:scale-[1.02] transition-transform duration-700">
-                            </div>
-                            <div class="p-4 bg-primary/10 text-center border-t border-white/5 backdrop-blur-md">
-                                <span class="text-xs text-primary font-bold uppercase tracking-[0.2em]">Primary Persona: Beginner Student</span>
+                        <div class="rauno-card" style="--glow-color: #00E5FF;">
+                            <div class="card-content overflow-hidden flex flex-col group">
+                                <div class="bg-black/60 p-10 flex-1 flex justify-center items-center">
+                                    <img src="persona1.png" alt="Primary Persona" class="w-full h-auto object-contain rounded-xl opacity-100 group-hover:scale-[1.02] transition-all duration-700">
+                                </div>
+                                <div class="p-5 border-t border-white/10 flex justify-between items-center bg-[#00E5FF]/5">
+                                    <div>
+                                        <div class="text-[#00E5FF] text-[10px] font-bold uppercase tracking-widest mb-1 transition-colors">Primary Target</div>
+                                        <p class="text-white font-semibold text-lg">Beginner Student</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="glass-card overflow-hidden border border-accent/20 shadow-xl shadow-accent/5 group hover:-translate-y-1 transition-all">
-                            <div class="bg-surfaceLight/30 relative overflow-hidden flex items-center justify-center p-4 md:p-6">
-                                <img src="persona2.png" alt="Secondary Persona: Gym Manager Analysis" class="w-full h-auto object-contain drop-shadow-2xl rounded-lg group-hover:scale-[1.02] transition-transform duration-700">
-                            </div>
-                            <div class="p-4 bg-accent/10 text-center border-t border-white/5 backdrop-blur-md">
-                                <span class="text-xs text-accent font-bold uppercase tracking-[0.2em]">Secondary Persona: Gym Manager</span>
+                        <div class="rauno-card" style="--glow-color: #FF3366;">
+                            <div class="card-content overflow-hidden flex flex-col group">
+                                <div class="bg-black/60 p-10 flex-1 flex justify-center items-center">
+                                    <img src="persona2.png" alt="Secondary Persona" class="w-full h-auto object-contain rounded-xl opacity-100 group-hover:scale-[1.02] transition-all duration-700">
+                                </div>
+                                <div class="p-5 border-t border-white/10 flex justify-between items-center bg-[#FF3366]/5">
+                                    <div>
+                                        <div class="text-[#FF3366] text-[10px] font-bold uppercase tracking-widest mb-1 transition-colors">Secondary Target</div>
+                                        <p class="text-white font-semibold text-lg">Gym Manager</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -272,437 +360,515 @@
             </div>
         </section>
 
-        <!-- SECTION 2: USER REQUIREMENTS -->
-        <section id="requirements" class="space-y-12 pt-20 border-t border-white/10">
-            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                02. User <span class="text-primary bg-none">Requirements</span>
-            </h2>
-            <div class="grid lg:grid-cols-3 gap-6 items-stretch">
-                <div class="lg:col-span-2 glass-card flex flex-col p-6 group hover:-translate-y-1 transition-all h-full bg-[#121212]/80 border-white/5">
-                    <div class="flex items-center gap-2 mb-6">
-                        <i data-lucide="map" class="w-5 h-5 text-primary"></i>
-                        <h3 class="text-primary font-bold text-sm tracking-widest uppercase">User Journey Map</h3>
-                    </div>
-                    <div class="flex-1 bg-[#1A1A1E] rounded-2xl flex items-center justify-center p-4 border border-white/5">
-                        <img src="user-journey-map.png" alt="End-to-end User Journey Map for FitGrid" class="w-full h-auto object-contain rounded-xl">
+        <!-- SECTION 2: REQUIREMENTS -->
+        <section id="requirements" class="scroll-mt-32">
+            <div class="reveal">
+                <h2 class="section-title">User <br>Requirements.</h2>
+                <p class="section-subtitle">Mapping the end-to-end journey to identify core friction points.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-12 gap-6 items-stretch reveal">
+                <div class="lg:col-span-8 rauno-card" style="--glow-color: rgba(255,255,255,0.6);">
+                    <div class="card-content p-8 flex flex-col">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-white font-bold text-xl tracking-tight">Journey Map</h3>
+                            <span class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest border border-white/20 px-2 py-1 rounded">Flow Analysis</span>
+                        </div>
+                        <div class="flex-1 rounded-xl flex items-center justify-center p-4 bg-black/50 border border-white/5 overflow-hidden">
+                            <img src="user-journey-map.png" alt="Journey Map" class="w-full h-auto object-contain opacity-100 transition-all duration-700 ease-out hover:scale-[1.02]">
+                        </div>
                     </div>
                 </div>
-                <div class="flex flex-col gap-6 h-full">
-                    <div class="glass-card p-6 flex flex-col hover:-translate-y-1 transition-all bg-[#121212]/80 border-white/5">
-                        <div class="flex items-center gap-2 mb-6">
-                            <i data-lucide="list-checks" class="w-5 h-5 text-primary"></i>
-                            <h3 class="text-primary font-bold text-sm tracking-widest uppercase">Core Requirements</h3>
-                        </div>
-                        <div class="space-y-3 flex-1 flex flex-col justify-center">
-                            <div class="p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors flex items-start gap-4">
-                                <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
-                                    <i data-lucide="gamepad-2" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-white font-bold text-[13px] mb-1.5 leading-snug">Visualized & Gamified Feedback</h4>
-                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
-                                        Real-time display of gym crowd density, course matching, and weekly precise training plans, allowing users to clearly see "their own schedule → results → environment", providing immediate feedback and a sense of accomplishment, thereby enhancing the enjoyment of using the gym.
-                                    </p>
-                                </div>
+                
+                <div class="lg:col-span-4 rauno-card" style="--glow-color: #D4FF00;">
+                    <div class="card-content p-8 flex flex-col">
+                        <h3 class="text-white font-bold text-xl tracking-tight mb-8">Core Requirements</h3>
+                        <div class="space-y-6 flex-1 flex flex-col justify-center">
+                            <div class="group">
+                                <h4 class="text-white font-bold text-[15px] mb-2 color-collide-target flex items-center gap-2">
+                                    Visualized Feedback
+                                </h4>
+                                <p class="text-zinc-300 text-[14px] leading-relaxed text-justify"><strong class="text-white font-semibold">Real-time display</strong> of gym crowd density, course matching, and weekly precise training plans, allowing users to clearly see <span class="text-[#D4FF00] font-semibold text-white/90">"their own schedule → results → environment"</span>.</p>
                             </div>
-                            <div class="flex items-start gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                                    <i data-lucide="zap" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-white font-bold text-[13px] mb-1.5 leading-snug">Highly Realistic & Practical Integration</h4>
-                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
-                                        The system directly connects with offline gym resources, helping users avoid peak times and transforming the "troublesome fitness decisions" into a convenient, smooth and user-friendly experience. The practicality itself is the source of long-term interest.
-                                    </p>
-                                </div>
+                            <div class="h-px w-full bg-white/10"></div>
+                            <div class="group">
+                                <h4 class="text-white font-bold text-[15px] mb-2 color-collide-target flex items-center gap-2">
+                                    Realistic Integration
+                                </h4>
+                                <p class="text-zinc-300 text-[14px] leading-relaxed text-justify">The system <strong class="text-white font-semibold">directly connects</strong> with offline gym resources, helping users avoid peak times and transforming "troublesome fitness decisions" into a <span class="text-[#00E5FF] font-semibold text-white/90">convenient experience</span>.</p>
                             </div>
-                            <div class="flex items-start gap-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.06] transition-colors">
-                                <div class="w-8 h-8 rounded-lg bg-rose-500/10 text-rose-400 flex items-center justify-center shrink-0">
-                                    <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
-                                </div>
-                                <div>
-                                    <h4 class="text-white font-bold text-[13px] mb-1.5 leading-snug">Intuitive Low-Barrier Experience</h4>
-                                    <p class="text-textMuted text-[11px] leading-relaxed text-justify">
-                                        Replace complex forms with the 3×3 Body Matrix, allowing users to set their goals simply by making selections instead of filling in cumbersome data. The operation is effortless, enjoyable and not strenuous.
-                                    </p>
-                                </div>
+                            <div class="h-px w-full bg-white/10"></div>
+                            <div class="group">
+                                <h4 class="text-white font-bold text-[15px] mb-2 color-collide-target flex items-center gap-2">
+                                    Low-Barrier Entry
+                                </h4>
+                                <p class="text-zinc-300 text-[14px] leading-relaxed text-justify">Replace complex forms with the <strong class="text-[#FF3366] font-semibold text-white/90">3×3 Body Matrix</strong>, allowing users to set their goals simply by making <strong class="text-white font-semibold">visual selections</strong> instead of filling in cumbersome data.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="glass-card p-6 hover:-translate-y-1 transition-all bg-[#121212]/80 border-white/5">
-                        <div class="flex items-center gap-2 mb-6">
-                            <i data-lucide="external-link" class="w-5 h-5 text-primary"></i>
-                            <h3 class="text-primary font-bold text-sm tracking-widest uppercase">Evidence of Life</h3>
-                        </div>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="aspect-square rounded-xl overflow-hidden bg-surfaceLight"><img src="evidence-of-life1.jpg" alt="Evidence 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
-                            <div class="aspect-square rounded-xl overflow-hidden bg-surfaceLight"><img src="evidence-of-life2.jpg" alt="Evidence 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
-                            <div class="aspect-square rounded-xl overflow-hidden bg-surfaceLight"><img src="evidence-of-life3.jpg" alt="Evidence 3" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
-                            <div class="aspect-square rounded-xl overflow-hidden bg-surfaceLight"><img src="evidence-of-life4.jpg" alt="Evidence 4" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
-                            <div class="aspect-square rounded-xl overflow-hidden bg-surfaceLight"><img src="evidence-of-life5.jpg" alt="Evidence 5" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"></div>
-                        </div>
-                    </div>
+                </div>
+            </div>
+
+            <!-- Evidence of Life -->
+            <div class="mt-20 reveal">
+                <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <h3 class="text-white font-bold text-xl tracking-tight">Evidence of Life</h3>
+                    <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest bg-white/10 px-3 py-1 rounded">Field Research</div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="aspect-square rounded-xl overflow-hidden border border-white/10 bg-black"><img src="evidence-of-life1.jpg" class="w-full h-full object-cover opacity-100 transition-all duration-500"></div>
+                    <div class="aspect-square rounded-xl overflow-hidden border border-white/10 bg-black"><img src="evidence-of-life2.jpg" class="w-full h-full object-cover opacity-100 transition-all duration-500"></div>
+                    <div class="aspect-square rounded-xl overflow-hidden border border-white/10 bg-black"><img src="evidence-of-life3.jpg" class="w-full h-full object-cover opacity-100 transition-all duration-500"></div>
+                    <div class="aspect-square rounded-xl overflow-hidden border border-white/10 bg-black"><img src="evidence-of-life4.jpg" class="w-full h-full object-cover opacity-100 transition-all duration-500"></div>
+                    <div class="aspect-square rounded-xl overflow-hidden border border-white/10 bg-black hidden md:block"><img src="evidence-of-life5.jpg" class="w-full h-full object-cover opacity-100 transition-all duration-500"></div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION 3: IDEATION -->
-        <section id="ideation" class="space-y-12 pt-20 border-t border-white/10">
-            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                03. Ideation & <span class="text-primary bg-none">Alternatives</span>
-            </h2>
+        <section id="ideation" class="scroll-mt-32">
+            <div class="reveal">
+                <h2 class="section-title">Ideation <span class="text-zinc-700 italic font-light">&</span><br>Prototyping.</h2>
+                <p class="section-subtitle">From rapid sketching to structured interactive flows.</p>
+            </div>
             
-           <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                <div class="subsection-title"><i data-lucide="pen-tool" class="w-5 h-5"></i> The "Crazy Eights"</div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mt-8">
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-1.jpg" alt="Crazy Eights Sketch 1" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
+            <div class="rauno-card p-8 md:p-10 mb-8 reveal" style="--glow-color: rgba(255,255,255,0.6);">
+                <div class="card-content">
+                    <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                        <h3 class="text-white font-bold text-xl tracking-tight">The "Crazy Eights"</h3>
+                        <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Sketches</div>
                     </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-2.jpg" alt="Crazy Eights Sketch 2" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-3.jpg" alt="Crazy Eights Sketch 3" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-4.jpg" alt="Crazy Eights Sketch 4" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-5.jpg" alt="Crazy Eights Sketch 5" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-6.jpg" alt="Crazy Eights Sketch 6" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-7.jpg" alt="Crazy Eights Sketch 7" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div class="rounded-2xl bg-white/[0.02] border border-white/10 group p-1.5 hover:border-primary/50 hover:bg-white/[0.05] transition-all">
-                        <img src="sketch-8.jpg" alt="Crazy Eights Sketch 8" class="w-full h-auto object-contain rounded-xl opacity-85 group-hover:opacity-100 transition-opacity">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-1.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-2.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-3.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-4.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-5.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-6.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-7.jpg" class="w-full h-auto opacity-100 rounded"></div>
+                        <div class="bg-black rounded-lg border border-white/10 overflow-hidden p-2"><img src="sketch-8.jpg" class="w-full h-auto opacity-100 rounded"></div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 md:p-10 flex flex-col h-full hover:border-white/20 transition-all">
-                    <div class="subsection-title"><i data-lucide="split-square-horizontal" class="w-5 h-5"></i> 3.2 Design Alternatives</div>
-                    <h4 class="text-white font-bold text-lg mb-4 mt-2">Dropdown Menus vs. Grid Matrices</h4>
-                    <div class="text-sm text-textMuted leading-relaxed flex-1 text-justify space-y-4">
-                        <p>
-                            Based on the feedback from <span class="text-accent font-medium">A/B testing</span>, users indicated that the menu dropdown requires more clicks to load the menu, and the operation steps are numerous and not concise enough.
-                        </p>
-                        <p>
-                            Most users believe that the <span class="text-white font-medium">nine-grid matrix</span> selection method allows for a clear understanding of what to do at a glance, and it enables quick and intuitive selection. 
-                        </p>
-                        <div class="p-4 bg-primary/10 border-l-2 border-primary rounded-r-lg mt-4">
-                            <p class="text-primary/90 font-medium">
-                                💡 The team ultimately chose the nine-grid matrix selection scheme as the core interaction method for user-generated group classes.
-                            </p>
+            <div class="grid md:grid-cols-2 gap-6 reveal">
+                <div class="rauno-card" style="--glow-color: #00E5FF;">
+                    <div class="card-content p-10 flex flex-col justify-center group h-full">
+                        <div class="font-mono text-[10px] text-[#00E5FF] bg-[#00E5FF]/10 px-3 py-1.5 rounded uppercase tracking-widest w-max mb-6">Design Alternatives</div>
+                        <h4 class="text-white font-black text-2xl mb-6 tracking-tight color-collide-target">Dropdown Menus vs. Grid Matrices</h4>
+                        <div class="text-[15px] text-zinc-300 leading-relaxed space-y-4 text-justify">
+                            <p>Based on the feedback from <strong class="text-white font-bold">A/B testing</strong>, users indicated that the menu dropdown requires <span class="text-[#FF3366] font-semibold text-white/90">more clicks</span> to load the menu, and the operation steps are numerous and <strong class="text-white font-semibold">not concise enough</strong>.</p>
+                            <p>Most users believe that the <span class="text-[#00E5FF] font-bold">nine-grid matrix</span> selection method allows for a <strong class="text-white font-semibold">clear understanding</strong> of what to do at a glance, and it enables quick and intuitive selection.</p>
                         </div>
                     </div>
                 </div>
-                <div class="glass-card p-8 md:p-10 flex flex-col items-center justify-center text-center relative overflow-hidden group h-full">
-                    <div class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors pointer-events-none"></div>
-                    <div class="subsection-title self-center relative z-10">
-                        <i data-lucide="figma" class="w-5 h-5"></i> 3.3 Low-Fi Prototype
+
+                <div class="rauno-card" style="--glow-color: #D4FF00;">
+                    <div class="card-content p-10 flex flex-col items-center justify-center text-center h-full relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[#D4FF00]/5 pointer-events-none"></div>
+                        <h4 class="text-white font-black text-2xl mb-4 tracking-tight relative z-10">Interactive Low-Fi Prototype</h4>
+                        <p class="text-[15px] text-zinc-300 mb-10 max-w-sm relative z-10">Click below to explore the interactive low-fidelity wireframes and user flows.</p>
+                        
+                        <div class="magnetic-wrap relative z-10">
+                            <a href="https://www.figma.com/proto/DDeisrG15zNGntWqktHWxw/wudi?node-id=0-1&t=xyyWMZHdHgakWTfo-1" target="_blank" 
+                               class="magnetic-inner px-8 py-4 bg-[#D4FF00] text-black text-[14px] font-bold rounded-full flex items-center gap-2 shadow-[0_0_30px_rgba(212,255,0,0.3)] hover:scale-105 transition-transform duration-300">
+                                Open Prototype <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-sm text-textMuted mt-4 mb-8 relative z-10">
-                        Click below to explore the interactive low-fidelity wireframes and user flows.
-                    </p>
-                    <a href="https://www.figma.com/proto/DDeisrG15zNGntWqktHWxw/wudi?node-id=0-1&t=xyyWMZHdHgakWTfo-1" 
-                       target="_blank" 
-                       class="px-8 py-4 bg-primary text-white text-sm font-bold rounded-full flex items-center gap-2 hover:bg-primaryHover hover:shadow-lg hover:shadow-primary/30 transition-all transform hover:-translate-y-0.5 relative z-10">
-                        Open Interactive Prototype <i data-lucide="external-link" class="w-4 h-4"></i>
-                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 4: TECHNICAL IMPLEMENTATION -->
-        <section id="technical" class="space-y-12 pt-20 border-t border-white/10">
-            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                04. Technical <span class="text-primary bg-none">Implementation</span>
-            </h2>
-            <div class="grid lg:grid-cols-2 gap-8">
-               <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                    <div class="subsection-title"><i data-lucide="database" class="w-5 h-5"></i> 4.1 System Architecture</div>
-                    <div class="bg-surface/50 rounded-xl overflow-hidden border border-white/5 p-6 mt-6 backdrop-blur-sm">
-                        <img src="system-architecture.jpg" alt="FitGrid Database and Framework Architecture Diagram" class="w-full h-auto object-contain hover:scale-105 transition-transform duration-500 shadow-2xl">
-                    </div>
-                    <div class="mt-8 space-y-6 text-sm leading-relaxed text-textMuted">
-                        <h4 class="text-white font-semibold text-base flex items-center gap-2">
-                            <i data-lucide="info" class="w-4 h-4 text-primary"></i> Data Flow & Technology Stack
-                        </h4>
-                        <ul class="space-y-4">
-                            <li class="flex items-start gap-3">
-                                <div class="p-1.5 rounded-lg bg-surfaceLight mt-0.5 flex items-center justify-center border border-white/5 shadow-inner">
-                                    <i data-lucide="hard-drive-upload" class="w-4 h-4 text-primary"></i>
-                                </div>
-                                <div><b class="text-white block mb-0.5">Secure Ingestion:</b> Capture and processing of real-time IoT check-in data.</div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="p-1.5 rounded-lg bg-surfaceLight mt-0.5 flex items-center justify-center border border-white/5 shadow-inner">
-                                    <i data-lucide="cloud" class="w-4 h-4 text-emerald-400"></i>
-                                </div>
-                                <div><b class="text-white block mb-0.5">Cloud Orchestration:</b> Managed by Vercel serverless functions for managing data persistence and logic distribution.</div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="p-1.5 rounded-lg bg-surfaceLight mt-0.5 flex items-center justify-center border border-white/5 shadow-inner">
-                                    <i data-lucide="code" class="w-4 h-4 text-amber-400"></i>
-                                </div>
-                                <div><b class="text-white block mb-0.5">Business Logic Engine:</b> Pure Vanilla JS executing core business rules in real-time (e.g., capacity validation).</div>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <div class="p-1.5 rounded-lg bg-surfaceLight mt-0.5 flex items-center justify-center border border-white/5 shadow-inner">
-                                    <i data-lucide="eye" class="w-4 h-4 text-sky-400"></i>
-                                </div>
-                                <div><b class="text-white block mb-0.5">Real-Time Insights:</b> Stylish Tailwind CSS interface providing live insights and simplifying monitoring.</div>
-                            </li>
+        <!-- SECTION 4: TECHNICAL -->
+        <section id="technical" class="scroll-mt-32">
+            <div class="reveal">
+                <h2 class="section-title">Technical <br>Implementation.</h2>
+                <p class="section-subtitle">Architecture overview and live deployment access.</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-6 reveal">
+               <div class="rauno-card" style="--glow-color: rgba(255,255,255,0.5);">
+                    <div class="card-content p-8 flex flex-col">
+                        <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                            <h3 class="text-white font-bold text-xl tracking-tight">System Architecture</h3>
+                            <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Structure</div>
+                        </div>
+                        <div class="bg-black/80 rounded-xl overflow-hidden border border-white/5 p-6 mb-8 flex items-center justify-center">
+                            <img src="system-architecture.jpg" alt="Architecture" class="w-full h-auto object-contain opacity-100 transition-opacity mix-blend-screen">
+                        </div>
+                        <ul class="text-[14px] text-zinc-300 space-y-3 font-mono leading-relaxed">
+                            <li><span class="text-white font-bold">Data Ingestion:</span> Capture IoT check-in data.</li>
+                            <li><span class="text-[#00E5FF] font-bold">Cloud Orchestration:</span> Vercel serverless functions.</li>
+                            <li><span class="text-[#D4FF00] font-bold">Logic Engine:</span> Vanilla JS executing core rules.</li>
+                            <li><span class="text-[#FF3366] font-bold">Insights:</span> Tailwind CSS real-time interface.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="glass-card p-8 md:p-10 flex flex-col hover:-translate-y-1 relative overflow-hidden group transition-all">
-                    <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 blur-3xl rounded-full group-hover:bg-primary/20 transition-colors"></div>
-                    <div class="subsection-title relative z-10"><i data-lucide="globe" class="w-5 h-5"></i> 4.2 High-Fi Prototype</div>
-                    <p class="text-sm text-textMuted mt-2 mb-8 relative z-10">Experience the fully functional deployment with real-time IoT synchronization and responsive dashboard.</p>
-                    <div class="flex-1 flex flex-col items-center justify-center space-y-6 relative z-10">
-                        <div class="p-5 bg-black/40 border border-white/10 rounded-2xl w-full text-center flex items-center justify-center gap-3 backdrop-blur-md group-hover:border-primary/30 transition-colors">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#10b981]"></span>
-                            <code class="text-white/80 font-mono text-[13px]">https://fitgrid-project.vercel.app/</code>
+
+                <div class="rauno-card" style="--glow-color: #D4FF00;">
+                    <div class="card-content p-10 flex flex-col items-center justify-center text-center group h-full">
+                        <div class="w-16 h-16 mb-8 text-[#D4FF00] drop-shadow-[0_0_15px_rgba(212,255,0,0.5)] transition-colors duration-500 color-collide-target">
+                            <svg viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor"/></svg>
                         </div>
-                        <a href="https://fitgrid-project.vercel.app/" target="_blank" class="w-full py-4 bg-white text-black text-center font-bold rounded-full hover:bg-gray-200 hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all transform hover:scale-[1.02] active:scale-[0.98]">Launch Live System</a>
-                        <div class="flex gap-4 mt-2">
-                            <span class="text-[10px] text-textMuted flex items-center gap-1"><i data-lucide="server" class="w-3 h-3"></i> Hosted on Vercel</span>
-                            <span class="text-[10px] text-textMuted flex items-center gap-1"><i data-lucide="zap" class="w-3 h-3"></i> Fast Performance</span>
+                        
+                        <h3 class="text-white font-black text-3xl tracking-tight mb-4">High-Fi Deployment</h3>
+                        <p class="text-[15px] text-zinc-300 mb-12 max-w-sm">Experience the fully functional deployment with real-time IoT synchronization and responsive dashboard.</p>
+
+                        <div class="w-full max-w-xs space-y-4">
+                            <div class="px-4 py-3 bg-[#D4FF00]/10 border border-[#D4FF00]/30 rounded-lg flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="relative flex h-2 w-2">
+                                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4FF00] opacity-75"></span>
+                                      <span class="relative inline-flex rounded-full h-2 w-2 bg-[#D4FF00] shadow-[0_0_8px_#D4FF00]"></span>
+                                    </span>
+                                    <span class="text-[#D4FF00] font-mono text-[10px] uppercase font-bold tracking-widest">Status: Online</span>
+                                </div>
+                                <code class="text-[#D4FF00]/80 font-mono text-[10px]">vercel.app</code>
+                            </div>
+
+                            <a href="https://fitgrid-project.vercel.app/" target="_blank" 
+                               class="block w-full py-4 bg-zinc-900 border border-white/10 text-white text-[13px] font-bold rounded-lg hover:bg-white hover:text-black transition-all duration-300">
+                                Launch Live System
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                <div class="subsection-title mb-8"><i data-lucide="users-2" class="w-5 h-5"></i> 4.3 Team Contributions</div>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] transition-colors group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div><h4 class="text-white font-bold text-lg">Zhichong Zhao</h4><p class="text-textMuted text-xs font-mono mt-1">ID: 2364597 | 25% Contribution</p></div>
-                            <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/20 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="microscope" class="w-3.5 h-3.5"></i> Research</span>
-                        </div>
-                        <h5 class="text-sm font-semibold text-white/80 mb-3 border-b border-white/10 pb-2">User Research & Content Lead</h5>
-                        <ul class="text-[13px] text-textMuted space-y-2.5 leading-relaxed">
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i> Led the "Motivation & Research" section, writing a detailed rationale for the chosen track.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i> Synthesized "The Gap" by systematically summarizing 4 academic papers and 4 commercial products.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i> Defined stakeholders and created distinct, targeted Personas.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-primary shrink-0 mt-0.5"></i> Structured the Process Portfolio framework and led the Mid-term Poster production.</li>
-                        </ul>
-                    </div>
-                    <div class="p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] transition-colors group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div><h4 class="text-white font-bold text-lg">Shuaifei Fan</h4><p class="text-textMuted text-xs font-mono mt-1">ID: 2362984 | 25% Contribution</p></div>
-                            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="palette" class="w-3.5 h-3.5"></i> UI/UX</span>
-                        </div>
-                        <h5 class="text-sm font-semibold text-white/80 mb-3 border-b border-white/10 pb-2">UI/UX Design Lead</h5>
-                        <ul class="text-[13px] text-textMuted space-y-2.5 leading-relaxed">
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Visualized pain points and concepts by mapping the User Journey.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Led rapid ideation, sketching 8 UI concepts ("Crazy Eights") for playful interactions.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Conducted in-depth comparisons of Design Alternatives to provide strong rationale.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i> Developed interactive Low-Fi prototypes and visually polished High-Fi web interfaces.</li>
-                        </ul>
-                    </div>
-                    <div class="p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] transition-colors group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div><h4 class="text-white font-bold text-lg">Xiyu Zhang</h4><p class="text-textMuted text-xs font-mono mt-1">ID: 2364446 | 25% Contribution</p></div>
-                            <span class="px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/20 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="code-2" class="w-3.5 h-3.5"></i> Develop</span>
-                        </div>
-                        <h5 class="text-sm font-semibold text-white/80 mb-3 border-b border-white/10 pb-2">System Development Lead</h5>
-                        <ul class="text-[13px] text-textMuted space-y-2.5 leading-relaxed">
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i> Built the functional web prototype, ensuring accessibility via a live URL (Vercel).</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i> Programmed and implemented the 3 "must-have" features defined in the requirements.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i> Designed the System Architecture diagram detailing backend data and UI state management.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i> Managed the GitHub repository and README, ensuring responsive design and technical compliance.</li>
-                        </ul>
-                    </div>
-                    <div class="p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.04] transition-colors group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div><h4 class="text-white font-bold text-lg">Haijin Xia</h4><p class="text-textMuted text-xs font-mono mt-1">ID: 2361793 | 25% Contribution</p></div>
-                            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 border border-purple-500/20 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"><i data-lucide="video" class="w-3.5 h-3.5"></i> Eval & Media</span>
-                        </div>
-                        <h5 class="text-sm font-semibold text-white/80 mb-3 border-b border-white/10 pb-2">Evaluation & Video Production Lead</h5>
-                        <ul class="text-[13px] text-textMuted space-y-2.5 leading-relaxed">
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Conducted comprehensive Usability Testing with 3 authentic target users on the Alpha version.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Documented iterative refinements via "Before & After" comparisons based on direct feedback.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Wrote the script and recorded High-Fi prototype screen captures with call-outs for interactions.</li>
-                            <li class="flex items-start gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-purple-400 shrink-0 mt-0.5"></i> Edited and produced the final 2-minute CHI-style teaser video (1080p, MP4).</li>
-                        </ul>
-                    </div>
+            <!-- Team Contributions -->
+            <div class="mt-32 reveal">
+                <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <h3 class="text-white font-bold text-2xl tracking-tight">Team Contributions</h3>
+                    <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Division of Labor</div>
                 </div>
-                <div class="mt-8 p-6 bg-surfaceLight/30 border border-white/10 rounded-2xl">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="p-2 bg-white/10 rounded-lg text-white"><i data-lucide="handshake" class="w-5 h-5"></i></div>
-                        <h4 class="text-white font-bold text-base uppercase tracking-wider">Joint Responsibilities</h4>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="rauno-card" style="--glow-color: #00E5FF;">
+                        <div class="card-content p-6 flex flex-col group">
+                            <div class="text-[10px] text-zinc-400 font-mono mb-4 border-b border-white/10 pb-2 flex justify-between">
+                                <span>ID: 2364597</span> <span class="text-[#00E5FF] font-bold">25%</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-1 color-collide-target">Zhichong Zhao</h4>
+                            <div class="text-[11px] text-[#00E5FF] font-bold uppercase tracking-widest mb-4 bg-[#00E5FF]/10 w-max px-2 py-1 rounded">Research Lead</div>
+                            <ul class="text-[13px] text-zinc-300 space-y-2 font-medium flex-1 list-disc pl-4">
+                                <li>Led "Motivation & Research" rationale.</li>
+                                <li>Synthesized 4 papers & 4 products.</li>
+                                <li>Defined stakeholders & Personas.</li>
+                                <li>Led Mid-term Poster production.</li>
+                            </ul>
+                        </div>
                     </div>
-                    <ul class="text-[13px] text-textMuted space-y-2 leading-relaxed grid md:grid-cols-3 gap-4">
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-white/50 shrink-0 mt-0.5"></i> Collaborated seamlessly on brainstorming, role assignment, and theme finalization.</li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-white/50 shrink-0 mt-0.5"></i> Participated in field research and user interviews to collect "Evidence of Life".</li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-white/50 shrink-0 mt-0.5"></i> Co-authored the Final Reflection (ethics & AI statement) ensuring academic integrity.</li>
-                    </ul>
+                    
+                    <div class="rauno-card" style="--glow-color: #D4FF00;">
+                        <div class="card-content p-6 flex flex-col group">
+                            <div class="text-[10px] text-zinc-400 font-mono mb-4 border-b border-white/10 pb-2 flex justify-between">
+                                <span>ID: 2362984</span> <span class="text-[#D4FF00] font-bold">25%</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-1 color-collide-target">Shuaifei Fan</h4>
+                            <div class="text-[11px] text-[#D4FF00] font-bold uppercase tracking-widest mb-4 bg-[#D4FF00]/10 w-max px-2 py-1 rounded">UI/UX Lead</div>
+                            <ul class="text-[13px] text-zinc-300 space-y-2 font-medium flex-1 list-disc pl-4">
+                                <li>Mapped the User Journey.</li>
+                                <li>Led rapid ideation ("Crazy Eights").</li>
+                                <li>Conducted Design Alternatives comparison.</li>
+                                <li>Developed Low-Fi & High-Fi interfaces.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rauno-card" style="--glow-color: #FF3366;">
+                        <div class="card-content p-6 flex flex-col group">
+                            <div class="text-[10px] text-zinc-400 font-mono mb-4 border-b border-white/10 pb-2 flex justify-between">
+                                <span>ID: 2364446</span> <span class="text-[#FF3366] font-bold">25%</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-1 color-collide-target">Xiyu Zhang</h4>
+                            <div class="text-[11px] text-[#FF3366] font-bold uppercase tracking-widest mb-4 bg-[#FF3366]/10 w-max px-2 py-1 rounded">Development Lead</div>
+                            <ul class="text-[13px] text-zinc-300 space-y-2 font-medium flex-1 list-disc pl-4">
+                                <li>Built the functional web prototype (Vercel).</li>
+                                <li>Programmed 3 "must-have" features.</li>
+                                <li>Designed System Architecture diagram.</li>
+                                <li>Managed GitHub repo and README.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="rauno-card" style="--glow-color: #9D00FF;">
+                        <div class="card-content p-6 flex flex-col group">
+                            <div class="text-[10px] text-zinc-400 font-mono mb-4 border-b border-white/10 pb-2 flex justify-between">
+                                <span>ID: 2361793</span> <span class="text-[#9D00FF] font-bold">25%</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg mb-1 color-collide-target">Haijin Xia</h4>
+                            <div class="text-[11px] text-[#9D00FF] font-bold uppercase tracking-widest mb-4 bg-[#9D00FF]/10 w-max px-2 py-1 rounded">Eval & Media Lead</div>
+                            <ul class="text-[13px] text-zinc-300 space-y-2 font-medium flex-1 list-disc pl-4">
+                                <li>Conducted Usability Testing with 3 users.</li>
+                                <li>Documented "Before & After" refinements.</li>
+                                <li>Recorded High-Fi prototype screen captures.</li>
+                                <li>Produced the final 2-minute teaser video.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION 5: EVALUATION -->
-        <section id="evaluation" class="space-y-12 pt-20 border-t border-white/10">
-            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                05. Evaluation & <span class="text-primary bg-none">Reflection</span>
-            </h2>
-           <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                <div class="subsection-title"><i data-lucide="users" class="w-5 h-5"></i> 5.1 Usability Testing</div>
-                <div class="mt-6 text-textMuted text-sm leading-relaxed text-justify space-y-6">
-                    <p>We conducted an usability test with three users. Two of them stated that all the functions of the product could be completed normally. However, one user stated that after the system generated the movement ratio, they were unsure of what to do next.</p>
-                    <div class="p-5 bg-white/[0.03] border border-white/10 rounded-xl relative overflow-hidden group hover:border-primary/30 transition-colors">
-                        <div class="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors pointer-events-none"></div>
-                        <p class="relative z-10 text-white/90 font-medium"><i data-lucide="arrow-right-circle" class="w-4 h-4 inline-block text-primary mr-2 -mt-0.5"></i>Therefore, we have added a button for generating exercise plans to guide users in choosing the appropriate group class times.</p>
+        <section id="evaluation" class="scroll-mt-32">
+            <div class="reveal">
+                <h2 class="section-title">Evaluation <span class="text-zinc-600 italic font-light">&</span><br>Reflection.</h2>
+                <p class="section-subtitle">Iterating based on empirical user feedback.</p>
+            </div>
+            
+            <div class="rauno-card reveal mb-16" style="--glow-color: #D4FF00;">
+                <div class="card-content p-8 md:p-12">
+                    <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                        <h3 class="text-white font-bold text-2xl tracking-tight">Usability Testing & Iteration</h3>
+                        <div class="font-mono text-[10px] text-[#D4FF00] bg-[#D4FF00]/10 px-3 py-1 rounded uppercase tracking-widest">Before & After</div>
+                    </div>
+
+                    <div class="text-[15px] text-zinc-300 leading-relaxed mb-12 max-w-4xl text-justify space-y-4">
+                        <p>We conducted an usability test with three users. Two of them stated that all the functions of the product could be completed normally. However, one user stated that after the system generated the movement ratio, they were <span class="text-[#FF3366] font-semibold text-white/90">unsure of what to do next</span>.</p>
+                        <p><strong class="text-[#D4FF00] font-bold">Solution:</strong> Therefore, we added a prominent <span class="text-[#D4FF00] font-bold bg-[#D4FF00]/10 px-2 py-0.5 rounded">"Generate My Plan →"</span> button to guide users in choosing the appropriate group class times. Post-iteration interviews confirmed users <strong class="text-white font-semibold">instantly understood</strong> this Call-to-Action.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 relative">
+                        <div class="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-black border border-[#D4FF00]/50 rounded-full z-10 items-center justify-center text-[#D4FF00]">
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </div>
+                        <div class="bg-black/80 rounded-2xl border border-white/10 p-8 flex flex-col items-center">
+                            <div class="text-zinc-400 text-[10px] font-mono tracking-widest uppercase mb-8 font-bold border border-zinc-600 px-3 py-1 rounded">Alpha v1: No Clear CTA</div>
+                            <img src="before-iteration.jpg" class="w-full max-w-[260px] h-auto object-contain opacity-100">
+                        </div>
+                        <div class="bg-black/80 rounded-2xl border border-[#D4FF00]/30 p-8 flex flex-col items-center shadow-[0_0_50px_rgba(212,255,0,0.08)] group relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#D4FF00]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+                            <div class="text-[#D4FF00] text-[10px] font-mono tracking-widest uppercase mb-8 font-bold bg-[#D4FF00]/10 px-3 py-1 rounded relative z-10">Refined UX: Added Button</div>
+                            <img src="after-iteration.jpg" class="w-full max-w-[260px] h-auto object-contain drop-shadow-2xl relative z-10 group-hover:scale-[1.02] transition-transform duration-700">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                <div class="subsection-title"><i data-lucide="arrow-right-left" class="w-5 h-5"></i> 5.2 Iterative Improvement</div>
-                <p class="text-sm text-textMuted mt-2 mb-8 text-justify">Based on the insights gathered from the usability testing, we refined our design. The following comparison highlights the key modifications made to address user feedback.</p>
-                <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2 text-rose-400 font-bold text-xs uppercase tracking-widest bg-rose-500/10 w-fit px-3 py-1.5 rounded-lg border border-rose-500/20"><i data-lucide="x-circle" class="w-4 h-4"></i> Before: Alpha Version</div>
-                        <div class="bg-surfaceLight/50 rounded-xl border border-white/10 overflow-hidden relative group p-4 h-[500px] flex items-center justify-center">
-                            <img src="before-iteration.jpg" alt="Alpha UI Before Iteration" class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity drop-shadow-2xl rounded-lg">
-                        </div>
-                        <div class="p-5 bg-white/[0.02] border border-white/5 rounded-xl">
-                            <h5 class="text-white text-sm font-bold mb-2">Identified Issue:</h5>
-                            <p class="text-[13px] text-textMuted leading-relaxed">The Alpha version lacked a clear Call-to-Action (CTA) at the bottom of the screen. Users reviewed the matrix data but were unsure of how to proceed to actual scheduling.</p>
-                        </div>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-widest bg-emerald-500/10 w-fit px-3 py-1.5 rounded-lg border border-emerald-500/20"><i data-lucide="check-circle-2" class="w-4 h-4"></i> After: Refined Version</div>
-                        <div class="bg-surfaceLight/50 rounded-xl border border-emerald-500/30 overflow-hidden relative group shadow-[0_0_20px_rgba(16,185,129,0.05)] p-4 h-[500px] flex items-center justify-center">
-                            <img src="after-iteration.jpg" alt="Refined UI After Iteration" class="w-full h-full object-contain opacity-90 group-hover:opacity-100 transition-opacity drop-shadow-2xl rounded-lg">
-                        </div>
-                        <div class="p-5 bg-emerald-500/5 border border-emerald-500/10 rounded-xl">
-                            <h5 class="text-white text-sm font-bold mb-2">Design Solution:</h5>
-                            <p class="text-[13px] text-textMuted leading-relaxed">Added a prominent, high-contrast <span class="text-white font-medium">"Generate My Plan →"</span> button. This immediately guides the user from data review to actionable planning.</p>
-                        </div>
-                    </div>
+
+            <!-- NEW: Technical Reflection -->
+            <div class="reveal mt-32">
+                <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <h3 class="text-white font-bold text-2xl tracking-tight">Technical Reflection</h3>
+                    <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Methodology</div>
                 </div>
-                <div class="mt-10 p-5 bg-primary/10 border-l-4 border-primary rounded-r-xl">
-                    <h5 class="text-white font-bold text-sm mb-2 flex items-center gap-2"><i data-lucide="message-square-heart" class="w-4 h-4 text-primary"></i> Post-Iteration Feedback</h5>
-                    <p class="text-[13px] text-textMuted leading-relaxed text-justify">After the modification, we conducted follow-up interviews with three users. All of them stated that upon seeing the button, they immediately understood that clicking it would enable them to create their own exercise plan.</p>
+                <div class="rauno-card" style="--glow-color: #00E5FF;">
+                    <div class="card-content p-8 md:p-12 space-y-8">
+                        <div class="text-[15px] text-zinc-300 leading-relaxed space-y-6">
+                            <p>We utilized <strong class="text-white">Gemini</strong> to accelerate the development of our frontend components and specific interactive logic. To ensure the output met our design and functional requirements, we used highly specific prompts across three key areas:</p>
+                            <ul class="space-y-4 list-none pl-0">
+                                <li class="flex gap-4"><span class="text-[#00E5FF] font-bold">•</span> <div><strong class="text-white">Core Frontend UI:</strong> We directed the AI to generate a layout strictly following a "dark mode glassmorphism" aesthetic. The prompt explicitly required the use of deep black backgrounds, translucent surface layers, and smooth transition animations for all hover effects to create a premium visual experience.</div></li>
+                                <li class="flex gap-4"><span class="text-[#00E5FF] font-bold">•</span> <div><strong class="text-white">3x3 Fitness Matrix Selector (Core Logic):</strong> We instructed the AI to build an interactive 3x3 matrix component for selecting workout intensity. Our prompt enforced three strict functional requirements: (1) highlighting clicked cells with a glowing accent color, (2) saving the selected value into a state variable, and (3) rendering a "Generate Plan" button below the grid that remains inactive until a cell is selected.</div></li>
+                                <li class="flex gap-4"><span class="text-[#00E5FF] font-bold">•</span> <div><strong class="text-white">Real-Time Gym Crowding Detection:</strong> To handle live data, we prompted the AI to generate the necessary API interfaces and logic for real-time data transmission, simulating the live gym occupancy updates.</div></li>
+                            </ul>
+                            <p class="pt-4 border-t border-white/5">Multiple verification methods were adopted to ensure the AI-generated code fully met user requirements, including conducting <strong class="text-white">functional testing</strong> to examine whether core features such as personalised fitness planning, group time selection, real-time gym crowd checking and private lesson booking operated as intended, alongside <strong class="text-white">user requirement checklist validation</strong> to align developed functions with real needs gathered from questionnaires and interviews, with unreasonable logic revised and optimised iteratively throughout the process.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="glass-card p-8 md:p-10 border-t-4 border-t-accent hover:border-white/20 transition-all">
-                <div class="subsection-title text-accent mb-8"><i data-lucide="lightbulb" class="w-5 h-5"></i> 5.3 Final Reflection: Social & Ethical Implications</div>
-                <div class="grid md:grid-cols-2 gap-8 text-sm">
-                    <div class="space-y-4 p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-colors">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 mb-2"><i data-lucide="shield-alert" class="w-5 h-5"></i></div>
-                        <h4 class="text-white font-bold text-base">Health Data Privacy</h4>
-                        <p class="text-textMuted leading-relaxed text-justify">The system collects sensitive data such as the user's current body type, ideal body type, exercise habits, and frequency of visits to the gym. If the data storage is not secure and is used for analysis or advertising without the user's consent, it will infringe upon user privacy and pose a risk of health data leakage. Therefore, we are committed to continuously maintaining the system with strict encryption protocols to protect user privacy.</p>
+
+            <!-- NEW: Social/Ethical Implications -->
+            <div class="reveal mt-32">
+                <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <h3 class="text-white font-bold text-2xl tracking-tight">Social & Ethical Implications</h3>
+                    <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Responsibilities</div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="rauno-card" style="--glow-color: #00E5FF;">
+                        <div class="card-content p-8 flex flex-col h-full">
+                            <h4 class="text-white font-bold text-lg mb-4">Health Data Privacy</h4>
+                            <p class="text-[15px] text-zinc-300 leading-relaxed text-justify flex-1">
+                                The system collects <strong class="text-white">sensitive data</strong> such as the user's current body type, ideal body type, exercise habits, and frequency of visits to the gym. If the data storage is not secure and is used for analysis or advertising without the user's consent, it will infringe upon user privacy and pose a risk of health data leakage. Therefore, we are committed to continuously maintaining the system with <span class="text-[#00E5FF] font-semibold">strict encryption protocols</span> to protect user privacy.
+                            </p>
+                        </div>
                     </div>
-                    <div class="space-y-4 p-6 rounded-2xl bg-white/[0.03] border border-white/5 hover:bg-white/[0.05] transition-colors">
-                        <div class="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400 mb-2"><i data-lucide="activity" class="w-5 h-5"></i></div>
-                        <h4 class="text-white font-bold text-base">Safety in Health Advice</h4>
-                        <p class="text-textMuted leading-relaxed text-justify">The system offers automatically generated weekly training plans, but they are not evaluated one-on-one by doctors or professional coaches. For users with injuries, chronic diseases, or weak constitutions, there may be risks associated with exercise. We acknowledge this limitation and will implement mandatory liability disclaimers and recommend consulting professionals for users with specific health conditions.</p>
+                    
+                    <div class="rauno-card" style="--glow-color: #FF3366;">
+                        <div class="card-content p-8 flex flex-col h-full">
+                            <h4 class="text-white font-bold text-lg mb-4">Safety in Health Advice</h4>
+                            <p class="text-[15px] text-zinc-300 leading-relaxed text-justify flex-1">
+                                The system offers <strong class="text-white">automatically generated</strong> weekly training plans, but they are not evaluated one-on-one by doctors or professional coaches. For users with injuries, chronic diseases, or weak constitutions, there may be risks associated with exercise. We acknowledge this limitation and will implement <span class="text-[#FF3366] font-semibold">mandatory liability disclaimers</span> and recommend consulting professionals for users with specific health conditions.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECTION 06: REFERENCES & AI DISCLOSURE -->
-        <section id="references" class="space-y-12 pt-20 border-t border-white/10">
-            <h2 class="section-title text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">
-                06. References & <span class="text-primary bg-none">AI Disclosure</span>
-            </h2>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-               <!-- Academic References -->
-                <div class="glass-card p-8 md:p-10 hover:-translate-y-1 transition-all">
-                    <div class="subsection-title mb-6"><i data-lucide="library" class="w-5 h-5"></i> 6.1 Academic References</div>
-                    <ul class="text-[13px] text-textMuted space-y-4">
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            [1] X. Zheng et al., "Leveraging mobile fitness apps for healthier lifestyles: How affordances drive sustained engagement," Internet Research, vol. 35, 2025.
-                        </li>
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            [2] A. R. et al., "Exploring Motivation, Perceived Crowding and Satisfaction Among Mountaineers and Recreationists," in Advances in Hospitality and Leisure, Bingley: Emerald Publishing Limited, 2023, pp. 115-135.
-                        </li>
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            [3] S. Kim and Y. Cho, "Effects of Content Characteristics and Improvement in User Satisfaction on the Reuse of Home Fitness Application," Sustainability, vol. 15, no. 10, Art. no. 8371, May 2023.
-                        </li>
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            [4] D. A. et al., "Goal-setting And Achievement In Activity Tracking Apps: A Case Study Of MyFitnessPal," in Proceedings of the The Web Conference, 2020, pp. 2853-2859.
-                        </li>
-                    </ul>
+        <!-- SECTION 6: REFERENCES -->
+        <section id="references" class="scroll-mt-32">
+            <div class="reveal">
+                <div class="flex items-center justify-between mb-8 border-b border-white/10 pb-4">
+                    <h3 class="text-white font-bold text-2xl tracking-tight">References</h3>
+                    <div class="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Academic & Tool Citations</div>
                 </div>
-
-
-                
-             <!-- AI Generation Disclosure -->
-                <div class="glass-card p-8 md:p-10 border-l-4 border-l-primary hover:-translate-y-1 transition-all flex flex-col h-full">
-                    <div class="subsection-title mb-6"><i data-lucide="sparkles" class="w-5 h-5 text-primary"></i> 6.2 AI Disclosure & Reflection</div>
-                    
-                    <p class="text-[13px] text-textMuted mb-6 leading-relaxed text-justify">
-                        In accordance with the project guidelines, we utilized Generative AI as an assistive tool. The following details our specific usage, evaluating both the successful outputs and the limitations that required manual intervention:
-                    </p>
-
-                    <ul class="text-[13px] text-textMuted space-y-5 flex-1 text-justify">
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            <span class="text-white font-medium">[1] Claude 3.5 Sonnet,</span> v1.0, accessed on 2026-02-24, available at <a href="https://claude.ai/" target="_blank" class="text-primary hover:underline transition-colors">https://claude.ai</a>. Used for expanding brief user descriptions into structured personas. While the AI successfully generated an excellent structural template, its content heavily focused on traditional "calorie counting," which explicitly contradicted our core project requirement of a "low-barrier experience." Consequently, we retained the AI's layout but manually rewrote the goals and pain points to align precisely with our research on perceived gym crowding.
-                        </li>
-                        <li class="pl-4 border-l-2 border-white/10 hover:border-primary transition-colors leading-relaxed">
-                            <span class="text-white font-medium">[2] Cursor,</span> v0.40, accessed on 2026-02-24, available at <a href="https://cursor.com/" target="_blank" class="text-primary hover:underline transition-colors">https://cursor.com</a>. Used for generating the initial Tailwind CSS layout for the glassmorphism dashboard. Although the AI provided a functional base structure, it generated excessive blur values and heavy borders that broke our minimalist aesthetic. As a result, the team discarded the AI's border styling, manually refined the <code>backdrop-blur</code> parameters, and adjusted subsequent prompts to explicitly specify "minimalist design."
-                        </li>
-                    </ul>
-
-                    <!-- Academic Integrity Disclaimer -->
-                    <div class="mt-8 p-4 rounded-xl border border-white/5 bg-surfaceLight/20 text-[11px] italic text-textMuted">
-                        * The team maintains 100% manual authorship over core architectural logic, UX design decisions, original research findings, and final code implementation.
+                <div class="rauno-card" style="--glow-color: rgba(255,255,255,0.4);">
+                    <div class="card-content p-8 md:p-12">
+                        <ul class="space-y-6 text-[14px] text-zinc-300 leading-relaxed text-justify">
+                            <li class="flex gap-4 group">
+                                <span class="text-[#00E5FF] font-mono font-bold shrink-0">[1]</span>
+                                <span>Gemini, accessed on 2026-04-22, available at <a href="https://gemini.google.com" class="underline underline-offset-4">https://gemini.google.com</a>. Used for generating user profiles cartoon images, user journey maps cartoon graphics, system architecture graphics, and writing the frontend code.</span>
+                            </li>
+                            <li class="flex gap-4 group">
+                                <span class="text-[#D4FF00] font-mono font-bold shrink-0">[2]</span>
+                                <span>Doubao, v2.0, accessed on 2026-05-08, available at <a href="https://www.doubao.com" class="underline underline-offset-4">https://www.doubao.com</a>. Used for generating the initial storyboard script for the Video Demo.</span>
+                            </li>
+                            <li class="flex gap-4 group">
+                                <span class="text-[#FF3366] font-mono font-bold shrink-0 opacity-50">[3]</span>
+                                <span>X. Zheng et al., "Leveraging mobile fitness apps for healthier lifestyles: How affordances drive sustained engagement," <i>Internet Research</i>, vol. 35, 2025.</span>
+                            </li>
+                            <li class="flex gap-4 group">
+                                <span class="text-[#9D00FF] font-mono font-bold shrink-0 opacity-50">[4]</span>
+                                <span>A. R. et al., "Exploring Motivation, Perceived Crowding and Satisfaction Among Mountaineers and Recreationists," in <i>Advances in Hospitality and Leisure</i>, Bingley: Emerald Publishing Limited, 2023, pp. 115-135.</span>
+                            </li>
+                            <li class="flex gap-4 group">
+                                <span class="text-zinc-500 font-mono font-bold shrink-0 opacity-50">[5]</span>
+                                <span>S. Kim and Y. Cho, "Effects of Content Characteristics and Improvement in User Satisfaction on the Reuse of Home Fitness Application," <i>Sustainability</i>, vol. 15, no. 10, Art. no. 8371, May 2023.</span>
+                            </li>
+                            <li class="flex gap-4 group">
+                                <span class="text-zinc-500 font-mono font-bold shrink-0 opacity-50">[6]</span>
+                                <span>D. A. et al., "Goal-setting And Achievement In Activity Tracking Apps: A Case Study Of MyFitnessPal," in <i>Proceedings of the The Web Conference</i>, 2020, pp. 2853-2859.</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+        </section>
 
-
-                
     </main>
 
-    <footer class="py-12 border-t border-white/10 bg-black/50 backdrop-blur-lg">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p class="text-textMuted text-xs tracking-[0.2em] uppercase font-semibold">
-                © 2026 XJTLU — FITGRID PROJECT TEAM
+    <footer class="py-12 border-t border-white/10 mt-20 relative">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+            <div class="text-white font-black text-lg tracking-tighter">FITGRID.</div>
+            <p class="text-zinc-500 text-[10px] font-mono uppercase tracking-widest text-center md:text-left">
+                © 2026 XJTLU Team 
             </p>
-            <div class="flex gap-4 text-textMuted">
-                <a href="#" class="hover:text-white transition-colors"><i data-lucide="github" class="w-5 h-5"></i></a>
-                <a href="#" class="hover:text-white transition-colors"><i data-lucide="mail" class="w-5 h-5"></i></a>
-            </div>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
         
-        window.addEventListener('scroll', () => {
-            const sections = ['motivation', 'requirements', 'ideation', 'technical', 'evaluation', 'references'];
-            let current = '';
+        // --- 1. 终极一镜到底动画 (FLIP Animation) ---
+        let isIntroActive = true;
+        let isAnimating = false;
+        
+        function playIntroAnimation(jumpTarget = null) {
+            if (!isIntroActive || isAnimating) return;
+            isAnimating = true;
+
+            const headerContainer = document.getElementById('header-container');
+            const flipItems = document.querySelectorAll('.flip-el');
+            if (!headerContainer || flipItems.length === 0) return;
             
-            sections.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    const rect = el.getBoundingClientRect();
-                    // Offset for better trigger point
-                    if (rect.top <= 200) {
-                        current = id;
-                    }
-                }
+            const firstStates = Array.from(flipItems).map(el => {
+                const rect = el.getBoundingClientRect();
+                const style = window.getComputedStyle(el);
+                return { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2, fontSize: style ? parseFloat(style.fontSize) : 16 };
             });
 
-            if (current) {
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('nav-active');
-                    if (link.getAttribute('href') === `#${current}`) {
-                        link.classList.add('nav-active');
-                    }
-                });
+            const hint = document.getElementById('intro-hint');
+            if (hint) hint.style.opacity = '0';
+
+            headerContainer.classList.remove('intro-layout');
+            headerContainer.classList.add('nav-layout');
+
+            const lastStates = Array.from(flipItems).map(el => {
+                const rect = el.getBoundingClientRect();
+                const style = window.getComputedStyle(el);
+                return { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2, fontSize: style ? parseFloat(style.fontSize) : 16 };
+            });
+
+            flipItems.forEach((el, i) => {
+                const dx = firstStates[i].cx - lastStates[i].cx;
+                const dy = firstStates[i].cy - lastStates[i].cy;
+                let scale = firstStates[i].fontSize / lastStates[i].fontSize;
+                if (isNaN(scale) || scale === Infinity || scale === 0) scale = 1;
+                el.style.transformOrigin = 'center center';
+                el.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+                el.style.transition = 'none';
+            });
+
+            document.body.offsetHeight;
+
+            flipItems.forEach(el => {
+                el.style.transition = 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), color 1.2s ease';
+                el.style.transform = 'translate(0, 0) scale(1)';
+            });
+
+            const introBg = document.getElementById('intro-bg');
+            if (introBg) introBg.style.opacity = '0';
+            const main = document.getElementById('real-main');
+            if (main) {
+                main.style.opacity = '1';
+                main.style.transform = 'translateY(0)';
             }
+            const dynamicHeader = document.getElementById('dynamic-header');
+            if (dynamicHeader) dynamicHeader.classList.add('glass-nav');
+
+            setTimeout(() => {
+                if (introBg) introBg.style.display = 'none';
+                if (document.body) document.body.style.overflow = '';
+                isIntroActive = false;
+                isAnimating = false;
+                if (typeof observer !== 'undefined') {
+                    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+                }
+                if (jumpTarget) {
+                    const targetEl = document.querySelector(jumpTarget);
+                    if (targetEl) { window.scrollTo({ top: targetEl.offsetTop - 100, behavior: 'smooth' }); }
+                }
+            }, 1200);
+        }
+
+        window.addEventListener('wheel', (e) => { if (e.deltaY > 10 && isIntroActive) playIntroAnimation(); }, {passive: true});
+        window.addEventListener('touchmove', () => { if (isIntroActive) playIntroAnimation(); }, {passive: true});
+        window.addEventListener('keydown', (e) => { if (['ArrowDown', 'PageDown', ' '].includes(e.key) && isIntroActive) playIntroAnimation(); });
+
+        document.querySelectorAll('.intro-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); 
+                const target = link.getAttribute('href');
+                if (isIntroActive) playIntroAnimation(target);
+                else {
+                    const targetEl = document.querySelector(target);
+                    if (targetEl) window.scrollTo({ top: targetEl.offsetTop - 100, behavior: 'smooth' });
+                }
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+             window.scrollTo(0, 0);
+             document.fonts.ready.then(() => {
+                 const preloader = document.getElementById('font-preloader');
+                 if (preloader) {
+                     preloader.style.opacity = '0';
+                     setTimeout(() => preloader.style.display = 'none', 500);
+                 }
+             });
+        });
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); } });
+        }, observerOptions);
+
+        document.querySelectorAll('.rauno-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        document.querySelectorAll('.magnetic-wrap').forEach(wrap => {
+            const inner = wrap.querySelector('.magnetic-inner');
+            if (!inner) return;
+            wrap.addEventListener('mousemove', (e) => {
+                const rect = wrap.getBoundingClientRect();
+                inner.style.transform = `translate(${(e.clientX - rect.left - rect.width / 2) * 0.3}px, ${(e.clientY - rect.top - rect.height / 2) * 0.3}px)`;
+            });
+            wrap.addEventListener('mouseleave', () => { inner.style.transform = `translate(0px, 0px)`; });
         });
     </script>
 </body>
